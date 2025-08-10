@@ -21,6 +21,16 @@
             --font-body: 'Inter', sans-serif;
         }
 
+        /* Dark Mode */
+        body.dark-mode {
+            --primary-bg-color: #121212;
+            --secondary-bg-color: #1E1E1E;
+            --card-bg-color: #2c2c2c;
+            --accent-color: #BB86FC; /* A vibrant purple */
+            --text-color: #E0E0E0;
+            --soft-text-color: #B0B0B0;
+        }
+
         /* Basic Resets and Body Styling */
         body {
             font-family: var(--font-body);
@@ -34,6 +44,7 @@
             min-height: 100vh;
             overflow-x: hidden;
             font-size: 16px;
+            transition: background-color 0.5s ease;
         }
 
         /* Header and App Title */
@@ -46,6 +57,11 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            transition: background-color 0.5s ease, box-shadow 0.5s ease;
         }
 
         #app-title {
@@ -57,6 +73,20 @@
             margin: 0;
             cursor: pointer;
             font-weight: 700;
+            transition: color 0.5s ease;
+        }
+        
+        #dark-mode-toggle {
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+        
+        #dark-mode-toggle:hover {
+            color: var(--accent-color);
         }
 
         /* Navigation Bar */
@@ -66,6 +96,9 @@
             padding: 15px 0;
             text-align: center;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.5s ease, box-shadow 0.5s ease;
+            overflow-x: auto;
+            white-space: nowrap;
         }
 
         .nav-button {
@@ -103,18 +136,24 @@
         .feature-section.active {
             display: block;
         }
-
-        #search-section .search-container {
-            width: 90%;
-            max-width: 700px;
-            margin: 25px auto;
-            display: flex;
-            gap: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            border-radius: 50px;
-            overflow: hidden;
+        
+        /* General styling for headings and containers */
+        h2 {
+            font-family: var(--font-heading);
+            color: var(--text-color);
+            text-align: center;
+            margin-bottom: 20px;
         }
         
+        .results-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        /* Search and Filter */
         .filter-controls {
             width: 90%;
             max-width: 700px;
@@ -134,9 +173,22 @@
             color: var(--text-color);
             outline: none;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
         
-        #search-section #search-input {
+        .search-container {
+            width: 90%;
+            max-width: 700px;
+            margin: 25px auto;
+            display: flex;
+            gap: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border-radius: 50px;
+            overflow: hidden;
+            transition: box-shadow 0.5s ease;
+        }
+        
+        .search-container input {
             flex-grow: 1;
             padding: 15px 25px;
             font-size: 1rem;
@@ -146,16 +198,12 @@
             outline: none;
             transition: all 0.3s ease;
         }
-
-        #search-section #search-input::placeholder {
+        
+        .search-container input::placeholder {
             color: var(--soft-text-color);
         }
-
-        #search-section #search-input:focus {
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        #search-section #search-button {
+        
+        .search-container button {
             padding: 15px 30px;
             background-color: var(--accent-color);
             color: var(--secondary-bg-color);
@@ -168,106 +216,9 @@
             transition: all 0.3s ease;
         }
 
-        #search-section #search-button:hover {
+        .search-container button:hover {
             background-color: #0b3a8c;
             transform: scale(1.02);
-        }
-
-        #results-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 25px;
-            padding: 20px 0;
-            animation: fadeIn 0.8s ease-in-out;
-        }
-        
-        #recommender-section h2, #time-capsule-section h2, #search-section h2 {
-            font-family: var(--font-heading);
-            color: var(--accent-color);
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        #time-capsule-section {
-            text-align: center;
-        }
-
-        #time-capsule-section .year-input-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        #time-capsule-section #year-input {
-            padding: 10px 20px;
-            font-size: 1rem;
-            border: 2px solid var(--accent-color);
-            border-radius: 50px;
-            background-color: var(--secondary-bg-color);
-            color: var(--text-color);
-            outline: none;
-            width: 150px;
-        }
-
-        #time-capsule-section #time-capsule-button {
-            padding: 10px 20px;
-            background-color: var(--accent-color);
-            color: var(--secondary-bg-color);
-            font-family: var(--font-heading);
-            font-size: 1rem;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        #time-capsule-section #time-capsule-button:hover {
-            background-color: #0b3a8c;
-            transform: scale(1.05);
-        }
-
-        /* Recommender UI */
-        #recommender-section .recommender-controls {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        
-        #recommender-section .recommender-controls input {
-            padding: 10px 20px;
-            font-size: 1rem;
-            border: 2px solid var(--accent-color);
-            border-radius: 50px;
-            background-color: var(--secondary-bg-color);
-            color: var(--text-color);
-            outline: none;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        #recommender-section .recommender-controls button {
-            padding: 12px 25px;
-            background-color: var(--accent-color);
-            color: var(--secondary-bg-color);
-            font-family: var(--font-heading);
-            font-weight: 600;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        #recommender-section .recommender-controls button:hover {
-            background-color: #0b3a8c;
-            transform: scale(1.05);
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         /* Movie Card and Animations */
@@ -316,7 +267,7 @@
             color: var(--soft-text-color);
             margin: 0;
         }
-        
+
         /* Loading and Error States */
         .loading-indicator {
             color: var(--accent-color);
@@ -357,7 +308,7 @@
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
             position: relative;
         }
-
+        
         .close-button {
             color: var(--soft-text-color);
             position: absolute;
@@ -373,7 +324,7 @@
         .close-button:focus {
             color: var(--accent-color);
         }
-
+        
         .modal-body {
             display: flex;
             flex-direction: column;
@@ -386,7 +337,7 @@
                 flex-direction: row;
             }
         }
-
+        
         .modal-poster {
             width: 100%;
             max-width: 300px;
@@ -394,7 +345,7 @@
             border-radius: 8px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
         }
-
+        
         .modal-details {
             flex-grow: 1;
         }
@@ -413,7 +364,7 @@
             font-size: 1.5rem;
             margin-top: 20px;
         }
-
+        
         .modal-details p, .modal-details ul {
             font-size: 1rem;
             line-height: 1.6;
@@ -444,64 +395,280 @@
             transform: scale(1.05);
         }
 
-        .action-buttons {
+        .modal-actions {
             display: flex;
-            gap: 15px;
-            margin-top: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .modal-actions button, .modal-actions a {
+            padding: 12px 20px;
+            font-size: 0.9rem;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
         }
 
-        .action-buttons button {
-            padding: 12px 25px;
-            font-size: 1rem;
+        .modal-actions .btn-primary {
+            background-color: var(--accent-color);
+            color: var(--secondary-bg-color);
             border: none;
+        }
+
+        .modal-actions .btn-primary:hover {
+            background-color: #0b3a8c;
+            transform: scale(1.05);
+        }
+
+        .modal-actions .btn-secondary {
+            background-color: var(--card-bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--soft-text-color);
+        }
+
+        .modal-actions .btn-secondary:hover {
+            background-color: var(--primary-bg-color);
+            transform: scale(1.05);
+        }
+        
+        /* Diary Form Modal */
+        #diary-form-modal .modal-content {
+            max-width: 500px;
+        }
+        
+        .diary-form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .diary-form-container input, .diary-form-container textarea, .diary-form-container select {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--soft-text-color);
+            background-color: var(--primary-bg-color);
+            color: var(--text-color);
+        }
+
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .star-rating .star {
+            color: var(--soft-text-color);
+            transition: color 0.2s ease;
+        }
+
+        .star-rating .star.active,
+        .star-rating .star:hover {
+            color: #FFD700; /* Gold color for active/hover stars */
+        }
+        
+        .diary-form-container button {
+            padding: 12px 20px;
+            background-color: var(--accent-color);
+            color: var(--secondary-bg-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .diary-form-container button:hover {
+            background-color: #0b3a8c;
+        }
+        
+        /* Trivia Section */
+        #trivia-section {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        #trivia-container {
+            background-color: var(--secondary-bg-color);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            max-width: 700px;
+            margin: 0 auto;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #trivia-question {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        #trivia-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        #trivia-options button {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            background-color: var(--primary-bg-color);
+            border: 2px solid var(--accent-color);
+            color: var(--text-color);
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-family: var(--font-body);
         }
 
-        .action-buttons .similar-button {
+        #trivia-options button:hover {
+            background-color: var(--accent-color);
+            color: var(--secondary-bg-color);
+        }
+        
+        .correct-answer {
+            background-color: #4CAF50 !important;
+            color: white !important;
+        }
+        
+        .incorrect-answer {
+            background-color: #F44336 !important;
+            color: white !important;
+        }
+        
+        /* Mood Recommender */
+        #mood-recommender-section .mood-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        #mood-recommender-section .mood-controls textarea {
+            width: 90%;
+            max-width: 600px;
+            padding: 15px;
+            font-size: 1rem;
+            border: 2px solid var(--accent-color);
+            border-radius: 12px;
+            background-color: var(--secondary-bg-color);
+            color: var(--text-color);
+            outline: none;
+            resize: vertical;
+        }
+        
+        #mood-recommender-section .mood-controls button {
+            padding: 12px 25px;
             background-color: var(--accent-color);
             color: var(--secondary-bg-color);
             font-family: var(--font-heading);
             font-weight: 600;
-        }
-        
-        .action-buttons .similar-button:hover {
-            background-color: #0b3a8c;
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(13, 71, 161, 0.4);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        /* Footer */
-        footer {
-            width: 100%;
-            text-align: center;
+        #mood-recommender-section .mood-controls button:hover {
+            background-color: #0b3a8c;
+            transform: scale(1.05);
+        }
+
+        /* Personal Diary and Watchlist */
+        #diary-entries, #watchlist-entries {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .diary-entry, .watchlist-entry {
+            background-color: var(--card-bg-color);
+            border-radius: 12px;
             padding: 20px;
-            background-color: var(--secondary-bg-color);
-            color: var(--soft-text-color);
-            margin-top: auto;
-            font-size: 0.8rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .diary-entry:hover, .watchlist-entry:hover {
+            transform: translateY(-5px);
+        }
+
+        /* News section */
+        #news-section .results-container {
+            /* Using the same grid as other movie lists */
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header, nav {
+                flex-direction: column;
+            }
+            .nav-button {
+                padding: 10px;
+            }
+            .search-container {
+                flex-direction: column;
+                border-radius: 12px;
+            }
+            .search-container #search-input {
+                border-radius: 12px;
+            }
+            .search-container #search-button {
+                width: 100%;
+                border-radius: 12px;
+            }
+            .modal-content {
+                margin: 20px;
+            }
+            .modal-body {
+                flex-direction: column;
+            }
+            .filter-controls {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
-<body>
+<body class="light-mode">
     <header>
         <h1 id="app-title">Cinefy</h1>
+        <button id="dark-mode-toggle"><i class="fas fa-moon"></i></button>
     </header>
     
     <nav>
         <button class="nav-button active" id="nav-search">Search</button>
-        <button class="nav-button" id="nav-recommender">Recommender</button>
-        <button class="nav-button" id="nav-time-capsule">Time Capsule</button>
+        <button class="nav-button" id="nav-mood-recommender">Mood Recommender</button>
+        <button class="nav-button" id="nav-news">Film News</button>
+        <button class="nav-button" id="nav-trivia">Trivia</button>
+        <button class="nav-button" id="nav-diary">My Diary</button>
+        <button class="nav-button" id="nav-watchlist">Watchlist</button>
     </nav>
 
     <main>
+        <!-- Search Section -->
         <div id="search-section" class="feature-section active">
-             <h2 style="color: var(--text-color);">Trending Movies This Week</h2>
-             <div class="filter-controls">
+            <h2 style="color: var(--text-color);">Trending Movies This Week</h2>
+            <div class="filter-controls">
                 <select id="genre-filter-search">
                     <option value="">All Genres</option>
+                </select>
+                <select id="year-filter-search">
+                    <option value="">All Years</option>
                 </select>
             </div>
             <div class="search-container">
@@ -509,108 +676,175 @@
                 <button id="search-button">Search</button>
             </div>
             <div id="loading-indicator" class="loading-indicator">
-                <i class="fas fa-spinner"></i>
+                <i class="fas fa-spinner fa-spin"></i>
             </div>
-            <div id="results-container">
+            <div id="results-container" class="results-container">
                 <!-- Movie cards will be dynamically inserted here -->
             </div>
         </div>
-
-        <div id="recommender-section" class="feature-section">
-            <h2 style="color: var(--text-color);">Find Similar Movies</h2>
-            <div class="filter-controls">
-                <select id="genre-filter-recommender">
-                    <option value="">All Genres</option>
-                </select>
+        
+        <!-- Mood Recommender Section -->
+        <div id="mood-recommender-section" class="feature-section">
+            <h2 style="color: var(--text-color);">Movie Recommendations Based on Your Mood</h2>
+            <p style="text-align:center; color: var(--soft-text-color);">Tell us how you're feeling and we'll suggest some films!</p>
+            <div class="mood-controls">
+                <textarea id="mood-input" placeholder="e.g., 'I'm feeling adventurous and want to see a fantasy film with a strong female lead.'"></textarea>
+                <button id="mood-button">Get Recommendations</button>
             </div>
-            <div class="recommender-controls">
-                <input type="text" id="recommender-input" placeholder="Enter a movie title to find similar films...">
-                <button id="recommender-button">Find</button>
+            <div id="mood-loading-indicator" class="loading-indicator">
+                <i class="fas fa-spinner fa-spin"></i>
             </div>
-             <div id="recommender-loading-indicator" class="loading-indicator">
-                <i class="fas fa-spinner"></i>
-            </div>
-            <div id="recommender-results-container" class="results-container">
-                <!-- Similar movie cards will be inserted here -->
+            <div id="mood-results-container" class="results-container">
+                <!-- Mood-based movie cards will be inserted here -->
             </div>
         </div>
 
-        <div id="time-capsule-section" class="feature-section">
-            <h2 style="color: var(--text-color);">Explore Films by Year</h2>
-            <div class="filter-controls">
-                <select id="genre-filter-time-capsule">
-                    <option value="">All Genres</option>
-                </select>
+        <!-- Film News Section -->
+        <div id="news-section" class="feature-section">
+            <h2 style="color: var(--text-color);">Now Playing in Theaters</h2>
+            <div id="news-loading-indicator" class="loading-indicator">
+                <i class="fas fa-spinner fa-spin"></i>
             </div>
-            <div class="year-input-container">
-                <input type="number" id="year-input" placeholder="Enter a year (e.g., 1999)">
-                <button id="time-capsule-button">Explore</button>
+            <div id="news-container" class="results-container">
+                <!-- News articles will be dynamically inserted here -->
             </div>
-            <div id="time-capsule-loading-indicator" class="loading-indicator">
-                <i class="fas fa-spinner"></i>
+        </div>
+
+        <!-- Trivia Section -->
+        <div id="trivia-section" class="feature-section">
+            <h2 style="color: var(--text-color);">Film Trivia Challenge</h2>
+            <div id="trivia-container">
+                <p id="trivia-question">Click 'Start Trivia' to begin!</p>
+                <div id="trivia-options">
+                    <!-- Trivia options will be inserted here -->
+                </div>
             </div>
-            <div id="time-capsule-results-container" class="results-container">
-                <!-- Time capsule movie cards will be inserted here -->
+            <button id="start-trivia-button" style="margin-top: 20px; padding: 12px 25px; background-color: var(--accent-color); color: white; border: none; border-radius: 50px; cursor: pointer;">Start Trivia</button>
+        </div>
+
+        <!-- My Diary Section -->
+        <div id="diary-section" class="feature-section">
+            <h2 style="color: var(--text-color);">My Personal Film Diary</h2>
+            <div id="diary-entries">
+                <!-- Diary entries will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Watchlist Section -->
+        <div id="watchlist-section" class="feature-section">
+            <h2 style="color: var(--text-color);">My Watchlist</h2>
+            <div id="watchlist-entries" class="results-container">
+                <!-- Watchlist movie cards will be inserted here -->
+            </div>
+        </div>
+
+        <!-- The main Movie Details Modal -->
+        <div id="movie-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="movie-modal-close">&times;</span>
+                <div id="modal-body-content" class="modal-body">
+                    <!-- Detailed movie info will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- The Diary Form Modal -->
+        <div id="diary-form-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="diary-modal-close">&times;</span>
+                <div class="diary-form-container">
+                    <h2 style="margin-top:0;">Add to Diary</h2>
+                    <p id="diary-form-movie-title" style="text-align:center; font-weight:bold; color:var(--text-color);"></p>
+                    <form id="diary-form">
+                        <input type="hidden" id="diary-form-movie-id">
+                        <input type="date" id="diary-form-date" required>
+                        <div class="star-rating">
+                            <span class="star" data-value="1">&#9733;</span>
+                            <span class="star" data-value="2">&#9733;</span>
+                            <span class="star" data-value="3">&#9733;</span>
+                            <span class="star" data-value="4">&#9733;</span>
+                            <span class="star" data-value="5">&#9733;</span>
+                        </div>
+                        <input type="hidden" id="diary-form-rating-value" required>
+                        <textarea id="diary-form-review" placeholder="Your review..." rows="4"></textarea>
+                        <button type="submit">Add to Diary</button>
+                    </form>
+                </div>
             </div>
         </div>
     </main>
 
     <footer>
-        &copy; 2024 Cinefy. Powered by The Movie Database (TMDb).
+        &copy; 2024 Cinefy. Powered by The Movie Database (TMDb), Gemini, and Open Trivia.
     </footer>
-
-    <!-- The Modal -->
-    <div id="movie-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <div id="modal-body-content" class="modal-body">
-                <!-- Detailed movie info will be dynamically inserted here -->
-            </div>
-        </div>
-    </div>
 
     <script>
         // --- API CONFIGURATION ---
-        const API_KEY = 'd91c0bfea39d9cc51c703202c289eebf';
+        const TMDB_API_KEY = 'd91c0bfea39d9cc51c703202c289eebf';
+        const GEMINI_API_KEY = 'AIzaSyD4ybkMxxqhsT6_axrdyFANKAGI4tEzlmQ';
         const BASE_URL = 'https://api.themoviedb.org/3/';
         const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
         const PLACEHOLDER_IMAGE = 'https://placehold.co/500x750/E8E8E8/666666?text=No+Poster';
+        const TRIVIA_API_URL = 'https://opentdb.com/api.php?amount=10&category=11&type=multiple';
 
         // --- DOM ELEMENTS ---
         const navSearchBtn = document.getElementById('nav-search');
-        const navRecommenderBtn = document.getElementById('nav-recommender');
-        const navTimeCapsuleBtn = document.getElementById('nav-time-capsule');
+        const navMoodRecommenderBtn = document.getElementById('nav-mood-recommender');
+        const navNewsBtn = document.getElementById('nav-news');
+        const navTriviaBtn = document.getElementById('nav-trivia');
+        const navDiaryBtn = document.getElementById('nav-diary');
+        const navWatchlistBtn = document.getElementById('nav-watchlist');
         
         const searchSection = document.getElementById('search-section');
-        const recommenderSection = document.getElementById('recommender-section');
-        const timeCapsuleSection = document.getElementById('time-capsule-section');
+        const moodRecommenderSection = document.getElementById('mood-recommender-section');
+        const newsSection = document.getElementById('news-section');
+        const triviaSection = document.getElementById('trivia-section');
+        const diarySection = document.getElementById('diary-section');
+        const watchlistSection = document.getElementById('watchlist-section');
         
         const searchInput = document.getElementById('search-input');
         const searchButton = document.getElementById('search-button');
         const resultsContainer = document.getElementById('results-container');
         const loadingIndicator = document.getElementById('loading-indicator');
         
-        const recommenderInput = document.getElementById('recommender-input');
-        const recommenderButton = document.getElementById('recommender-button');
-        const recommenderResultsContainer = document.getElementById('recommender-results-container');
-        const recommenderLoadingIndicator = document.getElementById('recommender-loading-indicator');
+        const moodInput = document.getElementById('mood-input');
+        const moodButton = document.getElementById('mood-button');
+        const moodResultsContainer = document.getElementById('mood-results-container');
+        const moodLoadingIndicator = document.getElementById('mood-loading-indicator');
 
-        const yearInput = document.getElementById('year-input');
-        const timeCapsuleButton = document.getElementById('time-capsule-button');
-        const timeCapsuleResultsContainer = document.getElementById('time-capsule-results-container');
-        const timeCapsuleLoadingIndicator = document.getElementById('time-capsule-loading-indicator');
+        const newsContainer = document.getElementById('news-container');
+        const newsLoadingIndicator = document.getElementById('news-loading-indicator');
+
+        const triviaQuestionEl = document.getElementById('trivia-question');
+        const triviaOptionsEl = document.getElementById('trivia-options');
+        const startTriviaButton = document.getElementById('start-trivia-button');
+        
+        const diaryEntriesContainer = document.getElementById('diary-entries');
+        const watchlistEntriesContainer = document.getElementById('watchlist-entries');
 
         const movieModal = document.getElementById('movie-modal');
         const modalBodyContent = document.getElementById('modal-body-content');
-        const closeButton = document.querySelector('.close-button');
+        const movieModalCloseBtn = document.getElementById('movie-modal-close');
+        
+        const diaryFormModal = document.getElementById('diary-form-modal');
+        const diaryModalCloseBtn = document.getElementById('diary-modal-close');
+        const diaryForm = document.getElementById('diary-form');
+        const diaryFormMovieTitle = document.getElementById('diary-form-movie-title');
+        const diaryFormMovieId = document.getElementById('diary-form-movie-id');
+        const diaryFormDate = document.getElementById('diary-form-date');
+        const diaryFormRatingStars = document.querySelector('#diary-form-modal .star-rating');
+        const diaryFormRatingValue = document.getElementById('diary-form-rating-value');
+        const diaryFormReview = document.getElementById('diary-form-review');
+        
         const appTitle = document.getElementById('app-title');
         
         const genreFilterSearch = document.getElementById('genre-filter-search');
-        const genreFilterRecommender = document.getElementById('genre-filter-recommender');
-        const genreFilterTimeCapsule = document.getElementById('genre-filter-time-capsule');
+        const yearFilterSearch = document.getElementById('year-filter-search');
         
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+
         // --- NAVIGATION LOGIC ---
-        function showSection(sectionId) {
+        function showSection(sectionId, callback = null) {
             document.querySelectorAll('.feature-section').forEach(section => {
                 section.classList.remove('active');
             });
@@ -619,27 +853,29 @@
             document.querySelectorAll('.nav-button').forEach(btn => {
                 btn.classList.remove('active');
             });
-            document.getElementById('nav-' + sectionId.split('-')[0]).classList.add('active');
+            const navButtonId = `nav-${sectionId.split('-')[0] === 'mood' ? 'mood-recommender' : sectionId.split('-')[0]}`;
+            document.getElementById(navButtonId).classList.add('active');
             
-            // Clear all results and inputs when switching sections
-            resultsContainer.innerHTML = '';
-            recommenderResultsContainer.innerHTML = '';
-            timeCapsuleResultsContainer.innerHTML = '';
-            searchInput.value = '';
-            recommenderInput.value = '';
-            yearInput.value = '';
+            if (callback) {
+                callback();
+            }
         }
         
-        navSearchBtn.addEventListener('click', () => showSection('search-section'));
-        navRecommenderBtn.addEventListener('click', () => showSection('recommender-section'));
-        navTimeCapsuleBtn.addEventListener('click', () => showSection('time-capsule-section'));
+        navSearchBtn.addEventListener('click', () => showSection('search-section', fetchInitialMovies));
+        navMoodRecommenderBtn.addEventListener('click', () => showSection('mood-recommender-section'));
+        navNewsBtn.addEventListener('click', () => showSection('news-section', fetchNowPlayingMovies));
+        navTriviaBtn.addEventListener('click', () => showSection('trivia-section'));
+        navDiaryBtn.addEventListener('click', () => showSection('diary-section', renderDiaryEntries));
+        navWatchlistBtn.addEventListener('click', () => showSection('watchlist-section', renderWatchlist));
+        appTitle.addEventListener('click', () => showSection('search-section', fetchInitialMovies));
         
         // --- EVENT LISTENERS ---
         searchButton.addEventListener('click', () => {
             const query = searchInput.value;
             const genreId = genreFilterSearch.value;
+            const year = yearFilterSearch.value;
             if (query) {
-                fetchMovies(query, resultsContainer, loadingIndicator, genreId);
+                fetchMovies(query, resultsContainer, loadingIndicator, genreId, year);
             }
         });
 
@@ -648,71 +884,144 @@
                 searchButton.click();
             }
         });
-        
-        recommenderButton.addEventListener('click', async () => {
-            const query = recommenderInput.value;
-            const genreId = genreFilterRecommender.value;
+
+        genreFilterSearch.addEventListener('change', () => {
+             const query = searchInput.value;
+             const genreId = genreFilterSearch.value;
+             const year = yearFilterSearch.value;
+             if (query) {
+                 fetchMovies(query, resultsContainer, loadingIndicator, genreId, year);
+             }
+        });
+
+        yearFilterSearch.addEventListener('change', () => {
+            const query = searchInput.value;
+            const genreId = genreFilterSearch.value;
+            const year = yearFilterSearch.value;
             if (query) {
-                recommenderLoadingIndicator.style.display = 'block';
-                recommenderResultsContainer.innerHTML = '';
-                
-                try {
-                    const searchResponse = await fetch(`${BASE_URL}search/movie?api_key=${API_KEY}&query=${query}&with_genres=${genreId}`);
-                    const searchData = await searchResponse.json();
-                    
-                    if (searchData.results && searchData.results.length > 0) {
-                        const movieId = searchData.results[0].id;
-                        const recommendationsResponse = await fetch(`${BASE_URL}movie/${movieId}/recommendations?api_key=${API_KEY}`);
-                        const recommendationsData = await recommendationsResponse.json();
-                        
-                        if (recommendationsData.results && recommendationsData.results.length > 0) {
-                            displayMovies(recommendationsData.results, recommenderResultsContainer);
-                        } else {
-                            recommenderResultsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">No recommendations available for that movie.</p>';
-                        }
-                    } else {
-                        recommenderResultsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">Movie not found. Please try a different title.</p>';
-                    }
-                } catch (error) {
-                    console.error('Error fetching recommendations:', error);
-                    recommenderResultsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">An error occurred. Please try again later.</p>';
-                } finally {
-                    recommenderLoadingIndicator.style.display = 'none';
-                }
+                fetchMovies(query, resultsContainer, loadingIndicator, genreId, year);
             }
         });
         
-        timeCapsuleButton.addEventListener('click', () => {
-            const year = yearInput.value;
-            const genreId = genreFilterTimeCapsule.value;
-            if (year && year.length === 4) {
-                fetchTimeCapsule(year, genreId);
-            } else {
-                timeCapsuleResultsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">Please enter a valid four-digit year.</p>';
-            }
-        });
-
-        appTitle.addEventListener('click', () => {
-            showSection('search-section');
-            fetchInitialMovies();
-        });
-
-        closeButton.addEventListener('click', () => {
+        movieModalCloseBtn.addEventListener('click', () => {
             movieModal.style.display = 'none';
+        });
+
+        diaryModalCloseBtn.addEventListener('click', () => {
+            diaryFormModal.style.display = 'none';
         });
 
         window.addEventListener('click', (e) => {
             if (e.target === movieModal) {
                 movieModal.style.display = 'none';
             }
+            if (e.target === diaryFormModal) {
+                diaryFormModal.style.display = 'none';
+            }
+        });
+        
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const icon = darkModeToggle.querySelector('i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+        });
+
+        function addToWatchlist(movie) {
+            let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+            if (!watchlist.some(m => m.id === movie.id)) {
+                watchlist.push(movie);
+                localStorage.setItem('watchlist', JSON.stringify(watchlist));
+                alert(`${movie.title} has been added to your watchlist!`);
+            } else {
+                alert(`${movie.title} is already in your watchlist.`);
+            }
+        }
+        
+        moodButton.addEventListener('click', async () => {
+            const mood = moodInput.value;
+            if (!mood) {
+                alert('Please enter your mood or a description.');
+                return;
+            }
+            moodLoadingIndicator.style.display = 'block';
+            moodResultsContainer.innerHTML = '';
+            
+            try {
+                const recommendationText = await getGeminiRecommendation(mood);
+                
+                const movieTitles = parseGeminiResponse(recommendationText);
+                
+                if (movieTitles.length > 0) {
+                    await fetchAndDisplayMoviesFromTitles(movieTitles, moodResultsContainer);
+                } else {
+                    moodResultsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">Could not find any movies for your mood.</p>';
+                }
+            } catch (error) {
+                console.error('Error with mood recommender:', error);
+                moodResultsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">An error occurred while getting recommendations. Please try again.</p>';
+            } finally {
+                moodLoadingIndicator.style.display = 'none';
+            }
+        });
+
+        // Event listener for the new diary form modal
+        diaryForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const movieTitle = diaryFormMovieTitle.textContent;
+            const movieId = diaryFormMovieId.value;
+            const date = diaryFormDate.value;
+            const rating = diaryFormRatingValue.value;
+            const review = diaryFormReview.value;
+            
+            if (!rating) {
+                alert('Please select a rating.');
+                return;
+            }
+
+            const diaryEntry = {
+                id: movieId,
+                title: movieTitle,
+                date: date,
+                rating: rating,
+                review: review,
+                timestamp: new Date().toISOString()
+            };
+
+            let diaryEntries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
+            diaryEntries.push(diaryEntry);
+            localStorage.setItem('diaryEntries', JSON.stringify(diaryEntries));
+
+            diaryFormModal.style.display = 'none';
+            alert(`${movieTitle} has been added to your diary!`);
+        });
+        
+        // Star rating logic for the diary form
+        diaryFormRatingStars.addEventListener('click', (e) => {
+            const star = e.target.closest('.star');
+            if (star) {
+                const rating = star.dataset.value;
+                diaryFormRatingValue.value = rating;
+                
+                document.querySelectorAll('#diary-form-modal .star-rating .star').forEach(s => {
+                    s.classList.remove('active');
+                });
+                
+                for (let i = 1; i <= rating; i++) {
+                    document.querySelector(`#diary-form-modal .star-rating .star[data-value="${i}"]`).classList.add('active');
+                }
+            }
         });
 
         // --- API FETCH FUNCTIONS ---
         async function fetchGenres() {
             try {
-                const response = await fetch(`${BASE_URL}genre/movie/list?api_key=${API_KEY}`);
+                const response = await fetch(`${BASE_URL}genre/movie/list?api_key=${TMDB_API_KEY}`);
                 const data = await response.json();
-                const genreLists = [genreFilterSearch, genreFilterRecommender, genreFilterTimeCapsule];
+                const genreLists = [genreFilterSearch];
                 
                 if (data.genres) {
                     genreLists.forEach(selectElement => {
@@ -729,15 +1038,22 @@
             }
         }
         
+        async function populateYearFilter() {
+            const currentYear = new Date().getFullYear();
+            for (let year = currentYear; year >= 1900; year--) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearFilterSearch.appendChild(option);
+            }
+        }
+
         async function fetchInitialMovies() {
             loadingIndicator.style.display = 'block';
             resultsContainer.innerHTML = '';
-
             try {
-                // Fetch trending movies of the week
-                const response = await fetch(`${BASE_URL}trending/movie/week?api_key=${API_KEY}`);
+                const response = await fetch(`${BASE_URL}trending/movie/week?api_key=${TMDB_API_KEY}`);
                 const data = await response.json();
-                
                 if (data.results && data.results.length > 0) {
                     displayMovies(data.results, resultsContainer);
                 } else {
@@ -751,12 +1067,17 @@
             }
         }
         
-        async function fetchMovies(query, container, loader, genreId) {
+        async function fetchMovies(query, container, loader, genreId = '', year = '') {
             loader.style.display = 'block';
             container.innerHTML = '';
-            
             try {
-                const url = `${BASE_URL}search/movie?api_key=${API_KEY}&query=${query}${genreId ? `&with_genres=${genreId}` : ''}`;
+                let url = `${BASE_URL}search/movie?api_key=${TMDB_API_KEY}&query=${query}`;
+                if (genreId) {
+                    url += `&with_genres=${genreId}`;
+                }
+                if (year) {
+                    url += `&primary_release_year=${year}`;
+                }
                 const response = await fetch(url);
                 const data = await response.json();
                 
@@ -772,32 +1093,48 @@
                 loader.style.display = 'none';
             }
         }
+
+        async function fetchNowPlayingMovies() {
+            newsLoadingIndicator.style.display = 'block';
+            newsContainer.innerHTML = '';
+            try {
+                const response = await fetch(`${BASE_URL}movie/now_playing?api_key=${TMDB_API_KEY}`);
+                const data = await response.json();
+                if (data.results && data.results.length > 0) {
+                    displayMovies(data.results, newsContainer);
+                } else {
+                    newsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">No current releases found.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching now playing movies:', error);
+                newsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">An error occurred. Please try again later.</p>';
+            } finally {
+                newsLoadingIndicator.style.display = 'none';
+            }
+        }
         
         async function fetchMovieDetails(movieId) {
-            // Use the main loading indicator for the modal, as it's the most prominent.
-            document.getElementById('loading-indicator').style.display = 'block';
-
+            loadingIndicator.style.display = 'block';
             try {
-                const movieResponse = await fetch(`${BASE_URL}movie/${movieId}?api_key=${API_KEY}&append_to_response=credits`);
+                const movieResponse = await fetch(`${BASE_URL}movie/${movieId}?api_key=${TMDB_API_KEY}&append_to_response=credits,videos,watch/providers`);
                 const movieData = await movieResponse.json();
-                
                 displayMovieDetails(movieData);
             } catch (error) {
                 console.error('Error fetching movie details:', error);
                 modalBodyContent.innerHTML = '<p style="color:var(--soft-text-color);">An error occurred. Please try again later.</p>';
             } finally {
-                document.getElementById('loading-indicator').style.display = 'none';
+                loadingIndicator.style.display = 'none';
                 movieModal.style.display = 'block';
             }
         }
         
         async function fetchSimilarMovies(movieId) {
-            document.getElementById('loading-indicator').style.display = 'block';
+            loadingIndicator.style.display = 'block';
             resultsContainer.innerHTML = '';
             showSection('search-section');
 
             try {
-                const response = await fetch(`${BASE_URL}movie/${movieId}/recommendations?api_key=${API_KEY}`);
+                const response = await fetch(`${BASE_URL}movie/${movieId}/recommendations?api_key=${TMDB_API_KEY}`);
                 const data = await response.json();
                 
                 if (data.results && data.results.length > 0) {
@@ -810,47 +1147,72 @@
                 console.error('Error fetching similar movies:', error);
                 resultsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">An error occurred. Please try again later.</p>';
             } finally {
-                document.getElementById('loading-indicator').style.display = 'none';
+                loadingIndicator.style.display = 'none';
                 movieModal.style.display = 'none';
             }
         }
-        
-        async function fetchPersonDetails(personId) {
-            document.getElementById('loading-indicator').style.display = 'block';
-            modalBodyContent.innerHTML = '';
+
+        async function getGeminiRecommendation(mood) {
+            const prompt = `Based on the following mood, suggest 5 specific movie titles. Do not include any other text besides the numbered list of movie titles. For example: "1. Movie A\n2. Movie B\n...". Mood: ${mood}`;
+            const apiKey = "AIzaSyD4ybkMxxqhsT6_axrdyFANKAGI4tEzlmQ"; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
             
-            try {
-                const personResponse = await fetch(`${BASE_URL}person/${personId}?api_key=${API_KEY}&append_to_response=movie_credits`);
-                const personData = await personResponse.json();
-                
-                displayPersonDetails(personData);
-            } catch (error) {
-                console.error('Error fetching person details:', error);
-                modalBodyContent.innerHTML = '<p style="color:var(--soft-text-color);">An error occurred. Please try again later.</p>';
-            } finally {
-                document.getElementById('loading-indicator').style.display = 'none';
+            const payload = {
+                contents: [{
+                    parts: [{ text: prompt }]
+                }],
+            };
+
+            let response;
+            let result;
+            let retryCount = 0;
+            const maxRetries = 3;
+            let delay = 1000;
+
+            while (retryCount < maxRetries) {
+                try {
+                    response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (response.ok) {
+                        result = await response.json();
+                        if (result?.candidates?.[0]?.content?.parts?.[0]?.text) {
+                            return result.candidates[0].content.parts[0].text;
+                        }
+                    } else if (response.status === 429) {
+                        console.log(`Rate limit exceeded. Retrying in ${delay / 1000}s...`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        delay *= 2;
+                        retryCount++;
+                    } else {
+                        throw new Error(`API error: ${response.status}`);
+                    }
+                } catch (error) {
+                    console.error('Error making API call:', error);
+                    return '';
+                }
             }
+            return '';
         }
 
-        async function fetchTimeCapsule(year, genreId) {
-            timeCapsuleLoadingIndicator.style.display = 'block';
-            timeCapsuleResultsContainer.innerHTML = '';
-            
-            try {
-                const url = `${BASE_URL}discover/movie?api_key=${API_KEY}&primary_release_year=${year}&sort_by=popularity.desc${genreId ? `&with_genres=${genreId}` : ''}`;
-                const popularResponse = await fetch(url);
-                const popularData = await popularResponse.json();
-                
-                if (popularData.results && popularData.results.length > 0) {
-                    displayMovies(popularData.results, timeCapsuleResultsContainer);
-                } else {
-                    timeCapsuleResultsContainer.innerHTML = `<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">No movies found for ${year}.</p>`;
+        async function fetchAndDisplayMoviesFromTitles(movieTitles, container) {
+            container.innerHTML = '';
+            for (const title of movieTitles) {
+                try {
+                    const searchResponse = await fetch(`${BASE_URL}search/movie?api_key=${TMDB_API_KEY}&query=${title}`);
+                    const searchData = await searchResponse.json();
+                    if (searchData.results && searchData.results.length > 0) {
+                        displayMovies([searchData.results[0]], container);
+                    }
+                } catch (error) {
+                    console.error(`Error fetching movie details for ${title}:`, error);
                 }
-            } catch (error) {
-                console.error('Error fetching time capsule data:', error);
-                timeCapsuleResultsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">An error occurred. Please try again later.</p>';
-            } finally {
-                timeCapsuleLoadingIndicator.style.display = 'none';
+            }
+            if (container.children.length === 0) {
+                 container.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">Could not find any movies for your mood.</p>';
             }
         }
         
@@ -880,11 +1242,14 @@
                 container.appendChild(movieCard);
             });
         }
-        
+
         function displayMovieDetails(movie) {
             const posterPath = movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : PLACEHOLDER_IMAGE;
             const cast = movie.credits.cast.slice(0, 5).map(actor => `<li data-person-id="${actor.id}">${actor.name}</li>`).join('');
             const releaseYear = movie.release_date ? `(${movie.release_date.substring(0, 4)})` : '';
+            
+            const watchProviders = movie['watch/providers']?.results?.US?.link;
+            const trailer = movie.videos?.results.find(v => v.type === 'Trailer' && v.site === 'YouTube');
             
             modalBodyContent.innerHTML = `
                 <img src="${posterPath}" alt="${movie.title} Poster" class="modal-poster" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}';">
@@ -895,52 +1260,237 @@
                     <p><strong>Rating:</strong> ${movie.vote_average.toFixed(1)} / 10</p>
                     <h4>Starring:</h4>
                     <ul>${cast}</ul>
-                    <div class="action-buttons">
-                        <button class="similar-button" data-movie-id="${movie.id}">Find Similar Movies</button>
+                    <div class="modal-actions">
+                        <button class="btn-primary" onclick="fetchSimilarMovies(${movie.id})">Find Similar Movies</button>
+                        <button class="btn-secondary" onclick="addToWatchlist(${JSON.stringify(movie).replace(/'/g, "\\'").replace(/"/g, "'")})">Add to Watchlist</button>
+                        <button class="btn-secondary" onclick="showDiaryFormModal('${movie.id}', '${movie.title.replace(/'/g, "\\'")}')">Add to Diary</button>
+                        ${watchProviders ? `<a class="btn-primary" href="${watchProviders}" target="_blank"><i class="fas fa-play"></i> Watch Now</a>` : ''}
+                        ${trailer ? `<a class="btn-secondary" href="https://www.youtube.com/watch?v=${trailer.key}" target="_blank"><i class="fas fa-film"></i> Watch Trailer</a>` : ''}
                     </div>
                 </div>
             `;
             
-            const similarButton = modalBodyContent.querySelector('.similar-button');
-            similarButton.addEventListener('click', (e) => {
-                fetchSimilarMovies(e.target.dataset.movieId);
-            });
-            
             const castListItems = modalBodyContent.querySelectorAll('.modal-details ul li');
             castListItems.forEach(item => {
                 item.addEventListener('click', (e) => {
-                    fetchPersonDetails(e.target.dataset.personId);
+                    alert(`Clicked on person with ID: ${e.target.dataset.personId}`);
                 });
             });
         }
         
-        function displayPersonDetails(person) {
-            const profilePath = person.profile_path ? `${IMAGE_BASE_URL}${person.profile_path}` : PLACEHOLDER_IMAGE;
-            const knownFor = person.movie_credits.cast.slice(0, 5).map(movie => `<li data-movie-id="${movie.id}">${movie.title}</li>`).join('');
+        function showDiaryFormModal(movieId, movieTitle) {
+            diaryFormMovieTitle.textContent = movieTitle;
+            diaryFormMovieId.value = movieId;
+            // Reset the form
+            diaryFormDate.value = '';
+            diaryFormReview.value = '';
+            diaryFormRatingValue.value = '';
+            document.querySelectorAll('#diary-form-modal .star-rating .star').forEach(s => {
+                s.classList.remove('active');
+            });
+            diaryFormModal.style.display = 'block';
+            movieModal.style.display = 'none';
+        }
+        
+        async function fetchTriviaQuestion() {
+            triviaQuestionEl.innerHTML = 'Loading a new question...';
+            triviaOptionsEl.innerHTML = '';
+            try {
+                const response = await fetch(TRIVIA_API_URL);
+                const data = await response.json();
+                if (data.results && data.results.length > 0) {
+                    displayTriviaQuestion(data.results[0]);
+                } else {
+                    triviaQuestionEl.innerHTML = 'Could not fetch trivia. Please try again.';
+                }
+            } catch (error) {
+                console.error('Error fetching trivia:', error);
+                triviaQuestionEl.innerHTML = 'An error occurred. Please try again later.';
+            }
+        }
+
+        function displayTriviaQuestion(trivia) {
+            triviaQuestionEl.innerHTML = trivia.question;
+            triviaOptionsEl.innerHTML = '';
             
-            modalBodyContent.innerHTML = `
-                <img src="${profilePath}" alt="${person.name} Photo" class="modal-poster" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}';">
-                <div class="modal-details">
-                    <h2>${person.name}</h2>
-                    <p><strong>Known For:</strong> ${person.known_for_department || 'N/A'}</p>
-                    <p><strong>Biography:</strong> ${person.biography || 'No biography available.'}</p>
-                    <h4>Filmography (Top 5):</h4>
-                    <ul>${knownFor}</ul>
-                </div>
-            `;
+            const options = [...trivia.incorrect_answers, trivia.correct_answer];
+            options.sort(() => Math.random() - 0.5);
             
-            const filmographyListItems = modalBodyContent.querySelectorAll('.modal-details ul li');
-            filmographyListItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    fetchMovieDetails(e.target.dataset.movieId);
-                });
+            options.forEach(option => {
+                const button = document.createElement('button');
+                button.innerHTML = option;
+                button.addEventListener('click', () => checkAnswer(button, option, trivia.correct_answer));
+                triviaOptionsEl.appendChild(button);
+            });
+        }
+
+        function checkAnswer(button, selectedAnswer, correctAnswer) {
+            document.querySelectorAll('#trivia-options button').forEach(btn => {
+                btn.disabled = true;
+                if (btn.innerHTML === correctAnswer) {
+                    btn.classList.add('correct-answer');
+                } else if (btn.innerHTML === selectedAnswer) {
+                    btn.classList.add('incorrect-answer');
+                }
+            });
+            
+            setTimeout(() => {
+                fetchTriviaQuestion();
+            }, 3000);
+        }
+
+        function renderDiaryEntries() {
+            diaryEntriesContainer.innerHTML = '';
+            const diaryEntries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
+            
+            if (diaryEntries.length === 0) {
+                diaryEntriesContainer.innerHTML = '<p style="text-align:center; color:var(--soft-text-color);">Your diary is empty. Add a movie to get started!</p>';
+                return;
+            }
+
+            diaryEntries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
+                const entryCard = document.createElement('div');
+                entryCard.className = 'diary-entry';
+                
+                let starRatingHtml = '';
+                for (let i = 1; i <= 5; i++) {
+                    starRatingHtml += `<span class="star-display ${i <= entry.rating ? 'active' : ''}">&#9733;</span>`;
+                }
+                
+                entryCard.innerHTML = `
+                    <h3 style="margin-top:0;">${entry.title}</h3>
+                    <p><strong>Watched on:</strong> ${entry.date}</p>
+                    <p><strong>Rating:</strong> ${starRatingHtml}</p>
+                    <p><strong>Review:</strong> ${entry.review}</p>
+                `;
+                diaryEntriesContainer.appendChild(entryCard);
             });
         }
         
-        // Load initial movies on page load and genres
+        function renderWatchlist() {
+            watchlistEntriesContainer.innerHTML = '';
+            const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+
+            if (watchlist.length === 0) {
+                watchlistEntriesContainer.innerHTML = '<p style="text-align:center; color:var(--soft-text-color);">Your watchlist is empty. Add some movies from the search page!</p>';
+                return;
+            }
+
+            watchlist.forEach(movie => {
+                const movieCard = document.createElement('div');
+                movieCard.className = 'movie-card';
+                movieCard.dataset.movieId = movie.id;
+                
+                const posterPath = movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : PLACEHOLDER_IMAGE;
+                const releaseYear = movie.release_date ? movie.release_date.substring(0, 4) : 'N/A';
+                
+                movieCard.innerHTML = `
+                    <img src="${posterPath}" alt="${movie.title} Poster" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}';">
+                    <div class="movie-card-content">
+                        <h3>${movie.title}</h3>
+                        <p>(${releaseYear})</p>
+                    </div>
+                `;
+                movieCard.addEventListener('click', () => fetchMovieDetails(movie.id));
+                watchlistEntriesContainer.appendChild(movieCard);
+            });
+        }
+        
+        function parseGeminiResponse(text) {
+            const lines = text.split('\n');
+            return lines.filter(line => line.match(/^\d+\./))
+                        .map(line => line.substring(line.indexOf('.') + 1).trim());
+        }
+
+        async function fetchNowPlayingMovies() {
+            newsLoadingIndicator.style.display = 'block';
+            newsContainer.innerHTML = '';
+            try {
+                const response = await fetch(`${BASE_URL}movie/now_playing?api_key=${TMDB_API_KEY}`);
+                const data = await response.json();
+                if (data.results && data.results.length > 0) {
+                    displayMovies(data.results, newsContainer);
+                } else {
+                    newsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">No current releases found.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching now playing movies:', error);
+                newsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">An error occurred. Please try again later.</p>';
+            } finally {
+                newsLoadingIndicator.style.display = 'none';
+            }
+        }
+
+        async function getGeminiRecommendation(mood) {
+            const prompt = `Based on the following mood, suggest 5 specific movie titles. Do not include any other text besides the numbered list of movie titles. For example: "1. Movie A\n2. Movie B\n...". Mood: ${mood}`;
+            const apiKey = "AIzaSyD4ybkMxxqhsT6_axrdyFANKAGI4tEzlmQ"; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{
+                    parts: [{ text: prompt }]
+                }],
+            };
+
+            let response;
+            let result;
+            let retryCount = 0;
+            const maxRetries = 3;
+            let delay = 1000;
+
+            while (retryCount < maxRetries) {
+                try {
+                    response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (response.ok) {
+                        result = await response.json();
+                        if (result?.candidates?.[0]?.content?.parts?.[0]?.text) {
+                            return result.candidates[0].content.parts[0].text;
+                        }
+                    } else if (response.status === 429) {
+                        console.log(`Rate limit exceeded. Retrying in ${delay / 1000}s...`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        delay *= 2;
+                        retryCount++;
+                    } else {
+                        throw new Error(`API error: ${response.status}`);
+                    }
+                } catch (error) {
+                    console.error('Error making API call:', error);
+                    return '';
+                }
+            }
+            return '';
+        }
+
+        async function fetchAndDisplayMoviesFromTitles(movieTitles, container) {
+            container.innerHTML = '';
+            for (const title of movieTitles) {
+                try {
+                    const searchResponse = await fetch(`${BASE_URL}search/movie?api_key=${TMDB_API_KEY}&query=${title}`);
+                    const searchData = await searchResponse.json();
+                    if (searchData.results && searchData.results.length > 0) {
+                        displayMovies([searchData.results[0]], container);
+                    }
+                } catch (error) {
+                    console.error(`Error fetching movie details for ${title}:`, error);
+                }
+            }
+            if (container.children.length === 0) {
+                 container.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">Could not find any movies for your mood.</p>';
+            }
+        }
+        
         document.addEventListener('DOMContentLoaded', () => {
             fetchGenres();
+            populateYearFilter();
             fetchInitialMovies();
+            // Moved the event listener here to ensure fetchTriviaQuestion is defined
+            startTriviaButton.addEventListener('click', fetchTriviaQuestion);
         });
     </script>
 </body>
