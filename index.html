@@ -3,1495 +3,831 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cinefy</title>
+    <title>Cinefy - Your Personal Movie Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* New Light Theme CSS Variables */
+        /* --- THEME & FONT VARIABLES --- */
         :root {
-            --primary-bg-color: #F0F2F5; /* Soft light gray */
-            --secondary-bg-color: #FFFFFF; /* Clean white */
-            --card-bg-color: #FDFDFD; /* Slightly off-white for cards */
-            --accent-color: #0D47A1; /* Deep, cinematic blue */
-            --text-color: #333333; /* Dark gray for readability */
-            --soft-text-color: #666666; /* Lighter gray for secondary text */
+            --primary-bg-color: #F0F2F5;
+            --secondary-bg-color: #FFFFFF;
+            --sidebar-bg-color: #FFFFFF;
+            --card-bg-color: #FFFFFF;
+            --accent-color: #0D47A1;
+            --text-color: #333333;
+            --soft-text-color: #666666;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --border-color: #E0E0E0;
             --font-heading: 'Poppins', sans-serif;
             --font-body: 'Inter', sans-serif;
+            --sidebar-width: 260px;
+            --spotlight-width: 300px;
         }
 
-        /* Dark Mode */
+        /* --- DARK MODE --- */
         body.dark-mode {
             --primary-bg-color: #121212;
             --secondary-bg-color: #1E1E1E;
+            --sidebar-bg-color: #1E1E1E;
             --card-bg-color: #2c2c2c;
-            --accent-color: #BB86FC; /* A vibrant purple */
+            --accent-color: #BB86FC;
             --text-color: #E0E0E0;
             --soft-text-color: #B0B0B0;
+            --success-color: #4CAF50;
+            --error-color: #F44336;
+            --border-color: #333333;
         }
 
-        /* Basic Resets and Body Styling */
+        /* --- BASIC RESETS & BODY --- */
+        * { box-sizing: border-box; }
         body {
             font-family: var(--font-body);
             background-color: var(--primary-bg-color);
             color: var(--text-color);
             margin: 0;
             padding: 0;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .app-wrapper {
             display: flex;
-            flex-direction: column;
-            align-items: center;
             min-height: 100vh;
-            overflow-x: hidden;
-            font-size: 16px;
-            transition: background-color 0.5s ease;
-        }
-
-        /* Header and App Title */
-        header {
-            width: 100%;
-            text-align: center;
-            padding: 25px 20px;
-            background-color: var(--secondary-bg-color);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            transition: background-color 0.5s ease, box-shadow 0.5s ease;
-        }
-
-        #app-title {
-            font-family: var(--font-heading);
-            font-size: clamp(2rem, 6vw, 3rem);
-            color: var(--accent-color);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 0;
-            cursor: pointer;
-            font-weight: 700;
-            transition: color 0.5s ease;
         }
         
-        #dark-mode-toggle {
-            font-size: 1.5rem;
-            cursor: pointer;
-            background: none;
-            border: none;
-            color: var(--text-color);
-            transition: color 0.3s ease;
-        }
-        
-        #dark-mode-toggle:hover {
-            color: var(--accent-color);
-        }
-
-        /* Navigation Bar */
-        nav {
-            width: 100%;
-            background-color: var(--secondary-bg-color);
-            padding: 15px 0;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: background-color 0.5s ease, box-shadow 0.5s ease;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-
-        .nav-button {
-            background-color: transparent;
-            border: none;
-            color: var(--soft-text-color);
-            font-family: var(--font-heading);
-            font-size: 1rem;
-            text-transform: uppercase;
-            font-weight: 600;
-            cursor: pointer;
-            padding: 10px 20px;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-button.active, .nav-button:hover {
-            color: var(--accent-color);
-            background-color: var(--primary-bg-color);
-            border-radius: 5px;
-        }
-
-        /* Main Content and Containers */
-        main {
-            width: 100%;
-            max-width: 1200px;
-            padding: 20px;
-        }
-
-        .feature-section {
-            display: none;
-            width: 100%;
-            animation: fadeIn 0.8s ease-in-out;
-        }
-
-        .feature-section.active {
-            display: block;
-        }
-        
-        /* General styling for headings and containers */
-        h2 {
-            font-family: var(--font-heading);
-            color: var(--text-color);
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .results-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 25px;
-            padding: 20px 0;
-            animation: fadeIn 0.8s ease-in-out;
-        }
-        
-        /* Search and Filter */
-        .filter-controls {
-            width: 90%;
-            max-width: 700px;
-            margin: 0px auto 25px auto;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .filter-controls select {
-            padding: 10px 15px;
-            font-size: 1rem;
-            border: 2px solid var(--accent-color);
-            border-radius: 50px;
-            background-color: var(--secondary-bg-color);
-            color: var(--text-color);
-            outline: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .search-container {
-            width: 90%;
-            max-width: 700px;
-            margin: 25px auto;
-            display: flex;
-            gap: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            border-radius: 50px;
-            overflow: hidden;
-            transition: box-shadow 0.5s ease;
-        }
-        
-        .search-container input {
-            flex-grow: 1;
-            padding: 15px 25px;
-            font-size: 1rem;
-            border: none;
-            background-color: var(--secondary-bg-color);
-            color: var(--text-color);
-            outline: none;
-            transition: all 0.3s ease;
-        }
-        
-        .search-container input::placeholder {
-            color: var(--soft-text-color);
-        }
-        
-        .search-container button {
-            padding: 15px 30px;
-            background-color: var(--accent-color);
-            color: var(--secondary-bg-color);
-            font-family: var(--font-heading);
-            font-size: 1rem;
-            text-transform: uppercase;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .search-container button:hover {
-            background-color: #0b3a8c;
-            transform: scale(1.02);
-        }
-
-        /* Movie Card and Animations */
-        .movie-card {
-            background-color: var(--card-bg-color);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .movie-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .movie-card img {
-            width: 100%;
-            min-height: 330px; 
-            max-width: 300px; 
-            display: block;
-            object-fit: cover;
-            border-bottom: 2px solid var(--accent-color);
-            background-color: #E8E8E8;
-        }
-        
-        .movie-card-content {
-            padding: 15px;
-            text-align: center;
-        }
-
-        .movie-card-content h3 {
-            font-family: var(--font-heading);
-            font-size: 1.1rem;
-            margin: 0 0 5px 0;
-            color: var(--text-color);
-        }
-
-        .movie-card-content p {
-            font-size: 0.9rem;
-            color: var(--soft-text-color);
-            margin: 0;
-        }
-
-        /* Loading and Error States */
-        .loading-indicator {
-            color: var(--accent-color);
-            font-family: var(--font-heading);
-            font-size: 2rem;
-            text-align: center;
-            display: none;
-            margin-top: 50px;
-            animation: bounce 1s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* Modal for Details */
-        .modal {
-            display: none;
+        /* --- FULL-PAGE ONBOARDING --- */
+        #onboarding-page {
             position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.7);
-            animation: fadeIn 0.3s;
-        }
-        
-        .modal-content {
-            background-color: var(--secondary-bg-color);
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 900px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
-        
-        .close-button {
-            color: var(--soft-text-color);
-            position: absolute;
-            top: 15px;
-            right: 25px;
-            font-size: 35px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .close-button:hover,
-        .close-button:focus {
-            color: var(--accent-color);
-        }
-        
-        .modal-body {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            align-items: flex-start;
-        }
-        
-        @media (min-width: 768px) {
-            .modal-body {
-                flex-direction: row;
-            }
-        }
-        
-        .modal-poster {
-            width: 100%;
-            max-width: 300px;
-            flex-shrink: 0;
-            border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-        }
-        
-        .modal-details {
-            flex-grow: 1;
-        }
-        
-        .modal-details h2 {
-            font-family: var(--font-heading);
-            color: var(--accent-color);
-            font-size: 2.5rem;
-            margin-top: 0;
-            line-height: 1.2;
-        }
-        
-        .modal-details h4 {
-            font-family: var(--font-heading);
-            color: var(--text-color);
-            font-size: 1.5rem;
-            margin-top: 20px;
-        }
-        
-        .modal-details p, .modal-details ul {
-            font-size: 1rem;
-            line-height: 1.6;
-            color: var(--soft-text-color);
-            margin-bottom: 5px;
-        }
-        
-        .modal-details ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        
-        .modal-details ul li {
-            background-color: #E8E8E8;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            color: var(--accent-color);
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-        
-        .modal-details ul li:hover {
-            background-color: #dedede;
-            transform: scale(1.05);
-        }
-
-        .modal-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .modal-actions button, .modal-actions a {
-            padding: 12px 20px;
-            font-size: 0.9rem;
-            border-radius: 50px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .modal-actions .btn-primary {
-            background-color: var(--accent-color);
-            color: var(--secondary-bg-color);
-            border: none;
-        }
-
-        .modal-actions .btn-primary:hover {
-            background-color: #0b3a8c;
-            transform: scale(1.05);
-        }
-
-        .modal-actions .btn-secondary {
-            background-color: var(--card-bg-color);
-            color: var(--text-color);
-            border: 1px solid var(--soft-text-color);
-        }
-
-        .modal-actions .btn-secondary:hover {
+            top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--primary-bg-color);
-            transform: scale(1.05);
-        }
-        
-        /* Diary Form Modal */
-        #diary-form-modal .modal-content {
-            max-width: 500px;
-        }
-        
-        .diary-form-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        
-        .diary-form-container input, .diary-form-container textarea, .diary-form-container select {
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid var(--soft-text-color);
-            background-color: var(--primary-bg-color);
-            color: var(--text-color);
-        }
-
-        .star-rating {
+            z-index: 3000;
             display: flex;
             justify-content: center;
-            gap: 5px;
-            font-size: 2rem;
-            cursor: pointer;
-        }
-
-        .star-rating .star {
-            color: var(--soft-text-color);
-            transition: color 0.2s ease;
-        }
-
-        .star-rating .star.active,
-        .star-rating .star:hover {
-            color: #FFD700; /* Gold color for active/hover stars */
-        }
-        
-        .diary-form-container button {
-            padding: 12px 20px;
-            background-color: var(--accent-color);
-            color: var(--secondary-bg-color);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .diary-form-container button:hover {
-            background-color: #0b3a8c;
-        }
-        
-        /* Trivia Section */
-        #trivia-section {
-            text-align: center;
+            align-items: center;
             padding: 20px;
+            animation: fadeIn 0.5s ease;
         }
-        
-        #trivia-container {
-            background-color: var(--secondary-bg-color);
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            max-width: 700px;
-            margin: 0 auto;
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #trivia-question {
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-        }
-
-        #trivia-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 100%;
-        }
-
-        #trivia-options button {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.1rem;
-            background-color: var(--primary-bg-color);
-            border: 2px solid var(--accent-color);
-            color: var(--text-color);
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        #trivia-options button:hover {
-            background-color: var(--accent-color);
-            color: var(--secondary-bg-color);
-        }
-        
-        .correct-answer {
-            background-color: #4CAF50 !important;
-            color: white !important;
-        }
-        
-        .incorrect-answer {
-            background-color: #F44336 !important;
-            color: white !important;
-        }
-        
-        /* Mood Recommender */
-        #mood-recommender-section .mood-controls {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        
-        #mood-recommender-section .mood-controls textarea {
-            width: 90%;
+        #onboarding-page .onboarding-content {
             max-width: 600px;
-            padding: 15px;
-            font-size: 1rem;
-            border: 2px solid var(--accent-color);
-            border-radius: 12px;
+            width: 100%;
             background-color: var(--secondary-bg-color);
-            color: var(--text-color);
-            outline: none;
-            resize: vertical;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            text-align: center;
         }
-        
-        #mood-recommender-section .mood-controls button {
-            padding: 12px 25px;
-            background-color: var(--accent-color);
-            color: var(--secondary-bg-color);
-            font-family: var(--font-heading);
-            font-weight: 600;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        #onboarding-page h2 { font-family: var(--font-heading); font-size: 2.5rem; color: var(--accent-color); }
+        #onboarding-page p { color: var(--soft-text-color); line-height: 1.6; }
+        .preference-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px; margin: 20px 0; max-height: 200px; overflow-y: auto;
+            border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; text-align: left;
         }
+        .preference-grid label { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease; }
+        .preference-grid label:hover { background-color: var(--primary-bg-color); }
+        .preference-grid input[type="checkbox"] { accent-color: var(--accent-color); }
+        #onboarding-form select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--secondary-bg-color); color: var(--text-color); margin: 10px 0 20px 0; }
+        #onboarding-form button { padding: 12px 25px; background-color: var(--accent-color); color: var(--secondary-bg-color); font-family: var(--font-heading); font-weight: 600; border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; width: 100%; font-size: 1rem; }
 
-        #mood-recommender-section .mood-controls button:hover {
-            background-color: #0b3a8c;
-            transform: scale(1.05);
-        }
-
-        /* Personal Diary and Watchlist */
-        #diary-entries, #watchlist-entries {
-            margin-top: 30px;
+        /* --- SIDEBAR NAVIGATION --- */
+        #sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--sidebar-bg-color);
+            border-right: 1px solid var(--border-color);
+            padding: 25px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            position: fixed;
+            top: 0; left: 0; height: 100%;
+            transition: background-color 0.5s ease, border-color 0.5s ease;
+            z-index: 100;
         }
+        #app-title { font-family: var(--font-heading); font-size: 2rem; color: var(--accent-color); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 40px 0; cursor: pointer; font-weight: 700; text-align: center; }
+        nav { display: flex; flex-direction: column; gap: 10px; flex-grow: 1; }
+        .nav-button { background-color: transparent; border: none; color: var(--soft-text-color); font-family: var(--font-body); font-size: 1rem; font-weight: 500; cursor: pointer; padding: 12px 15px; transition: all 0.3s ease; border-radius: 8px; display: flex; align-items: center; gap: 15px; text-align: left; }
+        .nav-button i { width: 20px; text-align: center; }
+        .nav-button.active, .nav-button:hover { color: var(--accent-color); background-color: var(--primary-bg-color); font-weight: 600; }
+        #dark-mode-toggle { font-size: 1.2rem; cursor: pointer; background: none; border: none; color: var(--soft-text-color); transition: color 0.3s ease; margin-top: auto; padding: 15px; border-radius: 8px; }
+        #dark-mode-toggle:hover { color: var(--accent-color); background-color: var(--primary-bg-color); }
         
-        .diary-entry, .watchlist-entry {
-            background-color: var(--card-bg-color);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
+        /* --- SPOTLIGHT PANEL (RIGHT SIDEBAR) --- */
+        #spotlight-panel {
+            width: var(--spotlight-width);
+            background-color: var(--sidebar-bg-color);
+            border-left: 1px solid var(--border-color);
+            padding: 25px;
+            position: fixed;
+            top: 0; right: 0; height: 100%;
+            overflow-y: auto;
+            transition: background-color 0.5s ease, border-color 0.5s ease;
+            z-index: 99;
         }
-        
-        .diary-entry:hover, .watchlist-entry:hover {
-            transform: translateY(-5px);
-        }
+        #spotlight-panel h3 { font-family: var(--font-heading); margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .upcoming-movie-item { display: flex; gap: 15px; margin-bottom: 15px; cursor: pointer; padding: 10px; border-radius: 8px; transition: background-color 0.2s ease; }
+        .upcoming-movie-item:hover { background-color: var(--primary-bg-color); }
+        .upcoming-movie-item img { width: 60px; height: 90px; object-fit: cover; border-radius: 5px; flex-shrink: 0; }
+        .upcoming-movie-info h4 { margin: 0 0 5px 0; font-size: 0.9rem; }
+        .upcoming-movie-info p { margin: 0; font-size: 0.8rem; color: var(--soft-text-color); }
 
-        /* News section */
-        #news-section .results-container {
-            /* Using the same grid as other movie lists */
+        /* --- MAIN CONTENT AREA --- */
+        main {
+            margin-left: var(--sidebar-width);
+            margin-right: var(--spotlight-width);
+            width: calc(100% - var(--sidebar-width) - var(--spotlight-width));
+            padding: 30px;
         }
+        .feature-section { display: none; width: 100%; animation: fadeIn 0.8s ease-in-out; }
+        .feature-section.active { display: block; }
+
+        /* --- HEADINGS & CONTAINERS --- */
+        h2 { font-family: var(--font-heading); color: var(--text-color); text-align: left; margin-bottom: 20px; font-size: 2rem; }
+        h3.section-subtitle { font-family: var(--font-heading); color: var(--text-color); margin-top: 40px; margin-bottom: -10px; font-size: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+        .page-description { color: var(--soft-text-color); margin-top: -15px; margin-bottom: 30px; text-align: left; }
+        .results-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 25px; padding: 20px 0; animation: fadeIn 0.8s ease-in-out; }
+
+        /* --- SEARCH CONTROLS --- */
+        .search-controls { width: 100%; max-width: 700px; margin: 0 auto 25px auto; display: flex; gap: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); border-radius: 50px; overflow: hidden; }
+        .search-controls input { flex-grow: 1; padding: 15px 25px; font-size: 1rem; border: none; background-color: var(--card-bg-color); color: var(--text-color); outline: none; }
+        .search-controls button { padding: 15px 30px; background-color: var(--accent-color); color: var(--secondary-bg-color); font-family: var(--font-heading); font-size: 1rem; text-transform: uppercase; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s ease; }
+        .search-controls button:hover { opacity: 0.8; }
+
+        /* --- MOVIE CARD --- */
+        .movie-card { background-color: var(--card-bg-color); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; position: relative; display: flex; flex-direction: column; }
+        .movie-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
+        .movie-card img { width: 100%; height: 300px; object-fit: cover; background-color: #E8E8E8; }
+        .movie-card-content { padding: 15px; text-align: left; flex-grow: 1; }
+        .movie-card-content h3 { font-size: 1rem; margin: 0 0 5px 0; }
+        .movie-card-content p { font-size: 0.9rem; color: var(--soft-text-color); margin: 0; }
+
+        /* --- MODALS (GENERAL) --- */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.7); animation: fadeIn 0.3s; }
+        .modal-content { background-color: var(--secondary-bg-color); margin: 5% auto; padding: 30px; border-radius: 12px; width: 90%; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); position: relative; }
+        .close-button { color: var(--soft-text-color); position: absolute; top: 15px; right: 25px; font-size: 35px; font-weight: bold; cursor: pointer; transition: color 0.3s ease; }
+        .close-button:hover, .close-button:focus { color: var(--accent-color); }
+
+        /* --- Other component styles (Diary, Watchlist, News, etc.) --- */
+        .diary-entry, .news-article-card { background-color: var(--card-bg-color); border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; gap: 20px; align-items: flex-start; }
+        .news-article-card { text-decoration: none; color: var(--text-color); }
+        .diary-entry img, .news-article-card img { width: 100px; height: 150px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+        .news-article-card img { width: 150px; }
+        .diary-entry-content, .news-article-content { flex-grow: 1; }
+        .news-article-content h3 { font-size: 1.2rem; }
+        .star-display { font-size: 1.2rem; color: #FFD700; }
+        .star-display.inactive { color: var(--soft-text-color); }
+        .diary-entry-actions { margin-top: 15px; display: flex; gap: 10px; }
+        .action-button { background: var(--primary-bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+        .action-button.delete { color: var(--error-color); border-color: var(--error-color); }
+        .watchlist-entry .action-button.delete { position: absolute; top: 10px; right: 10px; z-index: 2; background: rgba(0,0,0,0.6); border: none; color: white; border-radius: 50%; width: 30px; height: 30px; font-size: 1rem; display: flex; align-items: center; justify-content: center; }
         
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            header, nav {
-                flex-direction: column;
-            }
-            .nav-button {
-                padding: 10px;
-            }
-            .search-container {
-                flex-direction: column;
-                border-radius: 12px;
-            }
-            .search-container #search-input {
-                border-radius: 12px;
-            }
-            .search-container #search-button {
-                width: 100%;
-                border-radius: 12px;
-            }
-            .modal-content {
-                margin: 20px;
-            }
-            .modal-body {
-                flex-direction: column;
-            }
-            .filter-controls {
-                flex-direction: column;
-            }
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 1200px) {
+            #spotlight-panel { display: none; }
+            main { margin-right: 0; width: calc(100% - var(--sidebar-width)); }
+        }
+        @media (max-width: 992px) {
+            :root { --sidebar-width: 0; }
+            #sidebar { display: none; }
+            main { margin-left: 0; width: 100%; padding: 15px; }
+            #mobile-nav { display: block; width: 100%; background-color: var(--secondary-bg-color); padding: 10px 0; text-align: center; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); overflow-x: auto; white-space: nowrap; }
+            #mobile-nav .nav-button { display: inline-block; padding: 10px 15px; font-size: 0.9rem; }
+            #mobile-nav .nav-button i { display: none; }
+            h2 { font-size: 1.5rem; }
+            .modal-body { flex-direction: column; }
+        }
+        @media (min-width: 993px) {
+            #mobile-nav { display: none; }
         }
     </style>
 </head>
 <body class="light-mode">
-    <header>
-        <h1 id="app-title">Cinefy</h1>
-        <button id="dark-mode-toggle"><i class="fas fa-moon"></i></button>
-    </header>
+
+    <div id="onboarding-page" style="display: none;">
+        <div class="onboarding-content">
+            <h2>Welcome to Cinefy!</h2>
+            <p>Let's personalize your experience. Select your favorite genres and your region to get tailored movie news and recommendations.</p>
+            <form id="onboarding-form">
+                <h4>Favorite Genres (select up to 5)</h4>
+                <div id="onboarding-genre-grid" class="preference-grid"></div>
+                <h4>Your Region</h4>
+                <select id="onboarding-region-select"></select>
+                <button type="submit">Save & Start Exploring</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="app-wrapper" style="visibility: hidden;">
+        <aside id="sidebar">
+            <h1 id="app-title">Cinefy</h1>
+            <nav>
+                <button class="nav-button active" id="nav-home"><i class="fas fa-home"></i> Home</button>
+                <button class="nav-button" id="nav-upcoming"><i class="fas fa-calendar-alt"></i> Upcoming</button>
+                <button class="nav-button" id="nav-recommendations"><i class="fas fa-magic"></i> Recommendations</button>
+                <button class="nav-button" id="nav-news"><i class="fas fa-newspaper"></i> Film News</button>
+                <button class="nav-button" id="nav-mood-recommender"><i class="fas fa-smile"></i> Mood AI</button>
+                <button class="nav-button" id="nav-diary"><i class="fas fa-book"></i> My Diary</button>
+                <button class="nav-button" id="nav-watchlist"><i class="fas fa-list-alt"></i> Watchlist</button>
+            </nav>
+            <button id="dark-mode-toggle"><i class="fas fa-moon"></i> Toggle Theme</button>
+        </aside>
+
+        <div id="main-content">
+            <div id="mobile-nav"></div>
+            <main>
+                <div id="home-section" class="feature-section active">
+                    <h2 id="home-section-title">Popular Movies</h2>
+                    <p class="page-description">A curated list of popular movies based on your preferences.</p>
+                    <div id="home-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="home-container" class="results-container"></div>
+                </div>
+                
+                <div id="upcoming-section" class="feature-section">
+                    <h2>Upcoming Releases</h2>
+                    <p class="page-description">The latest movies coming to theaters and streaming this month.</p>
+                    
+                    <h3 class="section-subtitle">Theatrical Releases</h3>
+                    <div id="upcoming-theatrical-loading" class="loading-indicator" style="display: block;"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="upcoming-theatrical-container" class="results-container"></div>
+
+                    <h3 class="section-subtitle">New on OTT / Streaming</h3>
+                    <div id="upcoming-ott-loading" class="loading-indicator" style="display: block;"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="upcoming-ott-container" class="results-container"></div>
+                </div>
+
+                <div id="recommendations-section" class="feature-section">
+                    <h2>Find Recommendations</h2>
+                    <p class="page-description">Enter a movie you like, and we'll find similar ones.</p>
+                    <div class="search-controls">
+                        <input type="text" id="reco-search-input" placeholder="e.g., The Dark Knight">
+                        <button id="reco-search-button">Get Recommendations</button>
+                    </div>
+                    <div id="reco-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="reco-results-container" class="results-container"></div>
+                </div>
+
+                <div id="mood-recommender-section" class="feature-section">
+                    <h2>AI Mood Recommendations</h2>
+                    <p class="page-description">Tell our AI how you're feeling for a unique list of movie suggestions.</p>
+                    <div class="search-controls" style="flex-direction:column; border-radius:12px; box-shadow:none; gap:15px;">
+                        <textarea id="mood-input" placeholder="e.g., 'I want a funny, lighthearted movie to watch with family.'" style="border-radius:12px; border: 1px solid var(--border-color);"></textarea>
+                        <button id="mood-button" style="border-radius: 50px;">Get AI Recommendations</button>
+                    </div>
+                    <div id="mood-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="mood-results-container" class="results-container"></div>
+                </div>
+
+                <div id="news-section" class="feature-section">
+                    <h2>Your Personalized Film News</h2>
+                    <p class="page-description">The latest news about movies from your favorite genres.</p>
+                    <div id="news-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="news-container" class="results-container" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));"></div>
+                </div>
+
+                <div id="diary-section" class="feature-section">
+                    <h2>My Personal Film Diary</h2>
+                    <p class="page-description">A log of all the movies you've watched and reviewed.</p>
+                    <div id="diary-entries"></div>
+                </div>
+
+                <div id="watchlist-section" class="feature-section">
+                    <h2>My Watchlist</h2>
+                    <p class="page-description">A list of movies you want to watch in the future.</p>
+                    <div id="watchlist-entries" class="results-container"></div>
+                </div>
+            </main>
+        </div>
+
+        <aside id="spotlight-panel">
+            <h3>Upcoming in Theaters</h3>
+            <div id="spotlight-container">
+                <!-- Upcoming movies will be populated by JS -->
+            </div>
+        </aside>
+    </div>
+
+    <!-- MODALS -->
+    <div id="movie-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><div class="modal-body"></div></div></div>
+    <div id="diary-form-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><div class="diary-form-container"><h2 style="margin-top:0;">Add to Diary</h2><p id="diary-form-movie-title" style="text-align:center; font-weight:bold; color:var(--text-color);"></p><form id="diary-form"><input type="hidden" id="diary-form-movie-id"><input type="hidden" id="diary-form-poster-path"><input type="hidden" id="diary-form-timestamp"><input type="date" id="diary-form-date" required><div class="star-rating"><span class="star" data-value="1">&#9733;</span><span class="star" data-value="2">&#9733;</span><span class="star" data-value="3">&#9733;</span><span class="star" data-value="4">&#9733;</span><span class="star" data-value="5">&#9733;</span></div><input type="hidden" id="diary-form-rating-value" required><textarea id="diary-form-review" placeholder="Your review..." rows="4"></textarea><button type="submit" id="diary-form-submit-button">Add to Diary</button></form></div></div></div>
+    <div id="custom-alert-modal" class="modal"><div class="modal-content"><div id="alert-icon"></div><p id="alert-message"></p><button id="alert-close-button">OK</button></div></div>
     
-    <nav>
-        <button class="nav-button active" id="nav-search">Search</button>
-        <button class="nav-button" id="nav-mood-recommender">Mood Recommender</button>
-        <button class="nav-button" id="nav-news">Film News</button>
-        <button class="nav-button" id="nav-trivia">Trivia</button>
-        <button class="nav-button" id="nav-diary">My Diary</button>
-        <button class="nav-button" id="nav-watchlist">Watchlist</button>
-    </nav>
-
-    <main>
-        <!-- Search Section -->
-        <div id="search-section" class="feature-section active">
-            <h2 style="color: var(--text-color);">Trending Movies This Week</h2>
-            <div class="filter-controls">
-                <select id="genre-filter-search">
-                    <option value="">All Genres</option>
-                </select>
-                <select id="year-filter-search">
-                    <option value="">All Years</option>
-                </select>
-            </div>
-            <div class="search-container">
-                <input type="text" id="search-input" placeholder="Search for a movie...">
-                <button id="search-button">Search</button>
-            </div>
-            <div id="loading-indicator" class="loading-indicator">
-                <i class="fas fa-spinner fa-spin"></i>
-            </div>
-            <div id="results-container" class="results-container">
-                <!-- Movie cards will be dynamically inserted here -->
-            </div>
-        </div>
-        
-        <!-- Mood Recommender Section -->
-        <div id="mood-recommender-section" class="feature-section">
-            <h2 style="color: var(--text-color);">Movie Recommendations Based on Your Mood</h2>
-            <p style="text-align:center; color: var(--soft-text-color);">Tell us how you're feeling and we'll suggest some films!</p>
-            <div class="mood-controls">
-                <textarea id="mood-input" placeholder="e.g., 'I'm feeling adventurous and want to see a fantasy film with a strong female lead.'"></textarea>
-                <button id="mood-button">Get Recommendations</button>
-            </div>
-            <div id="mood-loading-indicator" class="loading-indicator">
-                <i class="fas fa-spinner fa-spin"></i>
-            </div>
-            <div id="mood-results-container" class="results-container">
-                <!-- Mood-based movie cards will be inserted here -->
-            </div>
-        </div>
-
-        <!-- Film News Section -->
-        <div id="news-section" class="feature-section">
-            <h2 style="color: var(--text-color);">Now Playing in Theaters</h2>
-            <div id="news-loading-indicator" class="loading-indicator">
-                <i class="fas fa-spinner fa-spin"></i>
-            </div>
-            <div id="news-container" class="results-container">
-                <!-- News articles will be dynamically inserted here -->
-            </div>
-        </div>
-
-        <!-- Trivia Section -->
-        <div id="trivia-section" class="feature-section">
-            <h2 style="color: var(--text-color);">Film Trivia Challenge</h2>
-            <div id="trivia-container">
-                <p id="trivia-question">Click 'Start Trivia' to begin!</p>
-                <div id="trivia-options">
-                    <!-- Trivia options will be inserted here -->
-                </div>
-            </div>
-            <button id="start-trivia-button" style="margin-top: 20px; padding: 12px 25px; background-color: var(--accent-color); color: white; border: none; border-radius: 50px; cursor: pointer;">Start Trivia</button>
-        </div>
-
-        <!-- My Diary Section -->
-        <div id="diary-section" class="feature-section">
-            <h2 style="color: var(--text-color);">My Personal Film Diary</h2>
-            <div id="diary-entries">
-                <!-- Diary entries will be inserted here -->
-            </div>
-        </div>
-
-        <!-- Watchlist Section -->
-        <div id="watchlist-section" class="feature-section">
-            <h2 style="color: var(--text-color);">My Watchlist</h2>
-            <div id="watchlist-entries" class="results-container">
-                <!-- Watchlist movie cards will be inserted here -->
-            </div>
-        </div>
-
-        <!-- The main Movie Details Modal -->
-        <div id="movie-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-button" id="movie-modal-close">&times;</span>
-                <div id="modal-body-content" class="modal-body">
-                    <!-- Detailed movie info will be dynamically inserted here -->
-                </div>
-            </div>
-        </div>
-        
-        <!-- The Diary Form Modal -->
-        <div id="diary-form-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-button" id="diary-modal-close">&times;</span>
-                <div class="diary-form-container">
-                    <h2 style="margin-top:0;">Add to Diary</h2>
-                    <p id="diary-form-movie-title" style="text-align:center; font-weight:bold; color:var(--text-color);"></p>
-                    <form id="diary-form">
-                        <input type="hidden" id="diary-form-movie-id">
-                        <input type="date" id="diary-form-date" required>
-                        <div class="star-rating">
-                            <span class="star" data-value="1">&#9733;</span>
-                            <span class="star" data-value="2">&#9733;</span>
-                            <span class="star" data-value="3">&#9733;</span>
-                            <span class="star" data-value="4">&#9733;</span>
-                            <span class="star" data-value="5">&#9733;</span>
-                        </div>
-                        <input type="hidden" id="diary-form-rating-value" required>
-                        <textarea id="diary-form-review" placeholder="Your review..." rows="4"></textarea>
-                        <button type="submit">Add to Diary</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        &copy; 2024 Cinefy. Powered by The Movie Database (TMDb), Gemini, and Open Trivia.
-    </footer>
 
     <script>
-        // --- API CONFIGURATION ---
+    document.addEventListener('DOMContentLoaded', () => {
+
         const TMDB_API_KEY = 'd91c0bfea39d9cc51c703202c289eebf';
-        const GEMINI_API_KEY = 'AIzaSyD4ybkMxxqhsT6_axrdyFANKAGI4tEzlmQ';
+        const GEMINI_API_KEY = '';
+        const GNEWS_API_KEY = 'adff08e986e75ae2074b7bcf9642781e';
         const BASE_URL = 'https://api.themoviedb.org/3/';
         const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
-        const PLACEHOLDER_IMAGE = 'https://placehold.co/500x750/E8E8E8/666666?text=No+Poster';
-        const TRIVIA_API_URL = 'https://opentdb.com/api.php?amount=10&category=11&type=multiple';
+        const GNEWS_API_URL = 'https://gnews.io/api/v4/search';
+        const PLACEHOLDER_IMAGE = 'https://placehold.co/500x750/cccccc/666666?text=No+Poster';
+        const NEWS_PLACEHOLDER_IMAGE = 'https://placehold.co/400x225/cccccc/666666?text=No+Image';
 
-        // --- DOM ELEMENTS ---
-        const navSearchBtn = document.getElementById('nav-search');
-        const navMoodRecommenderBtn = document.getElementById('nav-mood-recommender');
-        const navNewsBtn = document.getElementById('nav-news');
-        const navTriviaBtn = document.getElementById('nav-trivia');
-        const navDiaryBtn = document.getElementById('nav-diary');
-        const navWatchlistBtn = document.getElementById('nav-watchlist');
-        
-        const searchSection = document.getElementById('search-section');
-        const moodRecommenderSection = document.getElementById('mood-recommender-section');
-        const newsSection = document.getElementById('news-section');
-        const triviaSection = document.getElementById('trivia-section');
-        const diarySection = document.getElementById('diary-section');
-        const watchlistSection = document.getElementById('watchlist-section');
-        
-        const searchInput = document.getElementById('search-input');
-        const searchButton = document.getElementById('search-button');
-        const resultsContainer = document.getElementById('results-container');
-        const loadingIndicator = document.getElementById('loading-indicator');
-        
-        const moodInput = document.getElementById('mood-input');
-        const moodButton = document.getElementById('mood-button');
-        const moodResultsContainer = document.getElementById('mood-results-container');
-        const moodLoadingIndicator = document.getElementById('mood-loading-indicator');
-
-        const newsContainer = document.getElementById('news-container');
-        const newsLoadingIndicator = document.getElementById('news-loading-indicator');
-
-        const triviaQuestionEl = document.getElementById('trivia-question');
-        const triviaOptionsEl = document.getElementById('trivia-options');
-        const startTriviaButton = document.getElementById('start-trivia-button');
-        
-        const diaryEntriesContainer = document.getElementById('diary-entries');
-        const watchlistEntriesContainer = document.getElementById('watchlist-entries');
-
-        const movieModal = document.getElementById('movie-modal');
-        const modalBodyContent = document.getElementById('modal-body-content');
-        const movieModalCloseBtn = document.getElementById('movie-modal-close');
-        
-        const diaryFormModal = document.getElementById('diary-form-modal');
-        const diaryModalCloseBtn = document.getElementById('diary-modal-close');
-        const diaryForm = document.getElementById('diary-form');
-        const diaryFormMovieTitle = document.getElementById('diary-form-movie-title');
-        const diaryFormMovieId = document.getElementById('diary-form-movie-id');
-        const diaryFormDate = document.getElementById('diary-form-date');
-        const diaryFormRatingStars = document.querySelector('#diary-form-modal .star-rating');
-        const diaryFormRatingValue = document.getElementById('diary-form-rating-value');
-        const diaryFormReview = document.getElementById('diary-form-review');
-        
-        const appTitle = document.getElementById('app-title');
-        
-        const genreFilterSearch = document.getElementById('genre-filter-search');
-        const yearFilterSearch = document.getElementById('year-filter-search');
-        
-        const darkModeToggle = document.getElementById('dark-mode-toggle');
-
-        // --- NAVIGATION LOGIC ---
-        function showSection(sectionId, callback = null) {
-            document.querySelectorAll('.feature-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById(sectionId).classList.add('active');
+        const dom = {
+            appWrapper: document.querySelector('.app-wrapper'),
+            mobileNavContainer: document.getElementById('mobile-nav'),
+            navButtons: document.querySelectorAll('.nav-button'),
+            featureSections: document.querySelectorAll('.feature-section'),
+            appTitle: document.getElementById('app-title'),
+            darkModeToggle: document.getElementById('dark-mode-toggle'),
+            spotlightContainer: document.getElementById('spotlight-container'),
             
-            document.querySelectorAll('.nav-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            const navButtonId = `nav-${sectionId.split('-')[0] === 'mood' ? 'mood-recommender' : sectionId.split('-')[0]}`;
-            document.getElementById(navButtonId).classList.add('active');
-            
-            if (callback) {
-                callback();
+            home: { container: document.getElementById('home-container'), loading: document.getElementById('home-loading-indicator'), title: document.getElementById('home-section-title') },
+            upcoming: { 
+                theatricalContainer: document.getElementById('upcoming-theatrical-container'), 
+                theatricalLoading: document.getElementById('upcoming-theatrical-loading'), 
+                ottContainer: document.getElementById('upcoming-ott-container'), 
+                ottLoading: document.getElementById('upcoming-ott-loading') 
+            },
+            recommendations: { input: document.getElementById('reco-search-input'), button: document.getElementById('reco-search-button'), container: document.getElementById('reco-results-container'), loading: document.getElementById('reco-loading-indicator') },
+            mood: { input: document.getElementById('mood-input'), button: document.getElementById('mood-button'), container: document.getElementById('mood-results-container'), loading: document.getElementById('mood-loading-indicator') },
+            news: { container: document.getElementById('news-container'), loading: document.getElementById('news-loading-indicator') },
+            diary: { container: document.getElementById('diary-entries') },
+            watchlist: { container: document.getElementById('watchlist-entries') },
+            modals: {
+                movie: { main: document.getElementById('movie-modal'), body: document.querySelector('#movie-modal .modal-body'), close: document.querySelector('#movie-modal .close-button') },
+                diaryForm: { main: document.getElementById('diary-form-modal'), close: document.querySelector('#diary-form-modal .close-button'), form: document.getElementById('diary-form'), title: document.getElementById('diary-form-movie-title'), movieId: document.getElementById('diary-form-movie-id'), posterPath: document.getElementById('diary-form-poster-path'), timestamp: document.getElementById('diary-form-timestamp'), date: document.getElementById('diary-form-date'), ratingStars: document.querySelector('#diary-form-modal .star-rating'), ratingValue: document.getElementById('diary-form-rating-value'), review: document.getElementById('diary-form-review'), submitButton: document.getElementById('diary-form-submit-button') },
+                alert: { main: document.getElementById('custom-alert-modal'), icon: document.getElementById('alert-icon'), message: document.getElementById('alert-message'), close: document.getElementById('alert-close-button') },
+                onboarding: { page: document.getElementById('onboarding-page'), form: document.getElementById('onboarding-form'), genreGrid: document.getElementById('onboarding-genre-grid'), regionSelect: document.getElementById('onboarding-region-select') }
             }
+        };
+
+        function showSection(sectionId) {
+            dom.featureSections.forEach(section => section.classList.remove('active'));
+            dom.navButtons.forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`${sectionId}-section`).classList.add('active');
+            const activeBtn = document.getElementById(`nav-${sectionId}`);
+            if(activeBtn) activeBtn.classList.add('active');
+            const mobileActiveBtn = dom.mobileNavContainer.querySelector(`#nav-${sectionId}`);
+            if (mobileActiveBtn) mobileActiveBtn.classList.add('active');
         }
-        
-        navSearchBtn.addEventListener('click', () => showSection('search-section', fetchInitialMovies));
-        navMoodRecommenderBtn.addEventListener('click', () => showSection('mood-recommender-section'));
-        navNewsBtn.addEventListener('click', () => showSection('news-section', fetchNowPlayingMovies));
-        navTriviaBtn.addEventListener('click', () => showSection('trivia-section'));
-        navDiaryBtn.addEventListener('click', () => showSection('diary-section', renderDiaryEntries));
-        navWatchlistBtn.addEventListener('click', () => showSection('watchlist-section', renderWatchlist));
-        appTitle.addEventListener('click', () => showSection('search-section', fetchInitialMovies));
-        
-        // --- EVENT LISTENERS ---
-        searchButton.addEventListener('click', () => {
-            const query = searchInput.value;
-            const genreId = genreFilterSearch.value;
-            const year = yearFilterSearch.value;
-            if (query) {
-                fetchMovies(query, resultsContainer, loadingIndicator, genreId, year);
-            }
-        });
 
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                searchButton.click();
-            }
-        });
-
-        genreFilterSearch.addEventListener('change', () => {
-             const query = searchInput.value;
-             const genreId = genreFilterSearch.value;
-             const year = yearFilterSearch.value;
-             if (query) {
-                 fetchMovies(query, resultsContainer, loadingIndicator, genreId, year);
-             }
-        });
-
-        yearFilterSearch.addEventListener('change', () => {
-            const query = searchInput.value;
-            const genreId = genreFilterSearch.value;
-            const year = yearFilterSearch.value;
-            if (query) {
-                fetchMovies(query, resultsContainer, loadingIndicator, genreId, year);
-            }
-        });
-        
-        movieModalCloseBtn.addEventListener('click', () => {
-            movieModal.style.display = 'none';
-        });
-
-        diaryModalCloseBtn.addEventListener('click', () => {
-            diaryFormModal.style.display = 'none';
-        });
-
-        window.addEventListener('click', (e) => {
-            if (e.target === movieModal) {
-                movieModal.style.display = 'none';
-            }
-            if (e.target === diaryFormModal) {
-                diaryFormModal.style.display = 'none';
-            }
-        });
-        
-        darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const icon = darkModeToggle.querySelector('i');
-            if (document.body.classList.contains('dark-mode')) {
-                icon.className = 'fas fa-sun';
-            } else {
-                icon.className = 'fas fa-moon';
-            }
-        });
-
-        function addToWatchlist(movie) {
-            let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
-            if (!watchlist.some(m => m.id === movie.id)) {
-                watchlist.push(movie);
-                localStorage.setItem('watchlist', JSON.stringify(watchlist));
-                alert(`${movie.title} has been added to your watchlist!`);
-            } else {
-                alert(`${movie.title} is already in your watchlist.`);
-            }
-        }
-        
-        moodButton.addEventListener('click', async () => {
-            const mood = moodInput.value;
-            if (!mood) {
-                alert('Please enter your mood or a description.');
-                return;
-            }
-            moodLoadingIndicator.style.display = 'block';
-            moodResultsContainer.innerHTML = '';
-            
-            try {
-                const recommendationText = await getGeminiRecommendation(mood);
-                
-                const movieTitles = parseGeminiResponse(recommendationText);
-                
-                if (movieTitles.length > 0) {
-                    await fetchAndDisplayMoviesFromTitles(movieTitles, moodResultsContainer);
-                } else {
-                    moodResultsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">Could not find any movies for your mood.</p>';
-                }
-            } catch (error) {
-                console.error('Error with mood recommender:', error);
-                moodResultsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">An error occurred while getting recommendations. Please try again.</p>';
-            } finally {
-                moodLoadingIndicator.style.display = 'none';
-            }
-        });
-
-        // Event listener for the new diary form modal
-        diaryForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const movieTitle = diaryFormMovieTitle.textContent;
-            const movieId = diaryFormMovieId.value;
-            const date = diaryFormDate.value;
-            const rating = diaryFormRatingValue.value;
-            const review = diaryFormReview.value;
-            
-            if (!rating) {
-                alert('Please select a rating.');
-                return;
-            }
-
-            const diaryEntry = {
-                id: movieId,
-                title: movieTitle,
-                date: date,
-                rating: rating,
-                review: review,
-                timestamp: new Date().toISOString()
-            };
-
-            let diaryEntries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
-            diaryEntries.push(diaryEntry);
-            localStorage.setItem('diaryEntries', JSON.stringify(diaryEntries));
-
-            diaryFormModal.style.display = 'none';
-            alert(`${movieTitle} has been added to your diary!`);
-        });
-        
-        // Star rating logic for the diary form
-        diaryFormRatingStars.addEventListener('click', (e) => {
-            const star = e.target.closest('.star');
-            if (star) {
-                const rating = star.dataset.value;
-                diaryFormRatingValue.value = rating;
-                
-                document.querySelectorAll('#diary-form-modal .star-rating .star').forEach(s => {
-                    s.classList.remove('active');
+        function setupNavigation() {
+            const sidebarNav = document.querySelector('#sidebar nav');
+            dom.mobileNavContainer.innerHTML = sidebarNav.innerHTML;
+            dom.navButtons = document.querySelectorAll('.nav-button');
+            dom.navButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const sectionId = e.currentTarget.id.replace('nav-', '');
+                    showSection(sectionId);
+                    const fetchActions = {
+                        home: fetchPersonalizedHome,
+                        upcoming: fetchUpcomingReleases,
+                        news: fetchFilmNews,
+                        diary: renderDiaryEntries,
+                        watchlist: renderWatchlist,
+                    };
+                    if (fetchActions[sectionId]) fetchActions[sectionId]();
                 });
-                
-                for (let i = 1; i <= rating; i++) {
-                    document.querySelector(`#diary-form-modal .star-rating .star[data-value="${i}"]`).classList.add('active');
-                }
-            }
-        });
+            });
+            dom.appTitle.addEventListener('click', () => document.getElementById('nav-home').click());
+        }
 
-        // --- API FETCH FUNCTIONS ---
-        async function fetchGenres() {
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            dom.darkModeToggle.querySelector('i').className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem('darkMode', isDarkMode);
+        }
+
+        function applyInitialTheme() {
+            if (localStorage.getItem('darkMode') === 'true') toggleDarkMode();
+        }
+
+        function showCustomAlert(message, type = 'info') {
+            const modal = dom.modals.alert;
+            modal.message.textContent = message;
+            modal.main.className = `modal ${type}`;
+            const icons = { success: 'fa-solid fa-circle-check', error: 'fa-solid fa-circle-xmark', info: 'fa-solid fa-circle-info' };
+            modal.icon.innerHTML = `<i class="${icons[type]}"></i>`;
+            modal.main.style.display = 'block';
+        }
+
+        function setupEventListeners() {
+            dom.darkModeToggle.addEventListener('click', toggleDarkMode);
+            dom.recommendations.button.addEventListener('click', handleRecommendationSearch);
+            dom.recommendations.input.addEventListener('keypress', e => { if (e.key === 'Enter') handleRecommendationSearch(); });
+            dom.mood.button.addEventListener('click', handleMoodRecommendation);
+            dom.modals.movie.close.addEventListener('click', () => dom.modals.movie.main.style.display = 'none');
+            dom.modals.diaryForm.close.addEventListener('click', () => dom.modals.diaryForm.main.style.display = 'none');
+            dom.modals.alert.close.addEventListener('click', () => dom.modals.alert.main.style.display = 'none');
+            window.addEventListener('click', (e) => {
+                if (e.target === dom.modals.movie.main) dom.modals.movie.main.style.display = 'none';
+                if (e.target === dom.modals.diaryForm.main) dom.modals.diaryForm.main.style.display = 'none';
+                if (e.target === dom.modals.alert.main) dom.modals.alert.main.style.display = 'none';
+            });
+            dom.modals.diaryForm.form.addEventListener('submit', handleDiaryFormSubmit);
+            dom.modals.diaryForm.ratingStars.addEventListener('click', handleStarRating);
+            dom.modals.onboarding.form.addEventListener('submit', handleOnboardingSubmit);
+        }
+
+        function getPreferences() {
+            return JSON.parse(localStorage.getItem('userPreferences'));
+        }
+
+        async function checkOnboarding() {
+            if (!getPreferences()) {
+                await populateOnboardingModal();
+                dom.modals.onboarding.page.style.display = 'flex';
+            } else {
+                dom.appWrapper.style.visibility = 'visible';
+                fetchPersonalizedHome();
+                fetchUpcomingReleases(true); // Fetch for spotlight panel only
+            }
+        }
+
+        async function populateOnboardingModal() {
             try {
                 const response = await fetch(`${BASE_URL}genre/movie/list?api_key=${TMDB_API_KEY}`);
                 const data = await response.json();
-                const genreLists = [genreFilterSearch];
-                
                 if (data.genres) {
-                    genreLists.forEach(selectElement => {
-                        data.genres.forEach(genre => {
-                            const option = document.createElement('option');
-                            option.value = genre.id;
-                            option.textContent = genre.name;
-                            selectElement.appendChild(option);
-                        });
-                    });
+                    dom.modals.onboarding.genreGrid.innerHTML = data.genres.map(g => `<label><input type="checkbox" name="genre" value="${g.id}">${g.name}</label>`).join('');
                 }
-            } catch (error) {
-                console.error('Error fetching genres:', error);
+            } catch (error) { console.error("Failed to fetch genres for onboarding:", error); }
+            const regions = { "United States": "us", "India": "in", "United Kingdom": "gb", "Canada": "ca", "Australia": "au", "Germany": "de", "France": "fr" };
+            const options = Object.entries(regions).map(([name, code]) => `<option value="${code}">${name}</option>`).join('');
+            dom.modals.onboarding.regionSelect.innerHTML = `<option value="us">United States</option><option value="in">India</option>${options.replace('<option value="us">United States</option>', '').replace('<option value="in">India</option>', '')}`;
+        }
+
+        function handleOnboardingSubmit(e) {
+            e.preventDefault();
+            const selectedGenres = Array.from(dom.modals.onboarding.form.querySelectorAll('input[name="genre"]:checked')).map(cb => cb.value);
+            if (selectedGenres.length === 0 || selectedGenres.length > 5) { showCustomAlert("Please select 1 to 5 genres.", "error"); return; }
+            const selectedRegion = dom.modals.onboarding.regionSelect.value;
+            localStorage.setItem('userPreferences', JSON.stringify({ genres: selectedGenres, region: selectedRegion }));
+            dom.modals.onboarding.page.style.display = 'none';
+            dom.appWrapper.style.visibility = 'visible';
+            showCustomAlert("Preferences saved! Welcome to your personalized Cinefy.", "success");
+            fetchPersonalizedHome();
+            fetchUpcomingReleases(true);
+        }
+
+        async function fetchPersonalizedHome() {
+            const prefs = getPreferences();
+            if (!prefs || prefs.genres.length === 0) {
+                dom.home.title.textContent = "Trending Movies This Week";
+                const url = `${BASE_URL}trending/movie/week?api_key=${TMDB_API_KEY}`;
+                await fetchApiData(url, dom.home.container, dom.home.loading, displayMovies, "No movies found.");
+            } else {
+                dom.home.title.textContent = "Popular & Anticipated Films";
+                const genreString = prefs.genres.join('|'); // Use OR for genres
+                const fiveYearsAgo = new Date();
+                fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
+                const releaseDateFilter = `primary_release_date.gte=${fiveYearsAgo.toISOString().split('T')[0]}`;
+
+                dom.home.loading.style.display = 'block';
+                dom.home.container.innerHTML = '';
+
+                try {
+                    // Fetch Indian films
+                    const indianUrl = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&sort_by=vote_average.desc&vote_count.gte=100&with_genres=${genreString}&with_origin_country=IN&${releaseDateFilter}`;
+                    const indianResponse = await fetch(indianUrl);
+                    const indianData = await indianResponse.json();
+                    const indianMovies = indianData.results || [];
+
+                    // Fetch Hollywood films
+                    const hollywoodUrl = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&sort_by=vote_average.desc&vote_count.gte=100&with_genres=${genreString}&with_origin_country=US&${releaseDateFilter}`;
+                    const hollywoodResponse = await fetch(hollywoodUrl);
+                    const hollywoodData = await hollywoodResponse.json();
+                    const hollywoodMovies = hollywoodData.results || [];
+
+                    const indianMovieIds = new Set(indianMovies.map(m => m.id));
+                    const uniqueHollywoodMovies = hollywoodMovies.filter(m => !indianMovieIds.has(m.id));
+                    
+                    const combinedMovies = [...indianMovies, ...uniqueHollywoodMovies];
+
+                    if (combinedMovies.length > 0) {
+                        displayMovies(combinedMovies, dom.home.container);
+                    } else {
+                        dom.home.container.innerHTML = `<div class="empty-state-container"><i class="fas fa-film"></i><h3>No Results</h3><p>No recent anticipated movies found for your preferences.</p></div>`;
+                    }
+                } catch (error) {
+                    console.error('API Fetch Error:', error);
+                    dom.home.container.innerHTML = `<div class="empty-state-container"><i class="fas fa-exclamation-triangle"></i><h3>Error</h3><p>An error occurred. Please try again later.</p></div>`;
+                } finally {
+                    dom.home.loading.style.display = 'none';
+                }
             }
         }
         
-        async function populateYearFilter() {
-            const currentYear = new Date().getFullYear();
-            for (let year = currentYear; year >= 1900; year--) {
-                const option = document.createElement('option');
-                option.value = year;
-                option.textContent = year;
-                yearFilterSearch.appendChild(option);
+        async function fetchUpcomingReleases(spotlightOnly = false) {
+            const today = new Date().toISOString().split('T')[0];
+            const twoMonthsLater = new Date();
+            twoMonthsLater.setMonth(twoMonthsLater.getMonth() + 2);
+            const twoMonthsLaterStr = twoMonthsLater.toISOString().split('T')[0];
+            
+            const theatricalDateFilter = `primary_release_date.gte=${today}&primary_release_date.lte=${twoMonthsLaterStr}`;
+            
+            // Fetch for Spotlight Panel
+            if (spotlightOnly) {
+                const url = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&${theatricalDateFilter}&with_release_type=3&region=US,IN`;
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.results) {
+                    displayUpcomingMovies(data.results.slice(0, 10), dom.spotlightContainer);
+                }
+                return;
+            }
+
+            // Fetch for Main Upcoming Page
+            const theatricalUrl = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&${theatricalDateFilter}&with_release_type=3&region=US,IN`;
+            await fetchApiData(theatricalUrl, dom.upcoming.theatricalContainer, dom.upcoming.theatricalLoading, displayMovies, "No theatrical releases found for the coming months.");
+
+            const threeMonthsAgo = new Date();
+            threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+            const threeMonthsAgoStr = threeMonthsAgo.toISOString().split('T')[0];
+            const ottDateFilter = `primary_release_date.gte=${threeMonthsAgoStr}&primary_release_date.lte=${today}`;
+            const ottWatchProviders = '8|9|15|337'; // Netflix, Amazon Prime, Disney+, Apple TV
+            const ottUrl = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&${ottDateFilter}&with_watch_providers=${ottWatchProviders}&watch_region=IN,US&sort_by=popularity.desc`;
+            await fetchApiData(ottUrl, dom.upcoming.ottContainer, dom.upcoming.ottLoading, displayMovies, "No new OTT releases found for this month.");
+        }
+
+        async function fetchFilmNews() {
+            if (!GNEWS_API_KEY || GNEWS_API_KEY === 'PASTE_YOUR_GNEWS_API_KEY_HERE') { dom.news.container.innerHTML = `<p>News feature is not configured.</p>`; return; }
+            const prefs = getPreferences();
+            if (!prefs) { dom.news.container.innerHTML = `<p>Please set your preferences to see personalized news.</p>`; return; }
+            dom.news.loading.style.display = 'block';
+            dom.news.container.innerHTML = '';
+            try {
+                const genreResponse = await fetch(`${BASE_URL}genre/movie/list?api_key=${TMDB_API_KEY}`);
+                const genreData = await genreResponse.json();
+                const genreMap = new Map(genreData.genres.map(g => [g.id.toString(), g.name]));
+                const genreKeywords = prefs.genres.map(id => `"${genreMap.get(id)} movie"`).join(' OR ');
+                const url = `${GNEWS_API_URL}?q=${encodeURIComponent(genreKeywords)}&lang=en&country=${prefs.region}&token=${GNEWS_API_KEY}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.articles && data.articles.length > 0) {
+                    displayNews(data.articles);
+                } else {
+                    dom.news.container.innerHTML = `<p>No news found for your favorite genres.</p>`;
+                }
+            } catch (error) {
+                console.error("News fetch error:", error);
+                dom.news.container.innerHTML = `<p>Could not fetch film news.</p>`;
+            } finally {
+                dom.news.loading.style.display = 'none';
+            }
+        }
+        
+        async function handleRecommendationSearch() {
+            const query = dom.recommendations.input.value.trim();
+            if (!query) { showCustomAlert("Please enter a movie title.", "error"); return; }
+            dom.recommendations.loading.style.display = 'block';
+            dom.recommendations.container.innerHTML = '';
+            try {
+                const searchUrl = `${BASE_URL}search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`;
+                const searchResponse = await fetch(searchUrl);
+                const searchData = await searchResponse.json();
+                if (!searchData.results || searchData.results.length === 0) throw new Error(`Movie "${query}" not found.`);
+                const movieId = searchData.results[0].id;
+                const recoUrl = `${BASE_URL}movie/${movieId}/recommendations?api_key=${TMDB_API_KEY}`;
+                await fetchApiData(recoUrl, dom.recommendations.container, dom.recommendations.loading, displayMovies, "No recommendations found.");
+            } catch (error) {
+                console.error("Recommendation search error:", error);
+                showCustomAlert(error.message, 'error');
+                dom.recommendations.loading.style.display = 'none';
             }
         }
 
-        async function fetchInitialMovies() {
-            loadingIndicator.style.display = 'block';
-            resultsContainer.innerHTML = '';
+        async function fetchMovieDetails(movieId) {
+            dom.home.loading.style.display = 'block';
             try {
-                const response = await fetch(`${BASE_URL}trending/movie/week?api_key=${TMDB_API_KEY}`);
-                const data = await response.json();
-                if (data.results && data.results.length > 0) {
-                    displayMovies(data.results, resultsContainer);
-                } else {
-                    resultsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">No trending movies found.</p>';
-                }
+                const url = `${BASE_URL}movie/${movieId}?api_key=${TMDB_API_KEY}&append_to_response=credits,videos,watch/providers`;
+                const response = await fetch(url);
+                const movieData = await response.json();
+                displayMovieDetails(movieData);
+                dom.modals.movie.main.style.display = 'block';
             } catch (error) {
-                console.error('Error fetching initial movies:', error);
-                resultsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">An error occurred. Please try again later.</p>';
+                console.error('Error fetching movie details:', error);
+                showCustomAlert('Could not fetch movie details.', 'error');
             } finally {
-                loadingIndicator.style.display = 'none';
+                dom.home.loading.style.display = 'none';
             }
         }
         
-        async function fetchMovies(query, container, loader, genreId = '', year = '') {
+        async function fetchApiData(url, container, loader, displayFn, noResultsMessage) {
             loader.style.display = 'block';
             container.innerHTML = '';
             try {
-                let url = `${BASE_URL}search/movie?api_key=${TMDB_API_KEY}&query=${query}`;
-                if (genreId) {
-                    url += `&with_genres=${genreId}`;
-                }
-                if (year) {
-                    url += `&primary_release_year=${year}`;
-                }
                 const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const data = await response.json();
-                
                 if (data.results && data.results.length > 0) {
-                    displayMovies(data.results, container);
+                    displayFn(data.results, container);
                 } else {
-                    container.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">No results found.</p>';
+                    container.innerHTML = `<div class="empty-state-container"><i class="fas fa-film"></i><h3>No Results</h3><p>${noResultsMessage}</p></div>`;
                 }
             } catch (error) {
-                console.error('Error fetching movies:', error);
-                container.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">An error occurred. Please try again later.</p>';
+                console.error('API Fetch Error:', error);
+                container.innerHTML = `<div class="empty-state-container"><i class="fas fa-exclamation-triangle"></i><h3>Error</h3><p>An error occurred. Please try again later.</p></div>`;
             } finally {
                 loader.style.display = 'none';
             }
         }
-
-        async function fetchNowPlayingMovies() {
-            newsLoadingIndicator.style.display = 'block';
-            newsContainer.innerHTML = '';
-            try {
-                const response = await fetch(`${BASE_URL}movie/now_playing?api_key=${TMDB_API_KEY}`);
-                const data = await response.json();
-                if (data.results && data.results.length > 0) {
-                    displayMovies(data.results, newsContainer);
-                } else {
-                    newsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">No current releases found.</p>';
-                }
-            } catch (error) {
-                console.error('Error fetching now playing movies:', error);
-                newsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">An error occurred. Please try again later.</p>';
-            } finally {
-                newsLoadingIndicator.style.display = 'none';
-            }
-        }
         
-        async function fetchMovieDetails(movieId) {
-            loadingIndicator.style.display = 'block';
-            try {
-                const movieResponse = await fetch(`${BASE_URL}movie/${movieId}?api_key=${TMDB_API_KEY}&append_to_response=credits,videos,watch/providers`);
-                const movieData = await movieResponse.json();
-                displayMovieDetails(movieData);
-            } catch (error) {
-                console.error('Error fetching movie details:', error);
-                modalBodyContent.innerHTML = '<p style="color:var(--soft-text-color);">An error occurred. Please try again later.</p>';
-            } finally {
-                loadingIndicator.style.display = 'none';
-                movieModal.style.display = 'block';
-            }
-        }
-        
-        async function fetchSimilarMovies(movieId) {
-            loadingIndicator.style.display = 'block';
-            resultsContainer.innerHTML = '';
-            showSection('search-section');
-
-            try {
-                const response = await fetch(`${BASE_URL}movie/${movieId}/recommendations?api_key=${TMDB_API_KEY}`);
-                const data = await response.json();
-                
-                if (data.results && data.results.length > 0) {
-                    resultsContainer.innerHTML = '<h2 style="width:100%; text-align:center; font-family:var(--font-heading); color:var(--accent-color);">Similar Movies</h2>';
-                    displayMovies(data.results, resultsContainer);
-                } else {
-                    resultsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">No recommendations available for that movie.</p>';
-                }
-            } catch (error) {
-                console.error('Error fetching similar movies:', error);
-                resultsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">An error occurred. Please try again later.</p>';
-            } finally {
-                loadingIndicator.style.display = 'none';
-                movieModal.style.display = 'none';
-            }
-        }
-
-        async function getGeminiRecommendation(mood) {
-            const prompt = `Based on the following mood, suggest 5 specific movie titles. Do not include any other text besides the numbered list of movie titles. For example: "1. Movie A\n2. Movie B\n...". Mood: ${mood}`;
-            const apiKey = "AIzaSyD4ybkMxxqhsT6_axrdyFANKAGI4tEzlmQ"; 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-            
-            const payload = {
-                contents: [{
-                    parts: [{ text: prompt }]
-                }],
-            };
-
-            let response;
-            let result;
-            let retryCount = 0;
-            const maxRetries = 3;
-            let delay = 1000;
-
-            while (retryCount < maxRetries) {
-                try {
-                    response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    
-                    if (response.ok) {
-                        result = await response.json();
-                        if (result?.candidates?.[0]?.content?.parts?.[0]?.text) {
-                            return result.candidates[0].content.parts[0].text;
-                        }
-                    } else if (response.status === 429) {
-                        console.log(`Rate limit exceeded. Retrying in ${delay / 1000}s...`);
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                        delay *= 2;
-                        retryCount++;
-                    } else {
-                        throw new Error(`API error: ${response.status}`);
-                    }
-                } catch (error) {
-                    console.error('Error making API call:', error);
-                    return '';
-                }
-            }
-            return '';
-        }
-
-        async function fetchAndDisplayMoviesFromTitles(movieTitles, container) {
-            container.innerHTML = '';
-            for (const title of movieTitles) {
-                try {
-                    const searchResponse = await fetch(`${BASE_URL}search/movie?api_key=${TMDB_API_KEY}&query=${title}`);
-                    const searchData = await searchResponse.json();
-                    if (searchData.results && searchData.results.length > 0) {
-                        displayMovies([searchData.results[0]], container);
-                    }
-                } catch (error) {
-                    console.error(`Error fetching movie details for ${title}:`, error);
-                }
-            }
-            if (container.children.length === 0) {
-                 container.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">Could not find any movies for your mood.</p>';
-            }
-        }
-        
-        // --- UI DISPLAY FUNCTIONS ---
         function displayMovies(movies, container) {
-            container.innerHTML = '';
+            if (container.innerHTML.includes('empty-state-container')) container.innerHTML = '';
             movies.forEach(movie => {
+                if (!movie.poster_path) return;
                 const movieCard = document.createElement('div');
                 movieCard.className = 'movie-card';
-                movieCard.dataset.movieId = movie.id;
-                
-                const posterPath = movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : PLACEHOLDER_IMAGE;
-                const releaseYear = movie.release_date ? movie.release_date.substring(0, 4) : 'N/A';
-                
-                movieCard.innerHTML = `
-                    <img src="${posterPath}" alt="${movie.title} Poster" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}';">
-                    <div class="movie-card-content">
-                        <h3>${movie.title}</h3>
-                        <p>(${releaseYear})</p>
-                    </div>
-                `;
-                
-                movieCard.addEventListener('click', () => {
-                    fetchMovieDetails(movie.id);
-                });
-                
+                const posterPath = `${IMAGE_BASE_URL}${movie.poster_path}`;
+                movieCard.innerHTML = `<img src="${posterPath}" alt="${movie.title}" loading="lazy" onerror="this.src='${PLACEHOLDER_IMAGE}'"><div class="movie-card-content"><h3>${movie.title}</h3><p>(${movie.release_date ? movie.release_date.substring(0, 4) : 'N/A'})</p></div>`;
+                movieCard.addEventListener('click', () => fetchMovieDetails(movie.id));
                 container.appendChild(movieCard);
+            });
+        }
+
+        function displayUpcomingMovies(movies, container) {
+            container.innerHTML = '';
+            movies.forEach(movie => {
+                if (!movie.poster_path) return;
+                const item = document.createElement('div');
+                item.className = 'upcoming-movie-item';
+                const posterPath = `${IMAGE_BASE_URL}${movie.poster_path}`;
+                const releaseDate = new Date(movie.release_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+                item.innerHTML = `
+                    <img src="${posterPath}" alt="${movie.title}" loading="lazy" onerror="this.src='${PLACEHOLDER_IMAGE}'">
+                    <div class="upcoming-movie-info">
+                        <h4>${movie.title}</h4>
+                        <p>${releaseDate}</p>
+                    </div>`;
+                item.addEventListener('click', () => fetchMovieDetails(movie.id));
+                container.appendChild(item);
+            });
+        }
+
+        function displayNews(articles) {
+            dom.news.container.innerHTML = '';
+            articles.slice(0, 20).forEach(article => {
+                const card = document.createElement('a');
+                card.className = 'news-article-card';
+                card.href = article.url;
+                card.target = '_blank';
+                card.rel = 'noopener noreferrer';
+                card.innerHTML = `<img src="${article.image || NEWS_PLACEHOLDER_IMAGE}" alt="${article.title}" loading="lazy" onerror="this.src='${NEWS_PLACEHOLDER_IMAGE}'"><div class="news-article-content"><h3>${article.title}</h3><p>${article.description || ''}</p><span class="news-article-source">${article.source.name}</span></div>`;
+                dom.news.container.appendChild(card);
             });
         }
 
         function displayMovieDetails(movie) {
             const posterPath = movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : PLACEHOLDER_IMAGE;
-            const cast = movie.credits.cast.slice(0, 5).map(actor => `<li data-person-id="${actor.id}">${actor.name}</li>`).join('');
-            const releaseYear = movie.release_date ? `(${movie.release_date.substring(0, 4)})` : '';
-            
-            const watchProviders = movie['watch/providers']?.results?.US?.link;
-            const trailer = movie.videos?.results.find(v => v.type === 'Trailer' && v.site === 'YouTube');
-            
-            modalBodyContent.innerHTML = `
-                <img src="${posterPath}" alt="${movie.title} Poster" class="modal-poster" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}';">
-                <div class="modal-details">
-                    <h2>${movie.title} ${releaseYear}</h2>
-                    <p><strong>Genre:</strong> ${movie.genres.map(g => g.name).join(', ')}</p>
-                    <p><strong>Overview:</strong> ${movie.overview || 'No overview available.'}</p>
-                    <p><strong>Rating:</strong> ${movie.vote_average.toFixed(1)} / 10</p>
-                    <h4>Starring:</h4>
-                    <ul>${cast}</ul>
-                    <div class="modal-actions">
-                        <button class="btn-primary" onclick="fetchSimilarMovies(${movie.id})">Find Similar Movies</button>
-                        <button class="btn-secondary" onclick="addToWatchlist(${JSON.stringify(movie).replace(/'/g, "\\'").replace(/"/g, "'")})">Add to Watchlist</button>
-                        <button class="btn-secondary" onclick="showDiaryFormModal('${movie.id}', '${movie.title.replace(/'/g, "\\'")}')">Add to Diary</button>
-                        ${watchProviders ? `<a class="btn-primary" href="${watchProviders}" target="_blank"><i class="fas fa-play"></i> Watch Now</a>` : ''}
-                        ${trailer ? `<a class="btn-secondary" href="https://www.youtube.com/watch?v=${trailer.key}" target="_blank"><i class="fas fa-film"></i> Watch Trailer</a>` : ''}
-                    </div>
-                </div>
-            `;
-            
-            const castListItems = modalBodyContent.querySelectorAll('.modal-details ul li');
-            castListItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    alert(`Clicked on person with ID: ${e.target.dataset.personId}`);
-                });
-            });
+            const cast = movie.credits.cast.slice(0, 10).map(actor => `<li>${actor.name}</li>`).join('');
+            const simpleMovieObject = { id: movie.id, title: movie.title, poster_path: movie.poster_path, release_date: movie.release_date };
+            dom.modals.movie.body.innerHTML = `<img src="${posterPath}" alt="${movie.title}" class="modal-poster"><div class="modal-details"><h2>${movie.title}</h2><p><strong>Genre:</strong> ${movie.genres.map(g => g.name).join(', ')}</p><p><strong>Overview:</strong> ${movie.overview || 'N/A'}</p><p><strong>Rating:</strong> ${movie.vote_average.toFixed(1)}/10</p><h4>Starring:</h4><ul>${cast || 'N/A'}</ul><div class="modal-actions"><button class="btn-secondary" onclick='addToWatchlist(${JSON.stringify(simpleMovieObject)})'><i class="fas fa-plus"></i> Add to Watchlist</button><button class="btn-secondary" onclick='showDiaryFormModal(${JSON.stringify(simpleMovieObject)})'><i class="fas fa-book"></i> Add to Diary</button></div></div>`;
         }
         
-        function showDiaryFormModal(movieId, movieTitle) {
-            diaryFormMovieTitle.textContent = movieTitle;
-            diaryFormMovieId.value = movieId;
-            // Reset the form
-            diaryFormDate.value = '';
-            diaryFormReview.value = '';
-            diaryFormRatingValue.value = '';
-            document.querySelectorAll('#diary-form-modal .star-rating .star').forEach(s => {
-                s.classList.remove('active');
-            });
-            diaryFormModal.style.display = 'block';
-            movieModal.style.display = 'none';
-        }
-        
-        async function fetchTriviaQuestion() {
-            triviaQuestionEl.innerHTML = 'Loading a new question...';
-            triviaOptionsEl.innerHTML = '';
-            try {
-                const response = await fetch(TRIVIA_API_URL);
-                const data = await response.json();
-                if (data.results && data.results.length > 0) {
-                    displayTriviaQuestion(data.results[0]);
-                } else {
-                    triviaQuestionEl.innerHTML = 'Could not fetch trivia. Please try again.';
-                }
-            } catch (error) {
-                console.error('Error fetching trivia:', error);
-                triviaQuestionEl.innerHTML = 'An error occurred. Please try again later.';
+        const storage = { get: (key) => JSON.parse(localStorage.getItem(key)) || [], save: (key, data) => localStorage.setItem(key, JSON.stringify(data)) };
+        window.addToWatchlist = function(movie) {
+            let watchlist = storage.get('watchlist');
+            if (!watchlist.some(m => m.id === movie.id)) {
+                watchlist.push(movie);
+                storage.save('watchlist', watchlist);
+                showCustomAlert(`${movie.title} added to watchlist!`, 'success');
+            } else {
+                showCustomAlert(`${movie.title} is already in watchlist.`, 'info');
             }
-        }
-
-        function displayTriviaQuestion(trivia) {
-            triviaQuestionEl.innerHTML = trivia.question;
-            triviaOptionsEl.innerHTML = '';
-            
-            const options = [...trivia.incorrect_answers, trivia.correct_answer];
-            options.sort(() => Math.random() - 0.5);
-            
-            options.forEach(option => {
-                const button = document.createElement('button');
-                button.innerHTML = option;
-                button.addEventListener('click', () => checkAnswer(button, option, trivia.correct_answer));
-                triviaOptionsEl.appendChild(button);
-            });
-        }
-
-        function checkAnswer(button, selectedAnswer, correctAnswer) {
-            document.querySelectorAll('#trivia-options button').forEach(btn => {
-                btn.disabled = true;
-                if (btn.innerHTML === correctAnswer) {
-                    btn.classList.add('correct-answer');
-                } else if (btn.innerHTML === selectedAnswer) {
-                    btn.classList.add('incorrect-answer');
-                }
-            });
-            
-            setTimeout(() => {
-                fetchTriviaQuestion();
-            }, 3000);
-        }
-
-        function renderDiaryEntries() {
-            diaryEntriesContainer.innerHTML = '';
-            const diaryEntries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
-            
-            if (diaryEntries.length === 0) {
-                diaryEntriesContainer.innerHTML = '<p style="text-align:center; color:var(--soft-text-color);">Your diary is empty. Add a movie to get started!</p>';
-                return;
-            }
-
-            diaryEntries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
-                const entryCard = document.createElement('div');
-                entryCard.className = 'diary-entry';
-                
-                let starRatingHtml = '';
-                for (let i = 1; i <= 5; i++) {
-                    starRatingHtml += `<span class="star-display ${i <= entry.rating ? 'active' : ''}">&#9733;</span>`;
-                }
-                
-                entryCard.innerHTML = `
-                    <h3 style="margin-top:0;">${entry.title}</h3>
-                    <p><strong>Watched on:</strong> ${entry.date}</p>
-                    <p><strong>Rating:</strong> ${starRatingHtml}</p>
-                    <p><strong>Review:</strong> ${entry.review}</p>
-                `;
-                diaryEntriesContainer.appendChild(entryCard);
-            });
-        }
+        };
         
         function renderWatchlist() {
-            watchlistEntriesContainer.innerHTML = '';
-            const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
-
-            if (watchlist.length === 0) {
-                watchlistEntriesContainer.innerHTML = '<p style="text-align:center; color:var(--soft-text-color);">Your watchlist is empty. Add some movies from the search page!</p>';
-                return;
-            }
-
+            const watchlist = storage.get('watchlist');
+            dom.watchlist.container.innerHTML = '';
+            if (watchlist.length === 0) { dom.watchlist.container.innerHTML = `<div class="empty-state-container"><i class="fas fa-list-alt"></i><h3>Your Watchlist is Empty</h3><p>Add movies you want to watch.</p></div>`; return; }
             watchlist.forEach(movie => {
                 const movieCard = document.createElement('div');
-                movieCard.className = 'movie-card';
-                movieCard.dataset.movieId = movie.id;
-                
+                movieCard.className = 'movie-card watchlist-entry';
                 const posterPath = movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : PLACEHOLDER_IMAGE;
-                const releaseYear = movie.release_date ? movie.release_date.substring(0, 4) : 'N/A';
-                
-                movieCard.innerHTML = `
-                    <img src="${posterPath}" alt="${movie.title} Poster" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}';">
-                    <div class="movie-card-content">
-                        <h3>${movie.title}</h3>
-                        <p>(${releaseYear})</p>
-                    </div>
-                `;
+                movieCard.innerHTML = `<button class="action-button delete" title="Remove" onclick="event.stopPropagation(); removeFromWatchlist(${movie.id})"><i class="fas fa-times"></i></button><img src="${posterPath}" alt="${movie.title}" loading="lazy"><div class="movie-card-content"><h3>${movie.title}</h3><p>(${movie.release_date ? movie.release_date.substring(0, 4) : 'N/A'})</p></div>`;
                 movieCard.addEventListener('click', () => fetchMovieDetails(movie.id));
-                watchlistEntriesContainer.appendChild(movieCard);
+                dom.watchlist.container.appendChild(movieCard);
+            });
+        }
+        function removeFromWatchlist(movieId) {
+            storage.save('watchlist', storage.get('watchlist').filter(m => m.id !== movieId));
+            renderWatchlist();
+            showCustomAlert('Movie removed from watchlist.', 'success');
+        }
+        window.showDiaryFormModal = function(movie, existingEntry = null) {
+            const modal = dom.modals.diaryForm;
+            modal.form.reset();
+            modal.ratingValue.value = '';
+            modal.timestamp.value = '';
+            modal.ratingStars.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
+            modal.title.textContent = movie.title;
+            modal.movieId.value = movie.id;
+            modal.posterPath.value = movie.poster_path;
+            if (existingEntry) {
+                modal.submitButton.textContent = 'Update Entry';
+                modal.date.value = existingEntry.date;
+                modal.review.value = existingEntry.review;
+                modal.timestamp.value = existingEntry.timestamp;
+                modal.ratingValue.value = existingEntry.rating;
+                for (let i = 1; i <= existingEntry.rating; i++) modal.ratingStars.querySelector(`[data-value="${i}"]`).classList.add('active');
+            } else {
+                modal.submitButton.textContent = 'Add to Diary';
+                modal.date.valueAsDate = new Date();
+            }
+            modal.main.style.display = 'block';
+            dom.modals.movie.main.style.display = 'none';
+        }
+        function handleDiaryFormSubmit(e) {
+            e.preventDefault();
+            const modal = dom.modals.diaryForm;
+            const entry = { id: modal.movieId.value, title: modal.title.textContent, poster_path: modal.posterPath.value, date: modal.date.value, rating: modal.ratingValue.value, review: modal.review.value, timestamp: modal.timestamp.value || new Date().toISOString() };
+            if (!entry.rating) { showCustomAlert('Please select a star rating.', 'error'); return; }
+            let entries = storage.get('diaryEntries');
+            const existingIndex = entries.findIndex(item => item.timestamp === entry.timestamp);
+            if (existingIndex > -1) entries[existingIndex] = entry; else entries.push(entry);
+            storage.save('diaryEntries', entries);
+            modal.main.style.display = 'none';
+            showCustomAlert('Diary entry saved!', 'success');
+            renderDiaryEntries();
+        }
+        function handleStarRating(e) {
+            const star = e.target.closest('.star');
+            if (star) {
+                const rating = star.dataset.value;
+                dom.modals.diaryForm.ratingValue.value = rating;
+                dom.modals.diaryForm.ratingStars.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
+                for (let i = 1; i <= rating; i++) dom.modals.diaryForm.ratingStars.querySelector(`[data-value="${i}"]`).classList.add('active');
+            }
+        }
+        function removeFromDiary(timestamp) {
+            storage.save('diaryEntries', storage.get('diaryEntries').filter(entry => entry.timestamp !== timestamp));
+            renderDiaryEntries();
+            showCustomAlert('Diary entry removed.', 'success');
+        }
+        function renderDiaryEntries() {
+            const entries = storage.get('diaryEntries');
+            dom.diary.container.innerHTML = '';
+            if (entries.length === 0) { dom.diary.container.innerHTML = `<div class="empty-state-container"><i class="fas fa-book-open"></i><h3>Your Diary is Empty</h3><p>Log movies you've watched.</p></div>`; return; }
+            entries.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(entry => {
+                const card = document.createElement('div');
+                card.className = 'diary-entry';
+                let stars = '';
+                for (let i = 1; i <= 5; i++) stars += `<span class="star-display ${i <= entry.rating ? '' : 'inactive'}">&#9733;</span>`;
+                card.innerHTML = `<img src="${entry.poster_path ? IMAGE_BASE_URL + entry.poster_path : PLACEHOLDER_IMAGE}" alt="${entry.title}"><div class="diary-entry-content"><h3>${entry.title}</h3><p><strong>Watched:</strong> ${new Date(entry.date).toLocaleDateString()}</p><p><strong>Rating:</strong> ${stars}</p><p><strong>Review:</strong> ${entry.review || '<em>No review.</em>'}</p><div class="diary-entry-actions"><button class="action-button edit">Edit</button><button class="action-button delete">Delete</button></div></div>`;
+                card.querySelector('.edit').addEventListener('click', () => showDiaryFormModal({id: entry.id, title: entry.title, poster_path: entry.poster_path}, entry));
+                card.querySelector('.delete').addEventListener('click', () => removeFromDiary(entry.timestamp));
+                dom.diary.container.appendChild(card);
             });
         }
         
-        function parseGeminiResponse(text) {
-            const lines = text.split('\n');
-            return lines.filter(line => line.match(/^\d+\./))
-                        .map(line => line.substring(line.indexOf('.') + 1).trim());
-        }
-
-        async function fetchNowPlayingMovies() {
-            newsLoadingIndicator.style.display = 'block';
-            newsContainer.innerHTML = '';
+        async function handleMoodRecommendation() {
+            const mood = dom.mood.input.value.trim();
+            if (!mood) { showCustomAlert('Please describe your mood.', 'error'); return; }
+            dom.mood.loading.style.display = 'block';
+            dom.mood.container.innerHTML = '';
             try {
-                const response = await fetch(`${BASE_URL}movie/now_playing?api_key=${TMDB_API_KEY}`);
-                const data = await response.json();
-                if (data.results && data.results.length > 0) {
-                    displayMovies(data.results, newsContainer);
+                const prompt = `Based on the following mood, suggest 8-10 specific movie titles. Do not include any other text besides the numbered list of movie titles. For example: "1. Movie A\\n2. Movie B\\n...". Mood: ${mood}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`;
+                const payload = { contents: [{ parts: [{ text: prompt }] }] };
+                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!response.ok) throw new Error(`API error: ${response.status}`);
+                const result = await response.json();
+                const recommendationText = result?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                const movieTitles = recommendationText.split('\n').map(line => line.replace(/^\d+\.\s*/, '').trim()).filter(line => line.length > 0);
+                if (movieTitles.length > 0) {
+                    await fetchAndDisplayMoviesFromTitles(movieTitles, dom.mood.container);
                 } else {
-                    newsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">No current releases found.</p>';
+                    dom.mood.container.innerHTML = `<p style="text-align:center;">The AI couldn't find movies for that mood.</p>`;
                 }
             } catch (error) {
-                console.error('Error fetching now playing movies:', error);
-                newsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">An error occurred. Please try again later.</p>';
+                console.error('Mood recommender error:', error);
+                dom.mood.container.innerHTML = `<p style="text-align:center;">An error occurred with the AI recommender.</p>`;
             } finally {
-                newsLoadingIndicator.style.display = 'none';
+                dom.mood.loading.style.display = 'none';
             }
         }
-
-        async function getGeminiRecommendation(mood) {
-            const prompt = `Based on the following mood, suggest 5 specific movie titles. Do not include any other text besides the numbered list of movie titles. For example: "1. Movie A\n2. Movie B\n...". Mood: ${mood}`;
-            const apiKey = "AIzaSyD4ybkMxxqhsT6_axrdyFANKAGI4tEzlmQ"; 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-            
-            const payload = {
-                contents: [{
-                    parts: [{ text: prompt }]
-                }],
-            };
-
-            let response;
-            let result;
-            let retryCount = 0;
-            const maxRetries = 3;
-            let delay = 1000;
-
-            while (retryCount < maxRetries) {
-                try {
-                    response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    
-                    if (response.ok) {
-                        result = await response.json();
-                        if (result?.candidates?.[0]?.content?.parts?.[0]?.text) {
-                            return result.candidates[0].content.parts[0].text;
-                        }
-                    } else if (response.status === 429) {
-                        console.log(`Rate limit exceeded. Retrying in ${delay / 1000}s...`);
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                        delay *= 2;
-                        retryCount++;
-                    } else {
-                        throw new Error(`API error: ${response.status}`);
-                    }
-                } catch (error) {
-                    console.error('Error making API call:', error);
-                    return '';
-                }
-            }
-            return '';
-        }
-
-        async function fetchAndDisplayMoviesFromTitles(movieTitles, container) {
+        async function fetchAndDisplayMoviesFromTitles(titles, container) {
             container.innerHTML = '';
-            for (const title of movieTitles) {
+            let found = 0;
+            for (const title of titles) {
                 try {
-                    const searchResponse = await fetch(`${BASE_URL}search/movie?api_key=${TMDB_API_KEY}&query=${title}`);
-                    const searchData = await searchResponse.json();
-                    if (searchData.results && searchData.results.length > 0) {
-                        displayMovies([searchData.results[0]], container);
+                    const res = await fetch(`${BASE_URL}search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(title)}`);
+                    const data = await res.json();
+                    if (data.results && data.results.length > 0) {
+                        displayMovies([data.results[0]], container);
+                        found++;
                     }
-                } catch (error) {
-                    console.error(`Error fetching movie details for ${title}:`, error);
-                }
+                } catch (error) { console.error(`Error fetching ${title}:`, error); }
             }
-            if (container.children.length === 0) {
-                 container.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--soft-text-color);">Could not find any movies for your mood.</p>';
+            if (found === 0) {
+                container.innerHTML = `<p style="text-align:center;">Could not find movies matching the recommendations.</p>`;
             }
         }
         
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchGenres();
-            populateYearFilter();
-            fetchInitialMovies();
-            // Moved the event listener here to ensure fetchTriviaQuestion is defined
-            startTriviaButton.addEventListener('click', fetchTriviaQuestion);
-        });
+        function init() {
+            applyInitialTheme();
+            setupNavigation();
+            setupEventListeners();
+            checkOnboarding();
+        }
+        
+        init();
+    });
     </script>
 </body>
 </html>
+"
