@@ -325,6 +325,10 @@
             <main>
                 <!-- Home Section -->
                 <div id="home-section" class="feature-section active">
+                    <div class="search-controls" id="home-search-controls">
+                        <input type="text" id="home-search-input" placeholder="Search for any movie or series...">
+                        <button id="home-search-button"><i class="fas fa-search"></i></button>
+                    </div>
                     <h2>Popular Movies</h2>
                     <p class="page-description">A curated list of popular Indian and Hollywood films.</p>
                     <div id="home-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
@@ -439,7 +443,12 @@
             appTitle: document.getElementById('app-title'),
             spotlightContainer: document.getElementById('spotlight-container'),
             
-            home: { container: document.getElementById('home-container'), loading: document.getElementById('home-loading-indicator') },
+            home: { 
+                container: document.getElementById('home-container'), 
+                loading: document.getElementById('home-loading-indicator'),
+                searchInput: document.getElementById('home-search-input'),
+                searchButton: document.getElementById('home-search-button')
+            },
             series: { container: document.getElementById('series-container'), loading: document.getElementById('series-loading-indicator') },
             anticipated: { 
                 indiaContainer: document.getElementById('anticipated-india-container'), 
@@ -464,6 +473,7 @@
             setupNavigation();
             setupEventListeners();
             checkOnboarding();
+            setupEasterEggs();
         }
 
         // --- ONBOARDING & PERSONALIZATION ---
@@ -550,10 +560,16 @@
 
         // --- EVENT LISTENERS ---
         function setupEventListeners() {
+            // Search Listeners
+            dom.home.searchButton.addEventListener('click', handleHomeSearch);
+            dom.home.searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') handleHomeSearch(); });
             dom.recommendations.button.addEventListener('click', handleRecommendationSearch);
             dom.recommendations.input.addEventListener('keypress', e => { if (e.key === 'Enter') handleRecommendationSearch(); });
+            
+            // Mood AI Listener
             dom.mood.button.addEventListener('click', handleMoodRecommendation);
             
+            // Modal Close Listeners
             [dom.modals.movie.close, dom.modals.trailer.close].forEach(btn => btn.addEventListener('click', () => {
                 dom.modals.movie.main.style.display = 'none';
                 dom.modals.trailer.main.style.display = 'none';
@@ -684,10 +700,29 @@
                 await fetchApiData(url, dom.upcoming.container, dom.upcoming.loading, (movies) => displayContent(movies, dom.upcoming.container, 'movie'), "No upcoming theatrical releases found.");
             }
         }
+        
+        function handleHomeSearch() {
+            const query = dom.home.searchInput.value.trim();
+            if (!query) {
+                showCustomAlert("Please enter a search term.", "error");
+                return;
+            }
+            dom.recommendations.input.value = query;
+            handleRecommendationSearch();
+            showSection('recommendations');
+        }
 
         async function handleRecommendationSearch() {
             const query = dom.recommendations.input.value.trim();
             if (!query) { showCustomAlert("Please enter a movie or series title.", "error"); return; }
+
+            // Easter Egg checks
+            const lowerCaseQuery = query.toLowerCase();
+            if (easterEggTriggers[lowerCaseQuery]) {
+                easterEggTriggers[lowerCaseQuery]();
+                return;
+            }
+
             dom.recommendations.loading.style.display = 'block';
             dom.recommendations.container.innerHTML = '';
             try {
@@ -979,6 +1014,117 @@
                 displayContent(foundItems, container, 'mood_append');
             } else {
                 container.innerHTML = `<div class="empty-state-container"><p>Could not find poster images for the AI recommendations.</p></div>`;
+            }
+        }
+
+        // --- EASTER EGGS ---
+        const easterEggTriggers = {
+            'i am groot': handleGrootEasterEgg,
+            'there is no spoon': () => applyCssFilter('blur(2px) grayscale(1)', 3000, 'The Matrix has you...'),
+            'show me the money': () => makeItRain('💰'),
+            'bond, james bond': () => searchAndDisplayById(646, 'movie'), // Dr. No
+            'may the force be with you': () => searchAndDisplayById(11, 'movie'), // Star Wars
+            'i\'ll be back': () => searchAndDisplayById(218, 'movie'), // The Terminator
+            'why so serious?': () => searchAndDisplayById(155, 'movie'), // The Dark Knight
+            'hakuna matata': () => searchAndDisplayById(8587, 'movie'), // The Lion King
+            'to infinity and beyond': () => searchAndDisplayById(862, 'movie'), // Toy Story
+            'winter is coming': () => searchAndDisplayById(1399, 'tv'), // Game of Thrones
+            'how you doin?': () => searchAndDisplayById(1668, 'tv'), // Friends
+            'bazinga': () => searchAndDisplayById(1418, 'tv'), // The Big Bang Theory
+            'alohomora': () => {
+                document.documentElement.style.setProperty('--accent-color', '#740001'); // Gryffindor Red
+                document.documentElement.style.setProperty('--accent-hover-color', '#ae0001');
+                showCustomAlert('Mischief Managed!', 'success');
+            }
+        };
+
+        function setupEasterEggs() {
+            // Konami Code
+            const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+            let konamiIndex = 0;
+            window.addEventListener('keydown', (e) => {
+                if (e.key.toLowerCase() === konamiCode[konamiIndex]) {
+                    konamiIndex++;
+                    if (konamiIndex === konamiCode.length) {
+                        konamiIndex = 0;
+                        applyCssFilter('invert(1) hue-rotate(180deg)', 3000, 'Konami code activated!');
+                    }
+                } else {
+                    konamiIndex = 0;
+                }
+            });
+
+            // Se7en Click
+            let clickCount = 0;
+            dom.appTitle.addEventListener('click', () => {
+                clickCount++;
+                if (clickCount === 7) {
+                    showCustomAlert("What's in the box?!", "info");
+                    clickCount = 0;
+                }
+                setTimeout(() => { if(clickCount > 0) clickCount = 0; }, 2000); // Reset after 2 seconds
+            });
+        }
+        
+        function applyCssFilter(filter, duration, message) {
+            document.body.style.transition = 'filter 0.5s ease';
+            document.body.style.filter = filter;
+            showCustomAlert(message, "success");
+            setTimeout(() => document.body.style.filter = '', duration);
+        }
+
+        function makeItRain(emoji) {
+            for (let i = 0; i < 50; i++) {
+                const rain = document.createElement('div');
+                rain.innerText = emoji;
+                rain.style.position = 'fixed';
+                rain.style.left = `${Math.random() * 100}vw`;
+                rain.style.top = `${Math.random() * -50}vh`;
+                rain.style.fontSize = `${Math.random() * 2 + 1}rem`;
+                rain.style.animation = `fall 2s linear ${Math.random() * 2}s forwards`;
+                document.body.appendChild(rain);
+                setTimeout(() => rain.remove(), 4000);
+            }
+            const keyframes = `@keyframes fall { to { top: 110vh; transform: rotate(360deg); } }`;
+            const style = document.createElement('style');
+            style.innerHTML = keyframes;
+            document.head.appendChild(style);
+            setTimeout(() => style.remove(), 4000);
+        }
+
+        async function searchAndDisplayById(id, type) {
+            showSection('recommendations');
+            dom.recommendations.loading.style.display = 'block';
+            dom.recommendations.container.innerHTML = '';
+            try {
+                const url = `${BASE_URL}${type}/${id}?api_key=${TMDB_API_KEY}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                displayContent([data], dom.recommendations.container, type);
+            } catch (error) {
+                console.error("Easter egg fetch error:", error);
+            } finally {
+                dom.recommendations.loading.style.display = 'none';
+            }
+        }
+
+        async function handleGrootEasterEgg() {
+            const grootId = 118340; // Guardians of the Galaxy Vol. 1
+            const url = `${BASE_URL}movie/${grootId}/recommendations?api_key=${TMDB_API_KEY}`;
+            showSection('recommendations');
+            dom.recommendations.loading.style.display = 'block';
+            dom.recommendations.container.innerHTML = '';
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.results) {
+                    const grootMovies = data.results.map(movie => ({...movie, title: "I am Groot"}));
+                    displayContent(grootMovies, dom.recommendations.container, 'movie');
+                }
+            } catch (error) {
+                console.error("Groot error:", error);
+            } finally {
+                dom.recommendations.loading.style.display = 'none';
             }
         }
 
