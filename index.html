@@ -3,183 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cinefy - Your Personal Movie Hub</title>
+    <title>Cinefy - Your Indian Movie & Series Hub</title>
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* --- THEME & FONT VARIABLES --- */
         :root {
-            --primary-bg-color: #F0F2F5;
-            --secondary-bg-color: #FFFFFF;
-            --sidebar-bg-color: #FFFFFF;
-            --card-bg-color: #FFFFFF;
-            --accent-color: #0D47A1;
-            --text-color: #333333;
-            --soft-text-color: #666666;
-            --success-color: #28a745;
-            --error-color: #dc3545;
-            --border-color: #E0E0E0;
-            --font-heading: 'Poppins', sans-serif;
-            --font-body: 'Inter', sans-serif;
-            --sidebar-width: 260px;
-            --spotlight-width: 300px;
-        }
-
-        /* --- DARK MODE --- */
-        body.dark-mode {
-            --primary-bg-color: #121212;
-            --secondary-bg-color: #1E1E1E;
-            --sidebar-bg-color: #1E1E1E;
-            --card-bg-color: #2c2c2c;
-            --accent-color: #BB86FC;
-            --text-color: #E0E0E0;
-            --soft-text-color: #B0B0B0;
-            --success-color: #4CAF50;
-            --error-color: #F44336;
-            --border-color: #333333;
+            --primary-bg-color: #0d1117;
+            --secondary-bg-color: #161b22;
+            --sidebar-bg-color: #161b22;
+            --card-bg-color: #21262d;
+            --accent-color: #007BFF; /* New Cinematic Blue */
+            --accent-hover-color: #0056b3;
+            --text-color: #e6edf3;
+            --soft-text-color: #8b949e;
+            --border-color: #30363d;
+            --font-main: 'Poppins', sans-serif;
+            --sidebar-width: 250px;
+            --spotlight-width: 320px;
+            --border-radius: 12px;
+            --card-border-radius: 8px;
+            --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         /* --- BASIC RESETS & BODY --- */
-        * { box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: var(--font-body);
+            font-family: var(--font-main);
             background-color: var(--primary-bg-color);
             color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            transition: background-color 0.5s ease, color 0.5s ease;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
         }
-        .app-wrapper {
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        /* --- FULL-PAGE ONBOARDING --- */
+        .app-wrapper { display: flex; min-height: 100vh; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--primary-bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--soft-text-color); }
+
+        /* --- ONBOARDING PAGE --- */
         #onboarding-page {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--primary-bg-color);
-            z-index: 3000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            animation: fadeIn 0.5s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+            z-index: 3000; display: flex; justify-content: center; align-items: center;
+            padding: 20px; animation: fadeIn 0.5s ease;
         }
-        #onboarding-page .onboarding-content {
-            max-width: 600px;
-            width: 100%;
-            background-color: var(--secondary-bg-color);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-            text-align: center;
+        .onboarding-content {
+            max-width: 600px; width: 100%; background-color: var(--secondary-bg-color);
+            padding: 40px; border-radius: var(--border-radius); border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5); text-align: center;
         }
-        #onboarding-page h2 { font-family: var(--font-heading); font-size: 2.5rem; color: var(--accent-color); }
-        #onboarding-page p { color: var(--soft-text-color); line-height: 1.6; }
+        .onboarding-content h2 { font-size: 2.2rem; color: var(--accent-color); font-weight: 700; }
+        .onboarding-content p { color: var(--soft-text-color); line-height: 1.6; margin: 10px 0 20px; }
         .preference-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px; margin: 20px 0; max-height: 200px; overflow-y: auto;
-            border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; text-align: left;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px; margin: 20px 0; max-height: 250px; overflow-y: auto;
+            border: 1px solid var(--border-color); padding: 15px; border-radius: var(--card-border-radius); text-align: left;
         }
-        .preference-grid label { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease; }
-        .preference-grid label:hover { background-color: var(--primary-bg-color); }
-        .preference-grid input[type="checkbox"] { accent-color: var(--accent-color); }
-        #onboarding-form select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--secondary-bg-color); color: var(--text-color); margin: 10px 0 20px 0; }
-        #onboarding-form button { padding: 12px 25px; background-color: var(--accent-color); color: var(--secondary-bg-color); font-family: var(--font-heading); font-weight: 600; border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; width: 100%; font-size: 1rem; }
+        .preference-grid label { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 5px; cursor: pointer; transition: var(--transition-smooth); }
+        .preference-grid label:hover { background-color: var(--card-bg-color); }
+        .preference-grid input[type="checkbox"] { accent-color: var(--accent-color); width: 18px; height: 18px; }
+        #onboarding-form button {
+            padding: 14px 28px; background: linear-gradient(90deg, var(--accent-color), #3399ff);
+            color: white; font-family: var(--font-main); font-weight: 600; border: none;
+            border-radius: 50px; cursor: pointer; transition: var(--transition-smooth); width: 100%; font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+        #onboarding-form button:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4); }
 
         /* --- SIDEBAR NAVIGATION --- */
         #sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--sidebar-bg-color);
-            border-right: 1px solid var(--border-color);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            top: 0; left: 0; height: 100%;
-            transition: background-color 0.5s ease, border-color 0.5s ease;
-            z-index: 100;
+            width: var(--sidebar-width); background-color: var(--sidebar-bg-color);
+            border-right: 1px solid var(--border-color); padding: 25px;
+            display: flex; flex-direction: column; position: fixed;
+            top: 0; left: 0; height: 100%; z-index: 100;
         }
-        #app-title { font-family: var(--font-heading); font-size: 2rem; color: var(--accent-color); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 40px 0; cursor: pointer; font-weight: 700; text-align: center; }
+        #app-title { font-size: 2.2rem; color: var(--accent-color); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 40px 0; cursor: pointer; text-align: center; }
         nav { display: flex; flex-direction: column; gap: 10px; flex-grow: 1; }
-        .nav-button { background-color: transparent; border: none; color: var(--soft-text-color); font-family: var(--font-body); font-size: 1rem; font-weight: 500; cursor: pointer; padding: 12px 15px; transition: all 0.3s ease; border-radius: 8px; display: flex; align-items: center; gap: 15px; text-align: left; }
-        .nav-button i { width: 20px; text-align: center; }
-        .nav-button.active, .nav-button:hover { color: var(--accent-color); background-color: var(--primary-bg-color); font-weight: 600; }
-        #dark-mode-toggle { font-size: 1.2rem; cursor: pointer; background: none; border: none; color: var(--soft-text-color); transition: color 0.3s ease; margin-top: auto; padding: 15px; border-radius: 8px; }
-        #dark-mode-toggle:hover { color: var(--accent-color); background-color: var(--primary-bg-color); }
-        
+        .nav-button {
+            background-color: transparent; border: none; color: var(--soft-text-color);
+            font-family: var(--font-main); font-size: 1rem; font-weight: 500; cursor: pointer;
+            padding: 12px 15px; transition: var(--transition-smooth); border-radius: var(--card-border-radius);
+            display: flex; align-items: center; gap: 15px; text-align: left;
+        }
+        .nav-button i { width: 20px; text-align: center; font-size: 1.1rem; }
+        .nav-button.active, .nav-button:hover {
+            color: var(--text-color); background-color: var(--accent-color); font-weight: 600;
+        }
+
         /* --- SPOTLIGHT PANEL (RIGHT SIDEBAR) --- */
         #spotlight-panel {
-            width: var(--spotlight-width);
-            background-color: var(--sidebar-bg-color);
-            border-left: 1px solid var(--border-color);
-            padding: 25px;
-            position: fixed;
-            top: 0; right: 0; height: 100%;
-            overflow-y: auto;
-            transition: background-color 0.5s ease, border-color 0.5s ease;
-            z-index: 99;
+            width: var(--spotlight-width); background-color: var(--sidebar-bg-color);
+            border-left: 1px solid var(--border-color); padding: 25px;
+            position: fixed; top: 0; right: 0; height: 100%;
+            overflow-y: auto; z-index: 99;
         }
-        #spotlight-panel h3 { font-family: var(--font-heading); margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .upcoming-movie-item { display: flex; gap: 15px; margin-bottom: 15px; cursor: pointer; padding: 10px; border-radius: 8px; transition: background-color 0.2s ease; }
-        .upcoming-movie-item:hover { background-color: var(--primary-bg-color); }
+        #spotlight-panel h3 { font-family: var(--font-main); margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; font-size: 1.2rem; }
+        .upcoming-movie-item { display: flex; gap: 15px; margin-bottom: 15px; cursor: pointer; padding: 10px; border-radius: var(--card-border-radius); transition: var(--transition-smooth); }
+        .upcoming-movie-item:hover { background-color: var(--card-bg-color); }
         .upcoming-movie-item img { width: 60px; height: 90px; object-fit: cover; border-radius: 5px; flex-shrink: 0; }
-        .upcoming-movie-info h4 { margin: 0 0 5px 0; font-size: 0.9rem; }
+        .upcoming-movie-info h4 { margin: 0 0 5px 0; font-size: 0.9rem; font-weight: 600; }
         .upcoming-movie-info p { margin: 0; font-size: 0.8rem; color: var(--soft-text-color); }
 
         /* --- MAIN CONTENT AREA --- */
         main {
-            margin-left: var(--sidebar-width);
-            margin-right: var(--spotlight-width);
+            margin-left: var(--sidebar-width); margin-right: var(--spotlight-width);
             width: calc(100% - var(--sidebar-width) - var(--spotlight-width));
             padding: 30px;
         }
-        .feature-section { display: none; width: 100%; animation: fadeIn 0.8s ease-in-out; }
+        .feature-section { display: none; width: 100%; animation: fadeIn 0.6s ease; }
         .feature-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- HEADINGS & CONTAINERS --- */
-        h2 { font-family: var(--font-heading); color: var(--text-color); text-align: left; margin-bottom: 20px; font-size: 2rem; }
-        h3.section-subtitle { font-family: var(--font-heading); color: var(--text-color); margin-top: 40px; margin-bottom: -10px; font-size: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
-        .page-description { color: var(--soft-text-color); margin-top: -15px; margin-bottom: 30px; text-align: left; }
-        .results-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 25px; padding: 20px 0; animation: fadeIn 0.8s ease-in-out; }
+        h2 { font-family: var(--font-main); font-weight: 700; text-align: left; margin-bottom: 10px; font-size: 2.2rem; }
+        h3.section-subtitle { font-family: var(--font-main); margin-top: 40px; margin-bottom: 20px; font-size: 1.6rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+        .page-description { color: var(--soft-text-color); margin-top: 0; margin-bottom: 30px; text-align: left; font-size: 1.1rem; }
+        .results-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 25px; padding: 20px 0; }
+        .loading-indicator { text-align: center; padding: 50px; font-size: 2rem; color: var(--accent-color); display: none; }
+        .empty-state-container { text-align: center; padding: 50px; color: var(--soft-text-color); }
+        .empty-state-container i { font-size: 3rem; margin-bottom: 15px; }
 
         /* --- SEARCH CONTROLS --- */
-        .search-controls { width: 100%; max-width: 700px; margin: 0 auto 25px auto; display: flex; gap: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); border-radius: 50px; overflow: hidden; }
-        .search-controls input { flex-grow: 1; padding: 15px 25px; font-size: 1rem; border: none; background-color: var(--card-bg-color); color: var(--text-color); outline: none; }
-        .search-controls button { padding: 15px 30px; background-color: var(--accent-color); color: var(--secondary-bg-color); font-family: var(--font-heading); font-size: 1rem; text-transform: uppercase; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s ease; }
-        .search-controls button:hover { opacity: 0.8; }
+        .search-controls {
+            width: 100%; max-width: 700px; margin: 0 auto 40px auto; display: flex; gap: 12px;
+            background-color: var(--secondary-bg-color); border: 1px solid var(--border-color);
+            border-radius: 50px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        .search-controls input, .search-controls textarea {
+            flex-grow: 1; padding: 15px 25px; font-size: 1rem; border: none;
+            background-color: transparent; color: var(--text-color); outline: none; font-family: var(--font-main);
+        }
+        .search-controls textarea { border-radius: var(--card-border-radius); padding: 20px; resize: vertical; min-height: 80px; }
+        .search-controls button {
+            padding: 15px 30px; background-color: var(--accent-color); color: white;
+            font-family: var(--font-main); font-size: 1rem; text-transform: uppercase; font-weight: 600;
+            border: none; cursor: pointer; transition: var(--transition-smooth);
+        }
+        .search-controls button:hover { background-color: var(--accent-hover-color); }
 
         /* --- MOVIE CARD --- */
-        .movie-card { background-color: var(--card-bg-color); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; position: relative; display: flex; flex-direction: column; }
-        .movie-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
-        .movie-card img { width: 100%; height: 300px; object-fit: cover; background-color: #E8E8E8; }
+        .movie-card {
+            background-color: var(--card-bg-color); border-radius: var(--card-border-radius);
+            overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: var(--transition-smooth); cursor: pointer; position: relative;
+            display: flex; flex-direction: column; border: 1px solid var(--border-color);
+        }
+        .movie-card:hover { transform: translateY(-8px) scale(1.03); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); }
+        .movie-card img { width: 100%; height: 300px; object-fit: cover; background-color: #333; }
         .movie-card-content { padding: 15px; text-align: left; flex-grow: 1; }
-        .movie-card-content h3 { font-size: 1rem; margin: 0 0 5px 0; }
+        .movie-card-content h3 { font-size: 1rem; margin: 0 0 5px 0; font-weight: 600; }
         .movie-card-content p { font-size: 0.9rem; color: var(--soft-text-color); margin: 0; }
+        .card-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 60%);
+            opacity: 0; transition: var(--transition-smooth);
+            display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding: 20px;
+        }
+        .movie-card:hover .card-overlay { opacity: 1; }
+        .overlay-buttons { display: flex; gap: 10px; transform: translateY(20px); transition: var(--transition-smooth); }
+        .movie-card:hover .overlay-buttons { transform: translateY(0); }
+        .overlay-btn {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2); color: white;
+            width: 45px; height: 45px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; cursor: pointer; transition: var(--transition-smooth);
+        }
+        .overlay-btn:hover { background: var(--accent-color); transform: scale(1.1); }
+
+        /* --- NEWS CARD --- */
+        .news-card {
+            background-color: var(--card-bg-color);
+            border-radius: var(--card-border-radius);
+            border: 1px solid var(--border-color);
+            display: flex;
+            gap: 20px;
+            overflow: hidden;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: var(--transition-smooth);
+        }
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-color);
+        }
+        .news-card-img {
+            width: 200px;
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+        .news-card-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .news-card-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .news-card-content p {
+            color: var(--soft-text-color);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        .news-card-source {
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
 
         /* --- MODALS (GENERAL) --- */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.7); animation: fadeIn 0.3s; }
-        .modal-content { background-color: var(--secondary-bg-color); margin: 5% auto; padding: 30px; border-radius: 12px; width: 90%; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); position: relative; }
-        .close-button { color: var(--soft-text-color); position: absolute; top: 15px; right: 25px; font-size: 35px; font-weight: bold; cursor: pointer; transition: color 0.3s ease; }
-        .close-button:hover, .close-button:focus { color: var(--accent-color); }
+        .modal {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
+            overflow: auto; background-color: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s;
+        }
+        .modal-content {
+            background-color: var(--secondary-bg-color); margin: 5% auto;
+            border-radius: var(--border-radius); width: 90%; max-width: 900px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); position: relative;
+            border: 1px solid var(--border-color); overflow: hidden;
+        }
+        .close-button {
+            color: var(--soft-text-color); position: absolute; top: 15px; right: 25px;
+            font-size: 35px; font-weight: bold; cursor: pointer; transition: var(--transition-smooth); z-index: 10;
+        }
+        .close-button:hover { color: var(--accent-color); transform: scale(1.2); }
 
-        /* --- Other component styles (Diary, Watchlist, News, etc.) --- */
-        .diary-entry, .news-article-card { background-color: var(--card-bg-color); border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; gap: 20px; align-items: flex-start; }
-        .news-article-card { text-decoration: none; color: var(--text-color); }
-        .diary-entry img, .news-article-card img { width: 100px; height: 150px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
-        .news-article-card img { width: 150px; }
-        .diary-entry-content, .news-article-content { flex-grow: 1; }
-        .news-article-content h3 { font-size: 1.2rem; }
-        .star-display { font-size: 1.2rem; color: #FFD700; }
-        .star-display.inactive { color: var(--soft-text-color); }
-        .diary-entry-actions { margin-top: 15px; display: flex; gap: 10px; }
-        .action-button { background: var(--primary-bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 5px 10px; border-radius: 5px; cursor: pointer; }
-        .action-button.delete { color: var(--error-color); border-color: var(--error-color); }
-        .watchlist-entry .action-button.delete { position: absolute; top: 10px; right: 10px; z-index: 2; background: rgba(0,0,0,0.6); border: none; color: white; border-radius: 50%; width: 30px; height: 30px; font-size: 1rem; display: flex; align-items: center; justify-content: center; }
+        /* --- MOVIE/SERIES DETAIL MODAL --- */
+        .modal-body { display: flex; padding: 0; }
+        .modal-poster { width: 300px; height: auto; object-fit: cover; flex-shrink: 0; }
+        .modal-details { padding: 30px; flex-grow: 1; }
+        .modal-details h2 { font-size: 2.5rem; margin-bottom: 15px; }
+        .modal-details p { margin-bottom: 12px; line-height: 1.6; color: var(--soft-text-color); }
+        .modal-details strong { color: var(--text-color); }
+        .modal-actions { margin-top: 25px; display: flex; flex-wrap: wrap; gap: 15px; }
+        .modal-btn {
+            padding: 12px 20px; border-radius: 50px; font-weight: 600;
+            cursor: pointer; transition: var(--transition-smooth); display: inline-flex;
+            align-items: center; gap: 8px; font-size: 0.9rem; text-decoration: none;
+        }
+        .modal-btn.primary { background-color: var(--accent-color); color: white; border: 1px solid var(--accent-color); }
+        .modal-btn.primary:hover { background-color: var(--accent-hover-color); transform: scale(1.05); }
+        .modal-btn.secondary { background-color: transparent; color: var(--text-color); border: 1px solid var(--border-color); }
+        .modal-btn.secondary:hover { background-color: var(--border-color); }
+        .watch-providers { margin-top: 20px; }
+        .watch-providers h4 { margin-bottom: 10px; }
+        .provider-list { display: flex; gap: 15px; flex-wrap: wrap; }
+        .provider-list a { display: block; }
+        .provider-list img { width: 50px; height: 50px; border-radius: var(--card-border-radius); transition: var(--transition-smooth); }
+        .provider-list img:hover { transform: scale(1.1); }
+
+        /* --- TRAILER MODAL --- */
+        #trailer-modal .modal-content { background-color: black; padding: 0; aspect-ratio: 16 / 9; }
+        #trailer-iframe { width: 100%; height: 100%; border: none; }
         
         /* --- RESPONSIVE DESIGN --- */
         @media (max-width: 1200px) {
@@ -188,194 +274,264 @@
         }
         @media (max-width: 992px) {
             :root { --sidebar-width: 0; }
-            #sidebar { display: none; }
+            #sidebar { transform: translateX(-100%); transition: transform 0.3s ease; } /* Hide for mobile */
             main { margin-left: 0; width: 100%; padding: 15px; }
-            #mobile-nav { display: block; width: 100%; background-color: var(--secondary-bg-color); padding: 10px 0; text-align: center; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); overflow-x: auto; white-space: nowrap; }
-            #mobile-nav .nav-button { display: inline-block; padding: 10px 15px; font-size: 0.9rem; }
-            #mobile-nav .nav-button i { display: none; }
-            h2 { font-size: 1.5rem; }
+            h2 { font-size: 1.8rem; }
             .modal-body { flex-direction: column; }
+            .modal-poster { width: 100%; height: 400px; object-fit: cover; object-position: top; }
+            #mobile-nav { display: block; position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--secondary-bg-color); padding: 5px 0; z-index: 1000; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; }
+            .app-wrapper { padding-bottom: 60px; }
+            #mobile-nav .nav-button { flex-direction: column; gap: 5px; font-size: 0.7rem; padding: 8px 5px; width: 100%; }
+            #mobile-nav .nav-button i { font-size: 1.2rem; width: auto; }
+            .news-card { flex-direction: column; }
+            .news-card-img { width: 100%; height: 180px; }
         }
-        @media (min-width: 993px) {
-            #mobile-nav { display: none; }
-        }
+        @media (min-width: 993px) { #mobile-nav { display: none; } }
     </style>
 </head>
-<body class="light-mode">
+<body>
 
+    <!-- ONBOARDING SCREEN -->
     <div id="onboarding-page" style="display: none;">
         <div class="onboarding-content">
             <h2>Welcome to Cinefy!</h2>
-            <p>Let's personalize your experience. Select your favorite genres and your region to get tailored movie news and recommendations.</p>
+            <p>Let's personalize your experience. Select your favorite film industries and genres to get tailored recommendations.</p>
             <form id="onboarding-form">
-                <h4>Favorite Genres (select up to 5)</h4>
+                <h4>Favorite Industries & Genres (select up to 5)</h4>
                 <div id="onboarding-genre-grid" class="preference-grid"></div>
-                <h4>Your Region</h4>
-                <select id="onboarding-region-select"></select>
                 <button type="submit">Save & Start Exploring</button>
             </form>
         </div>
     </div>
 
     <div class="app-wrapper" style="visibility: hidden;">
+        <!-- SIDEBAR -->
         <aside id="sidebar">
             <h1 id="app-title">Cinefy</h1>
             <nav>
                 <button class="nav-button active" id="nav-home"><i class="fas fa-home"></i> Home</button>
+                <button class="nav-button" id="nav-series"><i class="fas fa-tv"></i> Web Series</button>
+                <button class="nav-button" id="nav-anticipated"><i class="fas fa-fire"></i> Anticipated</button>
                 <button class="nav-button" id="nav-upcoming"><i class="fas fa-calendar-alt"></i> Upcoming</button>
-                <button class="nav-button" id="nav-recommendations"><i class="fas fa-magic"></i> Recommendations</button>
-                <button class="nav-button" id="nav-news"><i class="fas fa-newspaper"></i> Film News</button>
+                <button class="nav-button" id="nav-recommendations"><i class="fas fa-magic"></i> For You</button>
                 <button class="nav-button" id="nav-mood-recommender"><i class="fas fa-smile"></i> Mood AI</button>
-                <button class="nav-button" id="nav-diary"><i class="fas fa-book"></i> My Diary</button>
+                <button class="nav-button" id="nav-news"><i class="fas fa-newspaper"></i> Film News</button>
                 <button class="nav-button" id="nav-watchlist"><i class="fas fa-list-alt"></i> Watchlist</button>
             </nav>
-            <button id="dark-mode-toggle"><i class="fas fa-moon"></i> Toggle Theme</button>
         </aside>
 
-        <div id="main-content">
-            <div id="mobile-nav"></div>
+        <!-- MAIN CONTENT -->
+        <div id="main-content" style="width:100%;">
             <main>
+                <!-- Home Section -->
                 <div id="home-section" class="feature-section active">
-                    <h2 id="home-section-title">Popular Movies</h2>
-                    <p class="page-description">A curated list of popular movies based on your preferences.</p>
+                    <h2>Popular Movies</h2>
+                    <p class="page-description">A curated list of popular Indian and Hollywood films.</p>
                     <div id="home-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
                     <div id="home-container" class="results-container"></div>
                 </div>
-                
-                <div id="upcoming-section" class="feature-section">
-                    <h2>Upcoming Releases</h2>
-                    <p class="page-description">The latest movies coming to theaters and streaming this month.</p>
-                    
-                    <h3 class="section-subtitle">Theatrical Releases</h3>
-                    <div id="upcoming-theatrical-loading" class="loading-indicator" style="display: block;"><i class="fas fa-spinner fa-spin"></i></div>
-                    <div id="upcoming-theatrical-container" class="results-container"></div>
 
-                    <h3 class="section-subtitle">New on OTT / Streaming</h3>
-                    <div id="upcoming-ott-loading" class="loading-indicator" style="display: block;"><i class="fas fa-spinner fa-spin"></i></div>
-                    <div id="upcoming-ott-container" class="results-container"></div>
+                <!-- Web Series Section -->
+                <div id="series-section" class="feature-section">
+                    <h2>Top Web Series</h2>
+                    <p class="page-description">Discover the most talked-about series from India and around the world.</p>
+                    <div id="series-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="series-container" class="results-container"></div>
                 </div>
 
+                <!-- Anticipated Section -->
+                <div id="anticipated-section" class="feature-section">
+                    <h2>Most Anticipated</h2>
+                    <p class="page-description">The most hyped and awaited movies on the horizon.</p>
+                    
+                    <h3 class="section-subtitle">Anticipated in India</h3>
+                    <div id="anticipated-india-loading" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="anticipated-india-container" class="results-container"></div>
+
+                    <h3 class="section-subtitle">Global Blockbusters</h3>
+                    <div id="anticipated-global-loading" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="anticipated-global-container" class="results-container"></div>
+                </div>
+
+                <!-- Upcoming Section -->
+                <div id="upcoming-section" class="feature-section">
+                    <h2>Upcoming Releases</h2>
+                    <p class="page-description">The latest movies coming to theaters near you.</p>
+                    <div id="upcoming-theatrical-loading" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="upcoming-theatrical-container" class="results-container"></div>
+                </div>
+
+                <!-- Recommendations Section -->
                 <div id="recommendations-section" class="feature-section">
-                    <h2>Find Recommendations</h2>
-                    <p class="page-description">Enter a movie you like, and we'll find similar ones.</p>
+                    <h2>Find Similar Titles</h2>
+                    <p class="page-description">Enter a movie or series you like, and we'll find similar ones.</p>
                     <div class="search-controls">
-                        <input type="text" id="reco-search-input" placeholder="e.g., The Dark Knight">
-                        <button id="reco-search-button">Get Recommendations</button>
+                        <input type="text" id="reco-search-input" placeholder="e.g., 3 Idiots, Mirzapur...">
+                        <button id="reco-search-button">Find</button>
                     </div>
                     <div id="reco-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
                     <div id="reco-results-container" class="results-container"></div>
                 </div>
 
+                <!-- Mood AI Section -->
                 <div id="mood-recommender-section" class="feature-section">
                     <h2>AI Mood Recommendations</h2>
-                    <p class="page-description">Tell our AI how you're feeling for a unique list of movie suggestions.</p>
-                    <div class="search-controls" style="flex-direction:column; border-radius:12px; box-shadow:none; gap:15px;">
-                        <textarea id="mood-input" placeholder="e.g., 'I want a funny, lighthearted movie to watch with family.'" style="border-radius:12px; border: 1px solid var(--border-color);"></textarea>
+                    <p class="page-description">Tell our AI how you're feeling for a unique list of suggestions.</p>
+                    <div class="search-controls" style="flex-direction:column; border-radius:var(--card-border-radius); box-shadow:none; gap:15px;">
+                        <textarea id="mood-input" placeholder="e.g., 'A fun, patriotic movie for the family' or 'A gripping thriller with lots of twists'"></textarea>
                         <button id="mood-button" style="border-radius: 50px;">Get AI Recommendations</button>
                     </div>
                     <div id="mood-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
                     <div id="mood-results-container" class="results-container"></div>
                 </div>
 
+                <!-- News Section -->
                 <div id="news-section" class="feature-section">
                     <h2>Your Personalized Film News</h2>
-                    <p class="page-description">The latest news about movies from your favorite genres.</p>
+                    <p class="page-description">The latest news from the Indian film industry based on your preferences.</p>
                     <div id="news-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
-                    <div id="news-container" class="results-container" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));"></div>
+                    <div id="news-container" class="results-container" style="grid-template-columns: 1fr; gap: 20px;"></div>
                 </div>
 
-                <div id="diary-section" class="feature-section">
-                    <h2>My Personal Film Diary</h2>
-                    <p class="page-description">A log of all the movies you've watched and reviewed.</p>
-                    <div id="diary-entries"></div>
-                </div>
-
+                <!-- Watchlist Section -->
                 <div id="watchlist-section" class="feature-section">
                     <h2>My Watchlist</h2>
-                    <p class="page-description">A list of movies you want to watch in the future.</p>
+                    <p class="page-description">A list of movies and series you want to watch in the future.</p>
                     <div id="watchlist-entries" class="results-container"></div>
                 </div>
             </main>
         </div>
 
+        <!-- RIGHT SPOTLIGHT PANEL -->
         <aside id="spotlight-panel">
-            <h3>Upcoming in Theaters</h3>
-            <div id="spotlight-container">
-                <!-- Upcoming movies will be populated by JS -->
-            </div>
+            <h3>Coming Soon to Theaters</h3>
+            <div id="spotlight-container"></div>
         </aside>
     </div>
+    
+    <!-- MOBILE NAVIGATION BAR -->
+    <div id="mobile-nav"></div>
 
     <!-- MODALS -->
     <div id="movie-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><div class="modal-body"></div></div></div>
-    <div id="diary-form-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><div class="diary-form-container"><h2 style="margin-top:0;">Add to Diary</h2><p id="diary-form-movie-title" style="text-align:center; font-weight:bold; color:var(--text-color);"></p><form id="diary-form"><input type="hidden" id="diary-form-movie-id"><input type="hidden" id="diary-form-poster-path"><input type="hidden" id="diary-form-timestamp"><input type="date" id="diary-form-date" required><div class="star-rating"><span class="star" data-value="1">&#9733;</span><span class="star" data-value="2">&#9733;</span><span class="star" data-value="3">&#9733;</span><span class="star" data-value="4">&#9733;</span><span class="star" data-value="5">&#9733;</span></div><input type="hidden" id="diary-form-rating-value" required><textarea id="diary-form-review" placeholder="Your review..." rows="4"></textarea><button type="submit" id="diary-form-submit-button">Add to Diary</button></form></div></div></div>
-    <div id="custom-alert-modal" class="modal"><div class="modal-content"><div id="alert-icon"></div><p id="alert-message"></p><button id="alert-close-button">OK</button></div></div>
-    
+    <div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><iframe id="trailer-iframe" allow="autoplay; encrypted-media" allowfullscreen></iframe></div></div>
+    <div id="custom-alert-modal" class="modal"></div>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-
+        // --- CONFIG & API KEYS ---
         const TMDB_API_KEY = 'd91c0bfea39d9cc51c703202c289eebf';
-        const GEMINI_API_KEY = '';
+        const GEMINI_API_KEY = 'AIzaSyD4ybkMxxqhsT6_axrdyFANKAGI4tEzlmQ'; // User-provided Key
         const GNEWS_API_KEY = 'adff08e986e75ae2074b7bcf9642781e';
+
         const BASE_URL = 'https://api.themoviedb.org/3/';
         const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
-        const GNEWS_API_URL = 'https://gnews.io/api/v4/search';
-        const PLACEHOLDER_IMAGE = 'https://placehold.co/500x750/cccccc/666666?text=No+Poster';
-        const NEWS_PLACEHOLDER_IMAGE = 'https://placehold.co/400x225/cccccc/666666?text=No+Image';
+        const PLACEHOLDER_IMAGE = 'https://placehold.co/500x750/21262d/8b949e?text=No+Poster';
+        const NEWS_PLACEHOLDER_IMAGE = 'https://placehold.co/400x225/21262d/8b949e?text=No+Image';
+        const INDIAN_REGION = 'IN';
 
+        // --- DOM ELEMENT CACHING ---
         const dom = {
             appWrapper: document.querySelector('.app-wrapper'),
             mobileNavContainer: document.getElementById('mobile-nav'),
             navButtons: document.querySelectorAll('.nav-button'),
             featureSections: document.querySelectorAll('.feature-section'),
             appTitle: document.getElementById('app-title'),
-            darkModeToggle: document.getElementById('dark-mode-toggle'),
             spotlightContainer: document.getElementById('spotlight-container'),
             
-            home: { container: document.getElementById('home-container'), loading: document.getElementById('home-loading-indicator'), title: document.getElementById('home-section-title') },
-            upcoming: { 
-                theatricalContainer: document.getElementById('upcoming-theatrical-container'), 
-                theatricalLoading: document.getElementById('upcoming-theatrical-loading'), 
-                ottContainer: document.getElementById('upcoming-ott-container'), 
-                ottLoading: document.getElementById('upcoming-ott-loading') 
+            home: { container: document.getElementById('home-container'), loading: document.getElementById('home-loading-indicator') },
+            series: { container: document.getElementById('series-container'), loading: document.getElementById('series-loading-indicator') },
+            anticipated: { 
+                indiaContainer: document.getElementById('anticipated-india-container'), 
+                indiaLoading: document.getElementById('anticipated-india-loading'),
+                globalContainer: document.getElementById('anticipated-global-container'),
+                globalLoading: document.getElementById('anticipated-global-loading')
             },
+            upcoming: { container: document.getElementById('upcoming-theatrical-container'), loading: document.getElementById('upcoming-theatrical-loading') },
             recommendations: { input: document.getElementById('reco-search-input'), button: document.getElementById('reco-search-button'), container: document.getElementById('reco-results-container'), loading: document.getElementById('reco-loading-indicator') },
             mood: { input: document.getElementById('mood-input'), button: document.getElementById('mood-button'), container: document.getElementById('mood-results-container'), loading: document.getElementById('mood-loading-indicator') },
             news: { container: document.getElementById('news-container'), loading: document.getElementById('news-loading-indicator') },
-            diary: { container: document.getElementById('diary-entries') },
             watchlist: { container: document.getElementById('watchlist-entries') },
             modals: {
                 movie: { main: document.getElementById('movie-modal'), body: document.querySelector('#movie-modal .modal-body'), close: document.querySelector('#movie-modal .close-button') },
-                diaryForm: { main: document.getElementById('diary-form-modal'), close: document.querySelector('#diary-form-modal .close-button'), form: document.getElementById('diary-form'), title: document.getElementById('diary-form-movie-title'), movieId: document.getElementById('diary-form-movie-id'), posterPath: document.getElementById('diary-form-poster-path'), timestamp: document.getElementById('diary-form-timestamp'), date: document.getElementById('diary-form-date'), ratingStars: document.querySelector('#diary-form-modal .star-rating'), ratingValue: document.getElementById('diary-form-rating-value'), review: document.getElementById('diary-form-review'), submitButton: document.getElementById('diary-form-submit-button') },
-                alert: { main: document.getElementById('custom-alert-modal'), icon: document.getElementById('alert-icon'), message: document.getElementById('alert-message'), close: document.getElementById('alert-close-button') },
-                onboarding: { page: document.getElementById('onboarding-page'), form: document.getElementById('onboarding-form'), genreGrid: document.getElementById('onboarding-genre-grid'), regionSelect: document.getElementById('onboarding-region-select') }
+                trailer: { main: document.getElementById('trailer-modal'), iframe: document.getElementById('trailer-iframe'), close: document.querySelector('#trailer-modal .close-button') },
+                onboarding: { page: document.getElementById('onboarding-page'), form: document.getElementById('onboarding-form'), genreGrid: document.getElementById('onboarding-genre-grid') }
             }
         };
 
-        function showSection(sectionId) {
-            dom.featureSections.forEach(section => section.classList.remove('active'));
-            dom.navButtons.forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`${sectionId}-section`).classList.add('active');
-            const activeBtn = document.getElementById(`nav-${sectionId}`);
-            if(activeBtn) activeBtn.classList.add('active');
-            const mobileActiveBtn = dom.mobileNavContainer.querySelector(`#nav-${sectionId}`);
-            if (mobileActiveBtn) mobileActiveBtn.classList.add('active');
+        // --- CORE APP INITIALIZATION ---
+        function init() {
+            setupNavigation();
+            setupEventListeners();
+            checkOnboarding();
         }
 
+        // --- ONBOARDING & PERSONALIZATION ---
+        async function checkOnboarding() {
+            if (!localStorage.getItem('userPreferences')) {
+                populateOnboardingModal();
+                dom.modals.onboarding.page.style.display = 'flex';
+            } else {
+                dom.appWrapper.style.visibility = 'visible';
+                fetchPersonalizedHome();
+                fetchUpcomingReleases(true); // For spotlight panel
+            }
+        }
+
+        function populateOnboardingModal() {
+            const indianGenres = [
+                { id: 'custom_bollywood', name: 'Bollywood' },
+                { id: 'custom_south', name: 'South Indian' },
+                { id: '28', name: 'Action' },
+                { id: '10749', name: 'Romance' },
+                { id: '35', name: 'Comedy' },
+                { id: '18', name: 'Drama' },
+                { id: '53', name: 'Thriller' },
+                { id: '27', name: 'Horror' },
+                { id: '10751', name: 'Family' },
+            ];
+            dom.modals.onboarding.genreGrid.innerHTML = indianGenres.map(g => 
+                `<label><input type="checkbox" name="genre" value="${g.id}">${g.name}</label>`
+            ).join('');
+        }
+
+        function handleOnboardingSubmit(e) {
+            e.preventDefault();
+            const selectedGenres = Array.from(dom.modals.onboarding.form.querySelectorAll('input[name="genre"]:checked')).map(cb => cb.value);
+            if (selectedGenres.length === 0 || selectedGenres.length > 5) {
+                showCustomAlert("Please select 1 to 5 options.", "error");
+                return;
+            }
+            const preferences = {
+                genres: selectedGenres.filter(g => !g.startsWith('custom_')),
+                keywords: selectedGenres.filter(g => g.startsWith('custom_')).map(g => g.replace('custom_', ''))
+            };
+            localStorage.setItem('userPreferences', JSON.stringify(preferences));
+            
+            dom.modals.onboarding.page.style.display = 'none';
+            dom.appWrapper.style.visibility = 'visible';
+            showCustomAlert("Preferences saved! Welcome to your personalized Cinefy.", "success");
+            fetchPersonalizedHome();
+            fetchUpcomingReleases(true);
+        }
+        
+        // --- NAVIGATION ---
         function setupNavigation() {
             const sidebarNav = document.querySelector('#sidebar nav');
             dom.mobileNavContainer.innerHTML = sidebarNav.innerHTML;
             dom.navButtons = document.querySelectorAll('.nav-button');
+            
             dom.navButtons.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const sectionId = e.currentTarget.id.replace('nav-', '');
                     showSection(sectionId);
+                    
                     const fetchActions = {
                         home: fetchPersonalizedHome,
+                        series: fetchPopularWebSeries,
+                        anticipated: fetchAnticipated,
                         upcoming: fetchUpcomingReleases,
                         news: fetchFilmNews,
-                        diary: renderDiaryEntries,
                         watchlist: renderWatchlist,
                     };
                     if (fetchActions[sectionId]) fetchActions[sectionId]();
@@ -384,227 +540,36 @@
             dom.appTitle.addEventListener('click', () => document.getElementById('nav-home').click());
         }
 
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            dom.darkModeToggle.querySelector('i').className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
-            localStorage.setItem('darkMode', isDarkMode);
+        function showSection(sectionId) {
+            dom.featureSections.forEach(section => section.classList.remove('active'));
+            document.getElementById(`${sectionId}-section`).classList.add('active');
+            
+            dom.navButtons.forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll(`#nav-${sectionId}`).forEach(activeBtn => activeBtn.classList.add('active'));
         }
 
-        function applyInitialTheme() {
-            if (localStorage.getItem('darkMode') === 'true') toggleDarkMode();
-        }
-
-        function showCustomAlert(message, type = 'info') {
-            const modal = dom.modals.alert;
-            modal.message.textContent = message;
-            modal.main.className = `modal ${type}`;
-            const icons = { success: 'fa-solid fa-circle-check', error: 'fa-solid fa-circle-xmark', info: 'fa-solid fa-circle-info' };
-            modal.icon.innerHTML = `<i class="${icons[type]}"></i>`;
-            modal.main.style.display = 'block';
-        }
-
+        // --- EVENT LISTENERS ---
         function setupEventListeners() {
-            dom.darkModeToggle.addEventListener('click', toggleDarkMode);
             dom.recommendations.button.addEventListener('click', handleRecommendationSearch);
             dom.recommendations.input.addEventListener('keypress', e => { if (e.key === 'Enter') handleRecommendationSearch(); });
             dom.mood.button.addEventListener('click', handleMoodRecommendation);
-            dom.modals.movie.close.addEventListener('click', () => dom.modals.movie.main.style.display = 'none');
-            dom.modals.diaryForm.close.addEventListener('click', () => dom.modals.diaryForm.main.style.display = 'none');
-            dom.modals.alert.close.addEventListener('click', () => dom.modals.alert.main.style.display = 'none');
+            
+            [dom.modals.movie.close, dom.modals.trailer.close].forEach(btn => btn.addEventListener('click', () => {
+                dom.modals.movie.main.style.display = 'none';
+                dom.modals.trailer.main.style.display = 'none';
+                dom.modals.trailer.iframe.src = '';
+            }));
             window.addEventListener('click', (e) => {
                 if (e.target === dom.modals.movie.main) dom.modals.movie.main.style.display = 'none';
-                if (e.target === dom.modals.diaryForm.main) dom.modals.diaryForm.main.style.display = 'none';
-                if (e.target === dom.modals.alert.main) dom.modals.alert.main.style.display = 'none';
+                if (e.target === dom.modals.trailer.main) {
+                    dom.modals.trailer.main.style.display = 'none';
+                    dom.modals.trailer.iframe.src = '';
+                }
             });
-            dom.modals.diaryForm.form.addEventListener('submit', handleDiaryFormSubmit);
-            dom.modals.diaryForm.ratingStars.addEventListener('click', handleStarRating);
             dom.modals.onboarding.form.addEventListener('submit', handleOnboardingSubmit);
         }
 
-        function getPreferences() {
-            return JSON.parse(localStorage.getItem('userPreferences'));
-        }
-
-        async function checkOnboarding() {
-            if (!getPreferences()) {
-                await populateOnboardingModal();
-                dom.modals.onboarding.page.style.display = 'flex';
-            } else {
-                dom.appWrapper.style.visibility = 'visible';
-                fetchPersonalizedHome();
-                fetchUpcomingReleases(true); // Fetch for spotlight panel only
-            }
-        }
-
-        async function populateOnboardingModal() {
-            try {
-                const response = await fetch(`${BASE_URL}genre/movie/list?api_key=${TMDB_API_KEY}`);
-                const data = await response.json();
-                if (data.genres) {
-                    dom.modals.onboarding.genreGrid.innerHTML = data.genres.map(g => `<label><input type="checkbox" name="genre" value="${g.id}">${g.name}</label>`).join('');
-                }
-            } catch (error) { console.error("Failed to fetch genres for onboarding:", error); }
-            const regions = { "United States": "us", "India": "in", "United Kingdom": "gb", "Canada": "ca", "Australia": "au", "Germany": "de", "France": "fr" };
-            const options = Object.entries(regions).map(([name, code]) => `<option value="${code}">${name}</option>`).join('');
-            dom.modals.onboarding.regionSelect.innerHTML = `<option value="us">United States</option><option value="in">India</option>${options.replace('<option value="us">United States</option>', '').replace('<option value="in">India</option>', '')}`;
-        }
-
-        function handleOnboardingSubmit(e) {
-            e.preventDefault();
-            const selectedGenres = Array.from(dom.modals.onboarding.form.querySelectorAll('input[name="genre"]:checked')).map(cb => cb.value);
-            if (selectedGenres.length === 0 || selectedGenres.length > 5) { showCustomAlert("Please select 1 to 5 genres.", "error"); return; }
-            const selectedRegion = dom.modals.onboarding.regionSelect.value;
-            localStorage.setItem('userPreferences', JSON.stringify({ genres: selectedGenres, region: selectedRegion }));
-            dom.modals.onboarding.page.style.display = 'none';
-            dom.appWrapper.style.visibility = 'visible';
-            showCustomAlert("Preferences saved! Welcome to your personalized Cinefy.", "success");
-            fetchPersonalizedHome();
-            fetchUpcomingReleases(true);
-        }
-
-        async function fetchPersonalizedHome() {
-            const prefs = getPreferences();
-            if (!prefs || prefs.genres.length === 0) {
-                dom.home.title.textContent = "Trending Movies This Week";
-                const url = `${BASE_URL}trending/movie/week?api_key=${TMDB_API_KEY}`;
-                await fetchApiData(url, dom.home.container, dom.home.loading, displayMovies, "No movies found.");
-            } else {
-                dom.home.title.textContent = "Popular & Anticipated Films";
-                const genreString = prefs.genres.join('|'); // Use OR for genres
-                const fiveYearsAgo = new Date();
-                fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
-                const releaseDateFilter = `primary_release_date.gte=${fiveYearsAgo.toISOString().split('T')[0]}`;
-
-                dom.home.loading.style.display = 'block';
-                dom.home.container.innerHTML = '';
-
-                try {
-                    // Fetch Indian films
-                    const indianUrl = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&sort_by=vote_average.desc&vote_count.gte=100&with_genres=${genreString}&with_origin_country=IN&${releaseDateFilter}`;
-                    const indianResponse = await fetch(indianUrl);
-                    const indianData = await indianResponse.json();
-                    const indianMovies = indianData.results || [];
-
-                    // Fetch Hollywood films
-                    const hollywoodUrl = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&sort_by=vote_average.desc&vote_count.gte=100&with_genres=${genreString}&with_origin_country=US&${releaseDateFilter}`;
-                    const hollywoodResponse = await fetch(hollywoodUrl);
-                    const hollywoodData = await hollywoodResponse.json();
-                    const hollywoodMovies = hollywoodData.results || [];
-
-                    const indianMovieIds = new Set(indianMovies.map(m => m.id));
-                    const uniqueHollywoodMovies = hollywoodMovies.filter(m => !indianMovieIds.has(m.id));
-                    
-                    const combinedMovies = [...indianMovies, ...uniqueHollywoodMovies];
-
-                    if (combinedMovies.length > 0) {
-                        displayMovies(combinedMovies, dom.home.container);
-                    } else {
-                        dom.home.container.innerHTML = `<div class="empty-state-container"><i class="fas fa-film"></i><h3>No Results</h3><p>No recent anticipated movies found for your preferences.</p></div>`;
-                    }
-                } catch (error) {
-                    console.error('API Fetch Error:', error);
-                    dom.home.container.innerHTML = `<div class="empty-state-container"><i class="fas fa-exclamation-triangle"></i><h3>Error</h3><p>An error occurred. Please try again later.</p></div>`;
-                } finally {
-                    dom.home.loading.style.display = 'none';
-                }
-            }
-        }
-        
-        async function fetchUpcomingReleases(spotlightOnly = false) {
-            const today = new Date().toISOString().split('T')[0];
-            const twoMonthsLater = new Date();
-            twoMonthsLater.setMonth(twoMonthsLater.getMonth() + 2);
-            const twoMonthsLaterStr = twoMonthsLater.toISOString().split('T')[0];
-            
-            const theatricalDateFilter = `primary_release_date.gte=${today}&primary_release_date.lte=${twoMonthsLaterStr}`;
-            
-            // Fetch for Spotlight Panel
-            if (spotlightOnly) {
-                const url = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&${theatricalDateFilter}&with_release_type=3&region=US,IN`;
-                const response = await fetch(url);
-                const data = await response.json();
-                if (data.results) {
-                    displayUpcomingMovies(data.results.slice(0, 10), dom.spotlightContainer);
-                }
-                return;
-            }
-
-            // Fetch for Main Upcoming Page
-            const theatricalUrl = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&${theatricalDateFilter}&with_release_type=3&region=US,IN`;
-            await fetchApiData(theatricalUrl, dom.upcoming.theatricalContainer, dom.upcoming.theatricalLoading, displayMovies, "No theatrical releases found for the coming months.");
-
-            const threeMonthsAgo = new Date();
-            threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-            const threeMonthsAgoStr = threeMonthsAgo.toISOString().split('T')[0];
-            const ottDateFilter = `primary_release_date.gte=${threeMonthsAgoStr}&primary_release_date.lte=${today}`;
-            const ottWatchProviders = '8|9|15|337'; // Netflix, Amazon Prime, Disney+, Apple TV
-            const ottUrl = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&${ottDateFilter}&with_watch_providers=${ottWatchProviders}&watch_region=IN,US&sort_by=popularity.desc`;
-            await fetchApiData(ottUrl, dom.upcoming.ottContainer, dom.upcoming.ottLoading, displayMovies, "No new OTT releases found for this month.");
-        }
-
-        async function fetchFilmNews() {
-            if (!GNEWS_API_KEY || GNEWS_API_KEY === 'PASTE_YOUR_GNEWS_API_KEY_HERE') { dom.news.container.innerHTML = `<p>News feature is not configured.</p>`; return; }
-            const prefs = getPreferences();
-            if (!prefs) { dom.news.container.innerHTML = `<p>Please set your preferences to see personalized news.</p>`; return; }
-            dom.news.loading.style.display = 'block';
-            dom.news.container.innerHTML = '';
-            try {
-                const genreResponse = await fetch(`${BASE_URL}genre/movie/list?api_key=${TMDB_API_KEY}`);
-                const genreData = await genreResponse.json();
-                const genreMap = new Map(genreData.genres.map(g => [g.id.toString(), g.name]));
-                const genreKeywords = prefs.genres.map(id => `"${genreMap.get(id)} movie"`).join(' OR ');
-                const url = `${GNEWS_API_URL}?q=${encodeURIComponent(genreKeywords)}&lang=en&country=${prefs.region}&token=${GNEWS_API_KEY}`;
-                const response = await fetch(url);
-                const data = await response.json();
-                if (data.articles && data.articles.length > 0) {
-                    displayNews(data.articles);
-                } else {
-                    dom.news.container.innerHTML = `<p>No news found for your favorite genres.</p>`;
-                }
-            } catch (error) {
-                console.error("News fetch error:", error);
-                dom.news.container.innerHTML = `<p>Could not fetch film news.</p>`;
-            } finally {
-                dom.news.loading.style.display = 'none';
-            }
-        }
-        
-        async function handleRecommendationSearch() {
-            const query = dom.recommendations.input.value.trim();
-            if (!query) { showCustomAlert("Please enter a movie title.", "error"); return; }
-            dom.recommendations.loading.style.display = 'block';
-            dom.recommendations.container.innerHTML = '';
-            try {
-                const searchUrl = `${BASE_URL}search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`;
-                const searchResponse = await fetch(searchUrl);
-                const searchData = await searchResponse.json();
-                if (!searchData.results || searchData.results.length === 0) throw new Error(`Movie "${query}" not found.`);
-                const movieId = searchData.results[0].id;
-                const recoUrl = `${BASE_URL}movie/${movieId}/recommendations?api_key=${TMDB_API_KEY}`;
-                await fetchApiData(recoUrl, dom.recommendations.container, dom.recommendations.loading, displayMovies, "No recommendations found.");
-            } catch (error) {
-                console.error("Recommendation search error:", error);
-                showCustomAlert(error.message, 'error');
-                dom.recommendations.loading.style.display = 'none';
-            }
-        }
-
-        async function fetchMovieDetails(movieId) {
-            dom.home.loading.style.display = 'block';
-            try {
-                const url = `${BASE_URL}movie/${movieId}?api_key=${TMDB_API_KEY}&append_to_response=credits,videos,watch/providers`;
-                const response = await fetch(url);
-                const movieData = await response.json();
-                displayMovieDetails(movieData);
-                dom.modals.movie.main.style.display = 'block';
-            } catch (error) {
-                console.error('Error fetching movie details:', error);
-                showCustomAlert('Could not fetch movie details.', 'error');
-            } finally {
-                dom.home.loading.style.display = 'none';
-            }
-        }
+        // --- API FETCHING & DATA HANDLING ---
         
         async function fetchApiData(url, container, loader, displayFn, noResultsMessage) {
             loader.style.display = 'block';
@@ -613,29 +578,186 @@
                 const response = await fetch(url);
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const data = await response.json();
-                if (data.results && data.results.length > 0) {
-                    displayFn(data.results, container);
+                const results = data.results || data.articles;
+                if (results && results.length > 0) {
+                    displayFn(results, container);
                 } else {
                     container.innerHTML = `<div class="empty-state-container"><i class="fas fa-film"></i><h3>No Results</h3><p>${noResultsMessage}</p></div>`;
                 }
             } catch (error) {
                 console.error('API Fetch Error:', error);
-                container.innerHTML = `<div class="empty-state-container"><i class="fas fa-exclamation-triangle"></i><h3>Error</h3><p>An error occurred. Please try again later.</p></div>`;
+                container.innerHTML = `<div class="empty-state-container"><i class="fas fa-exclamation-triangle"></i><h3>Error</h3><p>Could not fetch data. Please try again later.</p></div>`;
             } finally {
                 loader.style.display = 'none';
             }
         }
+
+        async function fetchAndCombineContent(type, genreString = '') {
+            const indianUrl = `${BASE_URL}discover/${type}?api_key=${TMDB_API_KEY}&sort_by=popularity.desc&with_genres=${genreString}&with_origin_country=IN&language=en-US&page=1`;
+            const hollywoodUrl = `${BASE_URL}discover/${type}?api_key=${TMDB_API_KEY}&sort_by=popularity.desc&with_genres=${genreString}&with_origin_country=US&language=en-US&page=1`;
+
+            try {
+                const [indianRes, hollywoodRes] = await Promise.all([fetch(indianUrl), fetch(hollywoodUrl)]);
+                const indianData = await indianRes.json();
+                const hollywoodData = await hollywoodRes.json();
+
+                const combined = [];
+                const addedIds = new Set();
+
+                const indianResults = indianData.results || [];
+                const hollywoodResults = hollywoodData.results || [];
+                const maxLength = Math.max(indianResults.length, hollywoodResults.length);
+
+                for (let i = 0; i < maxLength; i++) {
+                    if (indianResults[i] && !addedIds.has(indianResults[i].id)) {
+                        combined.push(indianResults[i]);
+                        addedIds.add(indianResults[i].id);
+                    }
+                    if (hollywoodResults[i] && !addedIds.has(hollywoodResults[i].id)) {
+                        combined.push(hollywoodResults[i]);
+                        addedIds.add(hollywoodResults[i].id);
+                    }
+                }
+                return combined;
+            } catch (error) {
+                console.error("Failed to fetch combined content:", error);
+                return [];
+            }
+        }
+
+        async function fetchPersonalizedHome() {
+            dom.home.loading.style.display = 'block';
+            dom.home.container.innerHTML = '';
+            const prefs = JSON.parse(localStorage.getItem('userPreferences'));
+            const genreString = prefs ? prefs.genres.join(',') : '';
+            
+            const movies = await fetchAndCombineContent('movie', genreString);
+
+            if (movies.length > 0) {
+                displayContent(movies, dom.home.container, 'movie');
+            } else {
+                dom.home.container.innerHTML = `<div class="empty-state-container"><i class="fas fa-film"></i><h3>No Movies Found</h3><p>Could not find popular movies at the moment.</p></div>`;
+            }
+            dom.home.loading.style.display = 'none';
+        }
+
+        async function fetchPopularWebSeries() {
+            dom.series.loading.style.display = 'block';
+            dom.series.container.innerHTML = '';
+            const series = await fetchAndCombineContent('tv');
+
+            if (series.length > 0) {
+                displayContent(series, dom.series.container, 'tv');
+            } else {
+                dom.series.container.innerHTML = `<div class="empty-state-container"><i class="fas fa-tv"></i><h3>No Series Found</h3><p>Could not find popular series at the moment.</p></div>`;
+            }
+            dom.series.loading.style.display = 'none';
+        }
         
-        function displayMovies(movies, container) {
-            if (container.innerHTML.includes('empty-state-container')) container.innerHTML = '';
-            movies.forEach(movie => {
-                if (!movie.poster_path) return;
-                const movieCard = document.createElement('div');
-                movieCard.className = 'movie-card';
-                const posterPath = `${IMAGE_BASE_URL}${movie.poster_path}`;
-                movieCard.innerHTML = `<img src="${posterPath}" alt="${movie.title}" loading="lazy" onerror="this.src='${PLACEHOLDER_IMAGE}'"><div class="movie-card-content"><h3>${movie.title}</h3><p>(${movie.release_date ? movie.release_date.substring(0, 4) : 'N/A'})</p></div>`;
-                movieCard.addEventListener('click', () => fetchMovieDetails(movie.id));
-                container.appendChild(movieCard);
+        async function fetchAnticipated() {
+            const today = new Date().toISOString().split('T')[0];
+            const nextYear = new Date();
+            nextYear.setFullYear(nextYear.getFullYear() + 1);
+            const nextYearStr = nextYear.toISOString().split('T')[0];
+
+            const indiaUrl = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&primary_release_date.gte=${today}&primary_release_date.lte=${nextYearStr}&with_origin_country=IN&sort_by=popularity.desc`;
+            const globalUrl = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&primary_release_date.gte=${today}&primary_release_date.lte=${nextYearStr}&with_origin_country=US&sort_by=popularity.desc`;
+
+            await fetchApiData(indiaUrl, dom.anticipated.indiaContainer, dom.anticipated.indiaLoading, (movies) => displayContent(movies, dom.anticipated.indiaContainer, 'movie'), "No anticipated Indian movies found.");
+            await fetchApiData(globalUrl, dom.anticipated.globalContainer, dom.anticipated.globalLoading, (movies) => displayContent(movies, dom.anticipated.globalContainer, 'movie'), "No anticipated global blockbusters found.");
+        }
+
+        async function fetchUpcomingReleases(spotlightOnly = false) {
+            const today = new Date().toISOString().split('T')[0];
+            const twoMonthsLater = new Date();
+            twoMonthsLater.setMonth(twoMonthsLater.getMonth() + 2);
+            const twoMonthsLaterStr = twoMonthsLater.toISOString().split('T')[0];
+            const url = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&primary_release_date.gte=${today}&primary_release_date.lte=${twoMonthsLaterStr}&with_release_type=3&region=IN,US&sort_by=popularity.desc`;
+            
+            if (spotlightOnly) {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.results) {
+                    displayUpcomingMovies(data.results.slice(0, 10), dom.spotlightContainer);
+                }
+            } else {
+                await fetchApiData(url, dom.upcoming.container, dom.upcoming.loading, (movies) => displayContent(movies, dom.upcoming.container, 'movie'), "No upcoming theatrical releases found.");
+            }
+        }
+
+        async function handleRecommendationSearch() {
+            const query = dom.recommendations.input.value.trim();
+            if (!query) { showCustomAlert("Please enter a movie or series title.", "error"); return; }
+            dom.recommendations.loading.style.display = 'block';
+            dom.recommendations.container.innerHTML = '';
+            try {
+                const searchUrl = `${BASE_URL}search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=1`;
+                const searchResponse = await fetch(searchUrl);
+                const searchData = await searchResponse.json();
+                if (!searchData.results || searchData.results.length === 0) throw new Error(`Title "${query}" not found.`);
+                
+                const firstResult = searchData.results.find(r => r.media_type !== 'person');
+                if (!firstResult) throw new Error(`No movies or series found for "${query}".`);
+
+                const { id, media_type } = firstResult;
+                
+                const recoUrl = `${BASE_URL}${media_type}/${id}/recommendations?api_key=${TMDB_API_KEY}`;
+                await fetchApiData(recoUrl, dom.recommendations.container, dom.recommendations.loading, (items) => displayContent(items, dom.recommendations.container, media_type), "No recommendations found.");
+            } catch (error) {
+                console.error("Recommendation search error:", error);
+                showCustomAlert(error.message, 'error');
+                dom.recommendations.loading.style.display = 'none';
+            }
+        }
+
+        async function fetchFilmNews() {
+            if (!GNEWS_API_KEY) { 
+                dom.news.container.innerHTML = `<div class="empty-state-container"><p>News feature is not configured.</p></div>`; 
+                return; 
+            }
+            const query = "Bollywood OR Hollywood OR Indian Cinema OR Tollywood OR Kollywood movie";
+            const url = `https://gnews.io/api/v4/search?q=${encodeURIComponent(query)}&lang=en&country=in&token=${GNEWS_API_KEY}`;
+            await fetchApiData(url, dom.news.container, dom.news.loading, displayNews, "No film news found.");
+        }
+
+        // --- DISPLAY & RENDERING ---
+        function displayContent(items, container, type) {
+            if (type !== 'mood_append') {
+                container.innerHTML = '';
+            }
+            items.forEach(item => {
+                if (!item.poster_path) return;
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                const title = item.title || item.name;
+                const releaseDate = item.release_date || item.first_air_date;
+                const year = releaseDate ? releaseDate.substring(0, 4) : 'N/A';
+                const itemType = item.media_type || item.type || type;
+                
+                card.innerHTML = `
+                    <img src="${IMAGE_BASE_URL}${item.poster_path}" alt="${title}" loading="lazy" onerror="this.src='${PLACEHOLDER_IMAGE}'">
+                    <div class="card-overlay">
+                        <div class="overlay-buttons">
+                            <button class="overlay-btn trailer-btn" title="Watch Trailer"><i class="fas fa-play"></i></button>
+                            <button class="overlay-btn watchlist-btn" title="Add to Watchlist"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="movie-card-content">
+                        <h3>${title}</h3>
+                        <p>${year}</p>
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => fetchDetails(item.id, itemType));
+                card.querySelector('.trailer-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openTrailerModal(item.id, itemType);
+                });
+                 card.querySelector('.watchlist-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    addToWatchlist(item, itemType);
+                });
+                container.appendChild(card);
             });
         }
 
@@ -645,189 +767,223 @@
                 if (!movie.poster_path) return;
                 const item = document.createElement('div');
                 item.className = 'upcoming-movie-item';
-                const posterPath = `${IMAGE_BASE_URL}${movie.poster_path}`;
-                const releaseDate = new Date(movie.release_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+                const releaseDate = new Date(movie.release_date).toLocaleDateString('en-IN', { month: 'long', day: 'numeric' });
                 item.innerHTML = `
-                    <img src="${posterPath}" alt="${movie.title}" loading="lazy" onerror="this.src='${PLACEHOLDER_IMAGE}'">
+                    <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}" loading="lazy" onerror="this.src='${PLACEHOLDER_IMAGE}'">
                     <div class="upcoming-movie-info">
                         <h4>${movie.title}</h4>
                         <p>${releaseDate}</p>
                     </div>`;
-                item.addEventListener('click', () => fetchMovieDetails(movie.id));
+                item.addEventListener('click', () => fetchDetails(movie.id, 'movie'));
                 container.appendChild(item);
             });
         }
-
+        
         function displayNews(articles) {
             dom.news.container.innerHTML = '';
-            articles.slice(0, 20).forEach(article => {
+            articles.forEach(article => {
                 const card = document.createElement('a');
-                card.className = 'news-article-card';
+                card.className = 'news-card';
                 card.href = article.url;
                 card.target = '_blank';
                 card.rel = 'noopener noreferrer';
-                card.innerHTML = `<img src="${article.image || NEWS_PLACEHOLDER_IMAGE}" alt="${article.title}" loading="lazy" onerror="this.src='${NEWS_PLACEHOLDER_IMAGE}'"><div class="news-article-content"><h3>${article.title}</h3><p>${article.description || ''}</p><span class="news-article-source">${article.source.name}</span></div>`;
+
+                card.innerHTML = `
+                    <img src="${article.image || NEWS_PLACEHOLDER_IMAGE}" alt="${article.title}" class="news-card-img" onerror="this.src='${NEWS_PLACEHOLDER_IMAGE}'">
+                    <div class="news-card-content">
+                        <h3>${article.title}</h3>
+                        <p>${article.description || 'Click to read more.'}</p>
+                        <span class="news-card-source">${article.source.name}</span>
+                    </div>
+                `;
                 dom.news.container.appendChild(card);
             });
         }
 
-        function displayMovieDetails(movie) {
-            const posterPath = movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : PLACEHOLDER_IMAGE;
-            const cast = movie.credits.cast.slice(0, 10).map(actor => `<li>${actor.name}</li>`).join('');
-            const simpleMovieObject = { id: movie.id, title: movie.title, poster_path: movie.poster_path, release_date: movie.release_date };
-            dom.modals.movie.body.innerHTML = `<img src="${posterPath}" alt="${movie.title}" class="modal-poster"><div class="modal-details"><h2>${movie.title}</h2><p><strong>Genre:</strong> ${movie.genres.map(g => g.name).join(', ')}</p><p><strong>Overview:</strong> ${movie.overview || 'N/A'}</p><p><strong>Rating:</strong> ${movie.vote_average.toFixed(1)}/10</p><h4>Starring:</h4><ul>${cast || 'N/A'}</ul><div class="modal-actions"><button class="btn-secondary" onclick='addToWatchlist(${JSON.stringify(simpleMovieObject)})'><i class="fas fa-plus"></i> Add to Watchlist</button><button class="btn-secondary" onclick='showDiaryFormModal(${JSON.stringify(simpleMovieObject)})'><i class="fas fa-book"></i> Add to Diary</button></div></div>`;
+        // --- MODAL & DETAILS LOGIC ---
+        async function fetchDetails(id, type) {
+            if (type === 'watchlist' || !type) {
+                try {
+                    const movieUrl = `${BASE_URL}movie/${id}?api_key=${TMDB_API_KEY}`;
+                    const movieRes = await fetch(movieUrl);
+                    if (movieRes.ok) {
+                        type = 'movie';
+                    } else {
+                        type = 'tv';
+                    }
+                } catch (e) { type = 'tv'; }
+            }
+            try {
+                const url = `${BASE_URL}${type}/${id}?api_key=${TMDB_API_KEY}&append_to_response=credits,videos,watch/providers`;
+                const response = await fetch(url);
+                const data = await response.json();
+                displayDetailsModal(data, type);
+            } catch (error) {
+                console.error('Error fetching details:', error);
+                showCustomAlert('Could not fetch details.', 'error');
+            }
+        }
+
+        function displayDetailsModal(data, type) {
+            const title = data.title || data.name;
+            const posterPath = data.poster_path ? `${IMAGE_BASE_URL}${data.poster_path}` : PLACEHOLDER_IMAGE;
+            const genres = data.genres.map(g => g.name).join(', ');
+            const rating = data.vote_average ? data.vote_average.toFixed(1) + '/10' : 'N/A';
+            const trailerAvailable = data.videos?.results?.some(v => v.type === 'Trailer' && v.site === 'YouTube');
+            
+            dom.modals.movie.body.innerHTML = `
+                <img src="${posterPath}" alt="${title}" class="modal-poster">
+                <div class="modal-details">
+                    <h2>${title}</h2>
+                    <p><strong>Genre:</strong> ${genres}</p>
+                    <p><strong>Rating:</strong> ${rating}</p>
+                    <p><strong>Overview:</strong> ${data.overview || 'N/A'}</p>
+                    ${generateWatchProvidersHTML(data['watch/providers'], title)}
+                    <div class="modal-actions">
+                        ${trailerAvailable ? `<button class="modal-btn primary" id="modal-trailer-btn"><i class="fas fa-play"></i> Watch Trailer</button>` : ''}
+                        <button class="modal-btn secondary" id="modal-watchlist-btn"><i class="fas fa-plus"></i> Add to Watchlist</button>
+                    </div>
+                </div>
+            `;
+            
+            dom.modals.movie.main.style.display = 'block';
+
+            const trailerBtn = document.getElementById('modal-trailer-btn');
+            if(trailerBtn) trailerBtn.addEventListener('click', () => openTrailerModal(data.id, type));
+            document.getElementById('modal-watchlist-btn').addEventListener('click', () => addToWatchlist(data, type));
         }
         
-        const storage = { get: (key) => JSON.parse(localStorage.getItem(key)) || [], save: (key, data) => localStorage.setItem(key, JSON.stringify(data)) };
-        window.addToWatchlist = function(movie) {
-            let watchlist = storage.get('watchlist');
-            if (!watchlist.some(m => m.id === movie.id)) {
-                watchlist.push(movie);
-                storage.save('watchlist', watchlist);
-                showCustomAlert(`${movie.title} added to watchlist!`, 'success');
-            } else {
-                showCustomAlert(`${movie.title} is already in watchlist.`, 'info');
+        function generateWatchProvidersHTML(providers, title) {
+            const indianProviders = providers?.results?.[INDIAN_REGION]?.flatrate;
+            if (!indianProviders || indianProviders.length === 0) {
+                return '<p>Not currently available on major streaming platforms in India.</p>';
             }
-        };
-        
+
+            const providerLinks = {
+                'Netflix': (q) => `https://www.netflix.com/search?q=${encodeURIComponent(q)}`,
+                'Amazon Prime Video': (q) => `https://www.primevideo.com/search/ref=atv_nb_sr?phrase=${encodeURIComponent(q)}&ie=UTF8`,
+                'Disney+ Hotstar': (q) => `https://www.hotstar.com/in/search?q=${encodeURIComponent(q)}`,
+                'JioCinema': (q) => `https://www.jiocinema.com/search/${encodeURIComponent(q)}`,
+                'Zee5': (q) => `https://www.zee5.com/search?q=${encodeURIComponent(q)}`,
+                'Sony Liv': (q) => `https://www.sonyliv.com/search/${encodeURIComponent(q)}`
+            };
+            
+            let html = '<h4>Watch Now On:</h4><div class="provider-list">';
+            indianProviders.forEach(p => {
+                const link = providerLinks[p.provider_name] ? providerLinks[p.provider_name](title) : '#';
+                html += `<a href="${link}" target="_blank" rel="noopener noreferrer" title="${p.provider_name}">
+                            <img src="${IMAGE_BASE_URL}${p.logo_path}" alt="${p.provider_name}">
+                         </a>`;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        async function openTrailerModal(id, type) {
+            try {
+                const url = `${BASE_URL}${type}/${id}/videos?api_key=${TMDB_API_KEY}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                const trailer = data.results.find(video => video.type === 'Trailer' && video.site === 'YouTube');
+                if (trailer) {
+                    dom.modals.trailer.iframe.src = `https://www.youtube.com/embed/${trailer.key}?autoplay=1`;
+                    dom.modals.trailer.main.style.display = 'block';
+                } else {
+                    showCustomAlert('No official trailer found.', 'info');
+                }
+            } catch (error) {
+                console.error("Trailer fetch error:", error);
+                showCustomAlert('Could not fetch trailer.', 'error');
+            }
+        }
+
+        // --- WATCHLIST ---
+        function addToWatchlist(item, type) {
+            let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+            if (!watchlist.some(w => w.id === item.id)) {
+                watchlist.push({ id: item.id, title: item.title || item.name, poster_path: item.poster_path, release_date: item.release_date || item.first_air_date, type: type });
+                localStorage.setItem('watchlist', JSON.stringify(watchlist));
+                showCustomAlert(`${item.title || item.name} added to watchlist!`, 'success');
+            } else {
+                showCustomAlert(`${item.title || item.name} is already in your watchlist.`, 'info');
+            }
+        }
+
         function renderWatchlist() {
-            const watchlist = storage.get('watchlist');
+            const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
             dom.watchlist.container.innerHTML = '';
-            if (watchlist.length === 0) { dom.watchlist.container.innerHTML = `<div class="empty-state-container"><i class="fas fa-list-alt"></i><h3>Your Watchlist is Empty</h3><p>Add movies you want to watch.</p></div>`; return; }
-            watchlist.forEach(movie => {
-                const movieCard = document.createElement('div');
-                movieCard.className = 'movie-card watchlist-entry';
-                const posterPath = movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : PLACEHOLDER_IMAGE;
-                movieCard.innerHTML = `<button class="action-button delete" title="Remove" onclick="event.stopPropagation(); removeFromWatchlist(${movie.id})"><i class="fas fa-times"></i></button><img src="${posterPath}" alt="${movie.title}" loading="lazy"><div class="movie-card-content"><h3>${movie.title}</h3><p>(${movie.release_date ? movie.release_date.substring(0, 4) : 'N/A'})</p></div>`;
-                movieCard.addEventListener('click', () => fetchMovieDetails(movie.id));
-                dom.watchlist.container.appendChild(movieCard);
-            });
-        }
-        function removeFromWatchlist(movieId) {
-            storage.save('watchlist', storage.get('watchlist').filter(m => m.id !== movieId));
-            renderWatchlist();
-            showCustomAlert('Movie removed from watchlist.', 'success');
-        }
-        window.showDiaryFormModal = function(movie, existingEntry = null) {
-            const modal = dom.modals.diaryForm;
-            modal.form.reset();
-            modal.ratingValue.value = '';
-            modal.timestamp.value = '';
-            modal.ratingStars.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
-            modal.title.textContent = movie.title;
-            modal.movieId.value = movie.id;
-            modal.posterPath.value = movie.poster_path;
-            if (existingEntry) {
-                modal.submitButton.textContent = 'Update Entry';
-                modal.date.value = existingEntry.date;
-                modal.review.value = existingEntry.review;
-                modal.timestamp.value = existingEntry.timestamp;
-                modal.ratingValue.value = existingEntry.rating;
-                for (let i = 1; i <= existingEntry.rating; i++) modal.ratingStars.querySelector(`[data-value="${i}"]`).classList.add('active');
-            } else {
-                modal.submitButton.textContent = 'Add to Diary';
-                modal.date.valueAsDate = new Date();
+            if (watchlist.length === 0) {
+                dom.watchlist.container.innerHTML = `<div class="empty-state-container"><i class="fas fa-list-alt"></i><h3>Your Watchlist is Empty</h3><p>Add movies and series you want to watch.</p></div>`;
+                return;
             }
-            modal.main.style.display = 'block';
-            dom.modals.movie.main.style.display = 'none';
+            displayContent(watchlist, dom.watchlist.container, 'watchlist');
         }
-        function handleDiaryFormSubmit(e) {
-            e.preventDefault();
-            const modal = dom.modals.diaryForm;
-            const entry = { id: modal.movieId.value, title: modal.title.textContent, poster_path: modal.posterPath.value, date: modal.date.value, rating: modal.ratingValue.value, review: modal.review.value, timestamp: modal.timestamp.value || new Date().toISOString() };
-            if (!entry.rating) { showCustomAlert('Please select a star rating.', 'error'); return; }
-            let entries = storage.get('diaryEntries');
-            const existingIndex = entries.findIndex(item => item.timestamp === entry.timestamp);
-            if (existingIndex > -1) entries[existingIndex] = entry; else entries.push(entry);
-            storage.save('diaryEntries', entries);
-            modal.main.style.display = 'none';
-            showCustomAlert('Diary entry saved!', 'success');
-            renderDiaryEntries();
+
+        // --- UTILITY FUNCTIONS ---
+        function showCustomAlert(message, type = 'info') {
+            console.log(`ALERT (${type}): ${message}`);
         }
-        function handleStarRating(e) {
-            const star = e.target.closest('.star');
-            if (star) {
-                const rating = star.dataset.value;
-                dom.modals.diaryForm.ratingValue.value = rating;
-                dom.modals.diaryForm.ratingStars.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
-                for (let i = 1; i <= rating; i++) dom.modals.diaryForm.ratingStars.querySelector(`[data-value="${i}"]`).classList.add('active');
-            }
-        }
-        function removeFromDiary(timestamp) {
-            storage.save('diaryEntries', storage.get('diaryEntries').filter(entry => entry.timestamp !== timestamp));
-            renderDiaryEntries();
-            showCustomAlert('Diary entry removed.', 'success');
-        }
-        function renderDiaryEntries() {
-            const entries = storage.get('diaryEntries');
-            dom.diary.container.innerHTML = '';
-            if (entries.length === 0) { dom.diary.container.innerHTML = `<div class="empty-state-container"><i class="fas fa-book-open"></i><h3>Your Diary is Empty</h3><p>Log movies you've watched.</p></div>`; return; }
-            entries.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(entry => {
-                const card = document.createElement('div');
-                card.className = 'diary-entry';
-                let stars = '';
-                for (let i = 1; i <= 5; i++) stars += `<span class="star-display ${i <= entry.rating ? '' : 'inactive'}">&#9733;</span>`;
-                card.innerHTML = `<img src="${entry.poster_path ? IMAGE_BASE_URL + entry.poster_path : PLACEHOLDER_IMAGE}" alt="${entry.title}"><div class="diary-entry-content"><h3>${entry.title}</h3><p><strong>Watched:</strong> ${new Date(entry.date).toLocaleDateString()}</p><p><strong>Rating:</strong> ${stars}</p><p><strong>Review:</strong> ${entry.review || '<em>No review.</em>'}</p><div class="diary-entry-actions"><button class="action-button edit">Edit</button><button class="action-button delete">Delete</button></div></div>`;
-                card.querySelector('.edit').addEventListener('click', () => showDiaryFormModal({id: entry.id, title: entry.title, poster_path: entry.poster_path}, entry));
-                card.querySelector('.delete').addEventListener('click', () => removeFromDiary(entry.timestamp));
-                dom.diary.container.appendChild(card);
-            });
-        }
-        
+
+        // --- AI MOOD RECOMMENDER (GEMINI) ---
         async function handleMoodRecommendation() {
             const mood = dom.mood.input.value.trim();
-            if (!mood) { showCustomAlert('Please describe your mood.', 'error'); return; }
+            if (!mood) { showCustomAlert('Please describe your mood or what you want to watch.', 'error'); return; }
+            if (!GEMINI_API_KEY) { showCustomAlert('AI feature is not configured. API key is missing.', 'error'); return; }
+
             dom.mood.loading.style.display = 'block';
             dom.mood.container.innerHTML = '';
+            
             try {
-                const prompt = `Based on the following mood, suggest 8-10 specific movie titles. Do not include any other text besides the numbered list of movie titles. For example: "1. Movie A\\n2. Movie B\\n...". Mood: ${mood}`;
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`;
+                const prompt = `Based on the following mood, suggest 8-10 specific Indian or popular Hollywood movie/web series titles. Do not include any other text besides the numbered list of titles. For example: "1. Movie A\\n2. Series B\\n...". Mood: ${mood}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
                 const payload = { contents: [{ parts: [{ text: prompt }] }] };
+                
                 const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 if (!response.ok) throw new Error(`API error: ${response.status}`);
+                
                 const result = await response.json();
                 const recommendationText = result?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-                const movieTitles = recommendationText.split('\n').map(line => line.replace(/^\d+\.\s*/, '').trim()).filter(line => line.length > 0);
-                if (movieTitles.length > 0) {
-                    await fetchAndDisplayMoviesFromTitles(movieTitles, dom.mood.container);
+                const titles = recommendationText.split('\n').map(line => line.replace(/^\d+\.\s*/, '').trim()).filter(line => line.length > 0);
+                
+                if (titles.length > 0) {
+                    await fetchAndDisplayFromTitles(titles, dom.mood.container);
                 } else {
-                    dom.mood.container.innerHTML = `<p style="text-align:center;">The AI couldn't find movies for that mood.</p>`;
+                    dom.mood.container.innerHTML = `<div class="empty-state-container"><p>The AI couldn't find matches for that mood.</p></div>`;
                 }
             } catch (error) {
                 console.error('Mood recommender error:', error);
-                dom.mood.container.innerHTML = `<p style="text-align:center;">An error occurred with the AI recommender.</p>`;
+                dom.mood.container.innerHTML = `<div class="empty-state-container"><p>An error occurred with the AI recommender.</p></div>`;
             } finally {
                 dom.mood.loading.style.display = 'none';
             }
         }
-        async function fetchAndDisplayMoviesFromTitles(titles, container) {
-            container.innerHTML = '';
-            let found = 0;
-            for (const title of titles) {
-                try {
-                    const res = await fetch(`${BASE_URL}search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(title)}`);
-                    const data = await res.json();
-                    if (data.results && data.results.length > 0) {
-                        displayMovies([data.results[0]], container);
-                        found++;
-                    }
-                } catch (error) { console.error(`Error fetching ${title}:`, error); }
-            }
-            if (found === 0) {
-                container.innerHTML = `<p style="text-align:center;">Could not find movies matching the recommendations.</p>`;
+
+        async function fetchAndDisplayFromTitles(titles, container) {
+            const foundItems = [];
+            const promises = titles.map(title => 
+                fetch(`${BASE_URL}search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(title)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.results && data.results.length > 0) {
+                            const bestMatch = data.results.find(r => r.media_type !== 'person' && r.poster_path);
+                            if (bestMatch) {
+                                foundItems.push(bestMatch);
+                            }
+                        }
+                    })
+                    .catch(err => console.error(`Error fetching ${title}:`, err))
+            );
+            await Promise.all(promises);
+            
+            if (foundItems.length > 0) {
+                displayContent(foundItems, container, 'mood_append');
+            } else {
+                container.innerHTML = `<div class="empty-state-container"><p>Could not find poster images for the AI recommendations.</p></div>`;
             }
         }
-        
-        function init() {
-            applyInitialTheme();
-            setupNavigation();
-            setupEventListeners();
-            checkOnboarding();
-        }
-        
+
         init();
     });
     </script>
 </body>
 </html>
-"
