@@ -725,7 +725,8 @@
                         let newUserCount = counterDoc.exists() ? counterDoc.data().count + 1 : 1;
                         transaction.set(userRef, {
                             uid: user.uid, email: user.email, createdAt: new Date(),
-                            canChangeTheme: newUserCount <= 10, theme: 'default'
+                            canChangeTheme: newUserCount <= 1000, // Increased for demonstration
+                            theme: 'default'
                         });
                         transaction.set(counterRef, { count: newUserCount }, { merge: true });
                     });
