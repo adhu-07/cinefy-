@@ -92,10 +92,12 @@
 
         /* --- LOGIN PAGE --- */
         #login-page {
+            position: relative;
+        }
+        #login-page.active {
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
         }
         
         /* --- NEW LOGIN BACKGROUND --- */
@@ -400,7 +402,7 @@
     </div>
 
     <!-- ===== LOGIN PAGE ===== -->
-    <div id="login-page" class="page">
+    <div id="login-page" class="page active">
         <div class="login-container">
             <h1 class="logo">Cinefy</h1>
             <p class="tagline" id="form-tagline">Sign in to begin your cinematic journey.</p>
@@ -1047,4 +1049,4 @@
         }
     </script>
 </body>
-</html
+</html>
