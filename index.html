@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cinefy - Your Cinematic Universe</title>
+    <title>Cinefy - Your Indian Movie & Series Hub</title>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Courier+Prime&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* --- THEME & FONT VARIABLES --- */
         :root {
@@ -17,7 +17,7 @@
             --secondary-bg-color: #161b22;
             --sidebar-bg-color: #161b22;
             --card-bg-color: #21262d;
-            --accent-color: #007BFF;
+            --accent-color: #007BFF; /* New Cinematic Blue */
             --accent-hover-color: #0056b3;
             --text-color: #e6edf3;
             --soft-text-color: #8b949e;
@@ -30,207 +30,52 @@
             --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* --- THEME STYLES --- */
-        body.matrix-theme {
-            --primary-bg-color: #020202;
-            --secondary-bg-color: #0a0a0a;
-            --sidebar-bg-color: #050505;
-            --card-bg-color: #0f120f;
-            --accent-color: #00ff41;
-            --accent-hover-color: #35ff6d;
-            --text-color: #00ff41;
-            --soft-text-color: #00b32d;
-            --border-color: #005215;
-            --font-main: 'Courier Prime', monospace;
-        }
-        body.dune-theme {
-            --primary-bg-color: #3c2f2f;
-            --secondary-bg-color: #5a4545;
-            --sidebar-bg-color: #4a3a3a;
-            --card-bg-color: #6c5858;
-            --accent-color: #ff8c42;
-            --accent-hover-color: #ffa56b;
-            --text-color: #f2e8e1;
-            --soft-text-color: #c9b8ae;
-            --border-color: #8a6f6f;
-        }
-        body.bladerunner-theme {
-            --primary-bg-color: #0c0d1c;
-            --secondary-bg-color: #121429;
-            --sidebar-bg-color: #101225;
-            --card-bg-color: #1a1c3a;
-            --accent-color: #f038ff;
-            --accent-hover-color: #f777ff;
-            --text-color: #e0e1ff;
-            --soft-text-color: #6c7aa8;
-            --border-color: #3b3d8d;
-        }
-
-        /* --- GENERAL & BODY --- */
+        /* --- BASIC RESETS & BODY --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body {
-            height: 100%;
-            overflow: hidden; /* Prevent double scrollbars */
-        }
         body {
             font-family: var(--font-main);
             background-color: var(--primary-bg-color);
             color: var(--text-color);
             transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
         }
-        .page {
-            display: none; /* Hide all pages by default */
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-        .page.active {
-            display: block;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-        .page.active { animation: fadeIn 0.5s ease-out; }
-
-        /* --- LOGIN PAGE --- */
-        #login-page {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-        
-        /* --- NEW LOGIN BACKGROUND --- */
-        #image-background-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            display: flex;
-            justify-content: center;
-            gap: 1vw;
-            overflow: hidden;
-        }
-        #image-background-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(13, 17, 23, 0.6);
-            z-index: 1;
-        }
-        .bg-column {
-            display: flex;
-            flex-direction: column;
-            width: 33vw; /* Adjust width as needed */
-            min-width: 300px;
-        }
-        .bg-image-tile {
-            width: 100%;
-            padding-top: 150%; /* Aspect ratio for portrait posters (height is 1.5x width) */
-            background-size: cover;
-            background-position: center;
-            flex-shrink: 0;
-            margin-bottom: 1vw;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .bg-column:nth-child(1) { animation: scroll-down 90s linear infinite; }
-        .bg-column:nth-child(2) { animation: scroll-up 80s linear infinite; }
-        .bg-column:nth-child(3) { animation: scroll-down 100s linear infinite; }
-
-        @keyframes scroll-up {
-            from { transform: translateY(0%); }
-            to { transform: translateY(-100%); }
-        }
-        @keyframes scroll-down {
-            from { transform: translateY(-100%); }
-            to { transform: translateY(0%); }
-        }
-        
-        .login-container {
-            position: relative; z-index: 2;
-            width: 100%; max-width: 450px;
-            padding: 50px;
-            background: rgba(13, 17, 23, 0.8);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            text-align: center;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
-        }
-        .login-container .logo {
-            font-size: 3rem; color: var(--accent-color);
-            font-weight: 700; text-transform: uppercase;
-            letter-spacing: 3px; margin-bottom: 15px;
-        }
-        .login-container .tagline { color: var(--soft-text-color); margin-bottom: 30px; font-size: 1rem; }
-        .login-container .input-group { position: relative; margin-bottom: 20px; }
-        .login-container .input-group i {
-            position: absolute; left: 15px; top: 50%;
-            transform: translateY(-50%); color: var(--soft-text-color);
-        }
-        .login-container .input-field {
-            width: 100%; padding: 15px 15px 15px 45px;
-            background-color: var(--secondary-bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px; color: var(--text-color);
-            font-family: 'Poppins', sans-serif; font-size: 1rem;
-            transition: var(--transition-smooth);
-        }
-        .login-container .input-field:focus {
-            outline: none; border-color: var(--accent-color);
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
-        }
-        .login-container .btn {
-            width: 100%; padding: 15px; border-radius: 8px;
-            border: none; font-family: 'Poppins', sans-serif;
-            font-size: 1.1rem; font-weight: 600; cursor: pointer;
-            transition: var(--transition-smooth); display: flex;
-            align-items: center; justify-content: center; gap: 10px;
-        }
-        .login-container .btn-primary { background: var(--accent-color); color: white; }
-        .login-container .btn-primary:hover { background: #0056b3; transform: translateY(-2px); }
-        .login-container .btn-google { background-color: #fff; color: #333; margin-top: 15px; }
-        .login-container .btn-google:hover { background-color: #f1f1f1; transform: translateY(-2px); }
-        .login-container .divider {
-            display: flex; align-items: center; text-align: center;
-            color: var(--soft-text-color); margin: 25px 0;
-        }
-        .login-container .divider::before, .login-container .divider::after {
-            content: ''; flex: 1; border-bottom: 1px solid var(--border-color);
-        }
-        .login-container .divider:not(:empty)::before { margin-right: .25em; }
-        .login-container .divider:not(:empty)::after { margin-left: .25em; }
-        .login-container .toggle-form { color: var(--soft-text-color); font-size: 0.9rem; }
-        .login-container .toggle-form button {
-            background: none; border: none; color: var(--accent-color);
-            font-weight: 600; cursor: pointer; font-size: 0.9rem;
-        }
-        .login-container #error-message {
-            color: #ff4d4d; margin-bottom: 15px;
-            font-size: 0.9rem; min-height: 1.2em;
-        }
-
-        /* --- APP & SETTINGS PAGES --- */
-        #app-page, #settings-page { overflow-y: auto; }
+        .app-wrapper { display: flex; min-height: 100vh; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--primary-bg-color); }
         ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--soft-text-color); }
-        
-        /* --- MATRIX THEME CANVAS --- */
-        #matrix-canvas {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; z-index: -1; opacity: 0.3;
+
+        /* --- ONBOARDING PAGE --- */
+        #onboarding-page {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+            z-index: 3000; display: flex; justify-content: center; align-items: center;
+            padding: 20px; animation: fadeIn 0.5s ease;
         }
-        body.matrix-theme #matrix-canvas { display: block; }
-        
-        /* --- APP PAGE STYLES --- */
-        .app-wrapper { display: flex; min-height: 100%; }
+        .onboarding-content {
+            max-width: 600px; width: 100%; background-color: var(--secondary-bg-color);
+            padding: 40px; border-radius: var(--border-radius); border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5); text-align: center;
+        }
+        .onboarding-content h2 { font-size: 2.2rem; color: var(--accent-color); font-weight: 700; }
+        .onboarding-content p { color: var(--soft-text-color); line-height: 1.6; margin: 10px 0 20px; }
+        .preference-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px; margin: 20px 0; max-height: 250px; overflow-y: auto;
+            border: 1px solid var(--border-color); padding: 15px; border-radius: var(--card-border-radius); text-align: left;
+        }
+        .preference-grid label { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 5px; cursor: pointer; transition: var(--transition-smooth); }
+        .preference-grid label:hover { background-color: var(--card-bg-color); }
+        .preference-grid input[type="checkbox"] { accent-color: var(--accent-color); width: 18px; height: 18px; }
+        #onboarding-form button {
+            padding: 14px 28px; background: linear-gradient(90deg, var(--accent-color), #3399ff);
+            color: white; font-family: var(--font-main); font-weight: 600; border: none;
+            border-radius: 50px; cursor: pointer; transition: var(--transition-smooth); width: 100%; font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+        #onboarding-form button:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4); }
+
+        /* --- SIDEBAR NAVIGATION --- */
         #sidebar {
             width: var(--sidebar-width); background-color: var(--sidebar-bg-color);
             border-right: 1px solid var(--border-color); padding: 25px;
@@ -249,13 +94,8 @@
         .nav-button.active, .nav-button:hover {
             color: var(--text-color); background-color: var(--accent-color); font-weight: 600;
         }
-        #nav-settings, #nav-logout { margin-top: auto; }
-        
-        main {
-            margin-left: var(--sidebar-width); margin-right: var(--spotlight-width);
-            width: calc(100% - var(--sidebar-width) - var(--spotlight-width));
-            padding: 30px;
-        }
+
+        /* --- SPOTLIGHT PANEL (RIGHT SIDEBAR) --- */
         #spotlight-panel {
             width: var(--spotlight-width); background-color: var(--sidebar-bg-color);
             border-left: 1px solid var(--border-color); padding: 25px;
@@ -268,8 +108,18 @@
         .upcoming-movie-item img { width: 60px; height: 90px; object-fit: cover; border-radius: 5px; flex-shrink: 0; }
         .upcoming-movie-info h4 { margin: 0 0 5px 0; font-size: 0.9rem; font-weight: 600; }
         .upcoming-movie-info p { margin: 0; font-size: 0.8rem; color: var(--soft-text-color); }
-        .feature-section { display: none; width: 100%; }
-        .feature-section.active { display: block; animation: fadeIn 0.6s ease; }
+
+        /* --- MAIN CONTENT AREA --- */
+        main {
+            margin-left: var(--sidebar-width); margin-right: var(--spotlight-width);
+            width: calc(100% - var(--sidebar-width) - var(--spotlight-width));
+            padding: 30px;
+        }
+        .feature-section { display: none; width: 100%; animation: fadeIn 0.6s ease; }
+        .feature-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- HEADINGS & CONTAINERS --- */
         h2 { font-family: var(--font-main); font-weight: 700; text-align: left; margin-bottom: 10px; font-size: 2.2rem; }
         h3.section-subtitle { font-family: var(--font-main); margin-top: 40px; margin-bottom: 20px; font-size: 1.6rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
         .page-description { color: var(--soft-text-color); margin-top: 0; margin-bottom: 30px; text-align: left; font-size: 1.1rem; }
@@ -277,6 +127,8 @@
         .loading-indicator { text-align: center; padding: 50px; font-size: 2rem; color: var(--accent-color); display: none; }
         .empty-state-container { text-align: center; padding: 50px; color: var(--soft-text-color); }
         .empty-state-container i { font-size: 3rem; margin-bottom: 15px; }
+
+        /* --- SEARCH CONTROLS --- */
         .search-controls {
             width: 100%; max-width: 700px; margin: 0 auto 40px auto; display: flex; gap: 12px;
             background-color: var(--secondary-bg-color); border: 1px solid var(--border-color);
@@ -293,6 +145,8 @@
             border: none; cursor: pointer; transition: var(--transition-smooth);
         }
         .search-controls button:hover { background-color: var(--accent-hover-color); }
+
+        /* --- MOVIE CARD --- */
         .movie-card {
             background-color: var(--card-bg-color); border-radius: var(--card-border-radius);
             overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -321,11 +175,58 @@
             font-size: 1.1rem; cursor: pointer; transition: var(--transition-smooth);
         }
         .overlay-btn:hover { background: var(--accent-color); transform: scale(1.1); }
+
+        /* --- NEWS CARD --- */
+        .news-card {
+            background-color: var(--card-bg-color);
+            border-radius: var(--card-border-radius);
+            border: 1px solid var(--border-color);
+            display: flex;
+            gap: 20px;
+            overflow: hidden;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: var(--transition-smooth);
+        }
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-color);
+        }
+        .news-card-img {
+            width: 200px;
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+        .news-card-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .news-card-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .news-card-content p {
+            color: var(--soft-text-color);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        .news-card-source {
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+
+        /* --- MODALS (GENERAL) --- */
         .modal {
             display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
             overflow: auto; background-color: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s;
         }
-        .modal.active { display: block; animation: fadeIn 0.3s; }
         .modal-content {
             background-color: var(--secondary-bg-color); margin: 5% auto;
             border-radius: var(--border-radius); width: 90%; max-width: 900px;
@@ -337,714 +238,898 @@
             font-size: 35px; font-weight: bold; cursor: pointer; transition: var(--transition-smooth); z-index: 10;
         }
         .close-button:hover { color: var(--accent-color); transform: scale(1.2); }
+
+        /* --- MOVIE/SERIES DETAIL MODAL --- */
+        .modal-body { display: flex; padding: 0; }
+        .modal-poster { width: 300px; height: auto; object-fit: cover; flex-shrink: 0; }
+        .modal-details { padding: 30px; flex-grow: 1; }
+        .modal-details h2 { font-size: 2.5rem; margin-bottom: 15px; }
+        .modal-details p { margin-bottom: 12px; line-height: 1.6; color: var(--soft-text-color); }
+        .modal-details strong { color: var(--text-color); }
+        .modal-actions { margin-top: 25px; display: flex; flex-wrap: wrap; gap: 15px; }
+        .modal-btn {
+            padding: 12px 20px; border-radius: 50px; font-weight: 600;
+            cursor: pointer; transition: var(--transition-smooth); display: inline-flex;
+            align-items: center; gap: 8px; font-size: 0.9rem; text-decoration: none;
+        }
+        .modal-btn.primary { background-color: var(--accent-color); color: white; border: 1px solid var(--accent-color); }
+        .modal-btn.primary:hover { background-color: var(--accent-hover-color); transform: scale(1.05); }
+        .modal-btn.secondary { background-color: transparent; color: var(--text-color); border: 1px solid var(--border-color); }
+        .modal-btn.secondary:hover { background-color: var(--border-color); }
+        .watch-providers { margin-top: 20px; }
+        .watch-providers h4 { margin-bottom: 10px; }
+        .provider-list { display: flex; gap: 15px; flex-wrap: wrap; }
+        .provider-list a { display: block; }
+        .provider-list img { width: 50px; height: 50px; border-radius: var(--card-border-radius); transition: var(--transition-smooth); }
+        .provider-list img:hover { transform: scale(1.1); }
+
+        /* --- TRAILER MODAL --- */
+        #trailer-modal .modal-content { background-color: black; padding: 0; aspect-ratio: 16 / 9; }
+        #trailer-iframe { width: 100%; height: 100%; border: none; }
+        
+        /* --- RESPONSIVE DESIGN --- */
         @media (max-width: 1200px) {
             #spotlight-panel { display: none; }
             main { margin-right: 0; width: calc(100% - var(--sidebar-width)); }
         }
         @media (max-width: 992px) {
             :root { --sidebar-width: 0; }
-            #sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            #sidebar { transform: translateX(-100%); transition: transform 0.3s ease; } /* Hide for mobile */
             main { margin-left: 0; width: 100%; padding: 15px; }
+            h2 { font-size: 1.8rem; }
+            .modal-body { flex-direction: column; }
+            .modal-poster { width: 100%; height: 400px; object-fit: cover; object-position: top; }
             #mobile-nav { display: block; position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--secondary-bg-color); padding: 5px 0; z-index: 1000; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; }
             .app-wrapper { padding-bottom: 60px; }
+            #mobile-nav .nav-button { flex-direction: column; gap: 5px; font-size: 0.7rem; padding: 8px 5px; width: 100%; }
+            #mobile-nav .nav-button i { font-size: 1.2rem; width: auto; }
+            .news-card { flex-direction: column; }
+            .news-card-img { width: 100%; height: 180px; }
         }
         @media (min-width: 993px) { #mobile-nav { display: none; } }
-        
-        /* --- SETTINGS PAGE STYLES --- */
-        #settings-page { padding: 40px; }
-        .settings-container {
-            max-width: 800px; margin: 0 auto;
-            background-color: var(--secondary-bg-color);
-            padding: 40px; border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-        }
-        .settings-container h1 { color: var(--accent-color); margin-bottom: 10px; }
-        .settings-container p { color: var(--soft-text-color); margin-bottom: 30px; }
-        .theme-options {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .theme-card {
-            border: 2px solid var(--border-color); border-radius: var(--border-radius);
-            padding: 20px; text-align: center; cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .theme-card:hover, .theme-card.active {
-            border-color: var(--accent-color); transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0, 123, 255, 0.2);
-        }
-        .theme-card h3 { margin-bottom: 15px; font-size: 1.2rem; }
-        .color-palette { display: flex; justify-content: center; gap: 10px; }
-        .color-swatch {
-            width: 30px; height: 30px; border-radius: 50%;
-            border: 2px solid var(--primary-bg-color);
-        }
-        #back-link {
-            display: inline-block; margin-top: 40px; color: var(--accent-color);
-            text-decoration: none; font-weight: 600; cursor: pointer;
-        }
-        #back-link i { margin-right: 8px; }
-        #success-message {
-            color: #00ff41; margin-top: 20px; text-align: center;
-            opacity: 0; transition: opacity 0.5s ease;
-        }
     </style>
 </head>
 <body>
 
-    <canvas id="matrix-canvas"></canvas>
-    
-    <!-- This container is now used for the login page background -->
-    <div id="image-background-container">
-        <!-- The JS will populate this if the user is on the login page -->
-    </div>
-
-    <!-- ===== LOGIN PAGE ===== -->
-    <div id="login-page" class="page">
-        <div class="login-container">
-            <h1 class="logo">Cinefy</h1>
-            <p class="tagline" id="form-tagline">Sign in to begin your cinematic journey.</p>
-            <form id="auth-form">
-                <p id="error-message"></p>
-                <div class="input-group">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" id="email" class="input-field" placeholder="Email" required>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="password" class="input-field" placeholder="Password" required>
-                </div>
-                <button type="submit" class="btn btn-primary" id="auth-button">
-                    <i class="fas fa-film"></i> <span id="auth-button-text">Login</span>
-                </button>
+    <!-- ONBOARDING SCREEN -->
+    <div id="onboarding-page" style="display: none;">
+        <div class="onboarding-content">
+            <h2>Welcome to Cinefy!</h2>
+            <p>Let's personalize your experience. Select your favorite film industries and genres to get tailored recommendations.</p>
+            <form id="onboarding-form">
+                <h4>Favorite Industries & Genres (select up to 5)</h4>
+                <div id="onboarding-genre-grid" class="preference-grid"></div>
+                <button type="submit">Save & Start Exploring</button>
             </form>
-            <div class="divider">OR</div>
-            <button class="btn btn-google" id="google-signin-button">
-                <i class="fab fa-google"></i> Sign in with Google
-            </button>
-            <p class="toggle-form" id="toggle-container">
-                Don't have an account? <button id="toggle-mode">Sign Up</button>
-            </p>
         </div>
     </div>
 
-    <!-- ===== MAIN APP PAGE ===== -->
-    <div id="app-page" class="page">
-        <div class="app-wrapper">
-            <aside id="sidebar">
-                <h1 id="app-title">Cinefy</h1>
-                <nav>
-                    <button class="nav-button active" id="nav-home"><i class="fas fa-home"></i> Home</button>
-                    <button class="nav-button" id="nav-series"><i class="fas fa-tv"></i> Web Series</button>
-                    <button class="nav-button" id="nav-anticipated"><i class="fas fa-fire"></i> Anticipated</button>
-                    <button class="nav-button" id="nav-recommendations"><i class="fas fa-magic"></i> For You</button>
-                    <button class="nav-button" id="nav-mood-recommender"><i class="fas fa-smile"></i> Mood AI</button>
-                    <button class="nav-button" id="nav-watchlist"><i class="fas fa-list-alt"></i> Watchlist</button>
-                    <button class="nav-button" id="nav-settings" style="display: none;"><i class="fas fa-cog"></i> Settings</button>
-                    <button class="nav-button" id="nav-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                </nav>
-            </aside>
-            <div id="main-content" style="width:100%;">
-                <main>
-                    <!-- Home Section -->
-                    <div id="home-section" class="feature-section active">
-                        <div class="search-controls" id="home-search-controls">
-                            <input type="text" id="home-search-input" placeholder="Search for any movie or series...">
-                            <button id="home-search-button"><i class="fas fa-search"></i></button>
-                        </div>
-                        <h2>Popular Movies</h2>
-                        <p class="page-description">A curated list of popular Indian and Hollywood films.</p>
-                        <div id="home-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
-                        <div id="home-container" class="results-container"></div>
-                    </div>
-                    <!-- Web Series Section -->
-                    <div id="series-section" class="feature-section">
-                        <h2>Top Web Series</h2>
-                        <p class="page-description">Discover the most talked-about series from India and around the world.</p>
-                        <div id="series-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
-                        <div id="series-container" class="results-container"></div>
-                    </div>
-                    <!-- Anticipated Section -->
-                    <div id="anticipated-section" class="feature-section">
-                        <h2>Most Anticipated</h2>
-                        <p class="page-description">The most hyped and awaited movies on the horizon.</p>
-                        <h3 class="section-subtitle">Anticipated in India</h3>
-                        <div id="anticipated-india-loading" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
-                        <div id="anticipated-india-container" class="results-container"></div>
-                        <h3 class="section-subtitle">Global Blockbusters</h3>
-                        <div id="anticipated-global-loading" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
-                        <div id="anticipated-global-container" class="results-container"></div>
-                    </div>
-                    <!-- Recommendations Section -->
-                    <div id="recommendations-section" class="feature-section">
-                        <h2>Find Similar Titles</h2>
-                        <p class="page-description">Enter a movie or series you like, and we'll find similar ones.</p>
-                        <div class="search-controls">
-                            <input type="text" id="reco-search-input" placeholder="e.g., 3 Idiots, Mirzapur...">
-                            <button id="reco-search-button">Find</button>
-                        </div>
-                        <div id="reco-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
-                        <div id="reco-results-container" class="results-container"></div>
-                    </div>
-                    <!-- Mood AI Section -->
-                    <div id="mood-recommender-section" class="feature-section">
-                        <h2>AI Mood Recommendations</h2>
-                        <p class="page-description">Tell our AI how you're feeling for a unique list of suggestions.</p>
-                        <div class="search-controls" style="flex-direction:column; border-radius:var(--card-border-radius); box-shadow:none; gap:15px;">
-                            <textarea id="mood-input" placeholder="e.g., 'A fun, patriotic movie for the family' or 'A gripping thriller with lots of twists'"></textarea>
-                            <button id="mood-button" style="border-radius: 50px;">Get AI Recommendations</button>
-                        </div>
-                        <div id="mood-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
-                        <div id="mood-results-container" class="results-container"></div>
-                    </div>
-                    <!-- Watchlist Section -->
-                    <div id="watchlist-section" class="feature-section">
-                        <h2>My Watchlist</h2>
-                        <p class="page-description">A list of movies and series you want to watch in the future.</p>
-                        <div id="watchlist-entries" class="results-container"></div>
-                    </div>
-                </main>
-            </div>
-            <aside id="spotlight-panel">
-                <h3>Coming Soon</h3>
-                <div id="spotlight-container"></div>
-            </aside>
-        </div>
-        <div id="mobile-nav"></div>
-    </div>
+    <div class="app-wrapper" style="visibility: hidden;">
+        <!-- SIDEBAR -->
+        <aside id="sidebar">
+            <h1 id="app-title">Cinefy</h1>
+            <nav>
+                <button class="nav-button active" id="nav-home"><i class="fas fa-home"></i> Home</button>
+                <button class="nav-button" id="nav-series"><i class="fas fa-tv"></i> Web Series</button>
+                <button class="nav-button" id="nav-anticipated"><i class="fas fa-fire"></i> Anticipated</button>
+                <button class="nav-button" id="nav-upcoming"><i class="fas fa-calendar-alt"></i> Upcoming</button>
+                <button class="nav-button" id="nav-recommendations"><i class="fas fa-magic"></i> For You</button>
+                <button class="nav-button" id="nav-mood-recommender"><i class="fas fa-smile"></i> Mood AI</button>
+                <button class="nav-button" id="nav-news"><i class="fas fa-newspaper"></i> Film News</button>
+                <button class="nav-button" id="nav-watchlist"><i class="fas fa-list-alt"></i> Watchlist</button>
+            </nav>
+        </aside>
 
-    <!-- ===== SETTINGS PAGE ===== -->
-    <div id="settings-page" class="page">
-        <div class="settings-container">
-            <h1>Theme Settings</h1>
-            <p>As one of our first users, you have exclusive access to change your theme. Choose your reality.</p>
-            <div class="theme-options">
-                <div class="theme-card" data-theme="default">
-                    <h3>Default</h3>
-                    <div class="color-palette">
-                        <div class="color-swatch" style="background-color: #0d1117;"></div>
-                        <div class="color-swatch" style="background-color: #007BFF;"></div>
-                        <div class="color-swatch" style="background-color: #e6edf3;"></div>
+        <!-- MAIN CONTENT -->
+        <div id="main-content" style="width:100%;">
+            <main>
+                <!-- Home Section -->
+                <div id="home-section" class="feature-section active">
+                    <div class="search-controls" id="home-search-controls">
+                        <input type="text" id="home-search-input" placeholder="Search for any movie or series...">
+                        <button id="home-search-button"><i class="fas fa-search"></i></button>
                     </div>
+                    <h2>Popular Movies</h2>
+                    <p class="page-description">A curated list of popular Indian and Hollywood films.</p>
+                    <div id="home-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="home-container" class="results-container"></div>
                 </div>
-                <div class="theme-card" data-theme="matrix-theme">
-                    <h3>The Matrix</h3>
-                    <div class="color-palette">
-                        <div class="color-swatch" style="background-color: #020202;"></div>
-                        <div class="color-swatch" style="background-color: #00ff41;"></div>
-                        <div class="color-swatch" style="background-color: #005215;"></div>
-                    </div>
-                </div>
-                <div class="theme-card" data-theme="dune-theme">
-                    <h3>Dune</h3>
-                    <div class="color-palette">
-                        <div class="color-swatch" style="background-color: #3c2f2f;"></div>
-                        <div class="color-swatch" style="background-color: #ff8c42;"></div>
-                        <div class="color-swatch" style="background-color: #f2e8e1;"></div>
-                    </div>
-                </div>
-                 <div class="theme-card" data-theme="bladerunner-theme">
-                    <h3>Blade Runner</h3>
-                    <div class="color-palette">
-                        <div class="color-swatch" style="background-color: #0c0d1c;"></div>
-                        <div class="color-swatch" style="background-color: #f038ff;"></div>
-                        <div class="color-swatch" style="background-color: #e0e1ff;"></div>
-                    </div>
-                </div>
-            </div>
-            <p id="success-message">Theme saved successfully!</p>
-            <a id="back-link"><i class="fas fa-arrow-left"></i> Back to Cinefy</a>
-        </div>
-    </div>
 
-    <!-- ===== MODALS (Shared) ===== -->
+                <!-- Web Series Section -->
+                <div id="series-section" class="feature-section">
+                    <h2>Top Web Series</h2>
+                    <p class="page-description">Discover the most talked-about series from India and around the world.</p>
+                    <div id="series-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="series-container" class="results-container"></div>
+                </div>
+
+                <!-- Anticipated Section -->
+                <div id="anticipated-section" class="feature-section">
+                    <h2>Most Anticipated</h2>
+                    <p class="page-description">The most hyped and awaited movies on the horizon.</p>
+                    
+                    <h3 class="section-subtitle">Anticipated in India</h3>
+                    <div id="anticipated-india-loading" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="anticipated-india-container" class="results-container"></div>
+
+                    <h3 class="section-subtitle">Global Blockbusters</h3>
+                    <div id="anticipated-global-loading" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="anticipated-global-container" class="results-container"></div>
+                </div>
+
+                <!-- Upcoming Section -->
+                <div id="upcoming-section" class="feature-section">
+                    <h2>Upcoming Releases</h2>
+                    <p class="page-description">The latest movies coming to theaters near you.</p>
+                    <div id="upcoming-theatrical-loading" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="upcoming-theatrical-container" class="results-container"></div>
+                </div>
+
+                <!-- Recommendations Section -->
+                <div id="recommendations-section" class="feature-section">
+                    <h2>Find Similar Titles</h2>
+                    <p class="page-description">Enter a movie or series you like, and we'll find similar ones.</p>
+                    <div class="search-controls">
+                        <input type="text" id="reco-search-input" placeholder="e.g., 3 Idiots, Mirzapur...">
+                        <button id="reco-search-button">Find</button>
+                    </div>
+                    <div id="reco-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="reco-results-container" class="results-container"></div>
+                </div>
+
+                <!-- Mood AI Section -->
+                <div id="mood-recommender-section" class="feature-section">
+                    <h2>AI Mood Recommendations</h2>
+                    <p class="page-description">Tell our AI how you're feeling for a unique list of suggestions.</p>
+                    <div class="search-controls" style="flex-direction:column; border-radius:var(--card-border-radius); box-shadow:none; gap:15px;">
+                        <textarea id="mood-input" placeholder="e.g., 'A fun, patriotic movie for the family' or 'A gripping thriller with lots of twists'"></textarea>
+                        <button id="mood-button" style="border-radius: 50px;">Get AI Recommendations</button>
+                    </div>
+                    <div id="mood-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="mood-results-container" class="results-container"></div>
+                </div>
+
+                <!-- News Section -->
+                <div id="news-section" class="feature-section">
+                    <h2>Your Personalized Film News</h2>
+                    <p class="page-description">The latest news from the Indian film industry based on your preferences.</p>
+                    <div id="news-loading-indicator" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div id="news-container" class="results-container" style="grid-template-columns: 1fr; gap: 20px;"></div>
+                </div>
+
+                <!-- Watchlist Section -->
+                <div id="watchlist-section" class="feature-section">
+                    <h2>My Watchlist</h2>
+                    <p class="page-description">A list of movies and series you want to watch in the future.</p>
+                    <div id="watchlist-entries" class="results-container"></div>
+                </div>
+            </main>
+        </div>
+
+        <!-- RIGHT SPOTLIGHT PANEL -->
+        <aside id="spotlight-panel">
+            <h3>Coming Soon to Theaters</h3>
+            <div id="spotlight-container"></div>
+        </aside>
+    </div>
+    
+    <!-- MOBILE NAVIGATION BAR -->
+    <div id="mobile-nav"></div>
+
+    <!-- MODALS -->
     <div id="movie-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><div class="modal-body"></div></div></div>
     <div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><iframe id="trailer-iframe" allow="autoplay; encrypted-media" allowfullscreen></iframe></div></div>
-    
-    <!-- ===== FIREBASE & APP SCRIPT ===== -->
-    <script type="module">
-        // --- Firebase SDK Imports ---
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import {
-            getAuth, onAuthStateChanged, createUserWithEmailAndPassword,
-            signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut
-        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import {
-            getFirestore, doc, getDoc, setDoc, runTransaction, updateDoc
-        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    <div id="custom-alert-modal" class="modal"></div>
 
-        // --- Firebase Configuration ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyAnGsBcsc2I23QHAO3b_Kk42d0SZoAP6ok",
-            authDomain: "cinefy-app.firebaseapp.com",
-            projectId: "cinefy-app",
-            storageBucket: "cinefy-app.firebasestorage.app",
-            messagingSenderId: "434515285834",
-            appId: "1:434515285834:web:2583d43d2f905e67ea13b3",
-            measurementId: "G-SXVE113XG5"
-        };
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- CONFIG & API KEYS ---
+        const TMDB_API_KEY = 'd91c0bfea39d9cc51c703202c289eebf';
+        const GEMINI_API_KEY = 'AIzaSyD4ybkMxxqhsT6_axrdyFANKAGI4tEzlmQ'; // User-provided Key
+        const GNEWS_API_KEY = 'adff08e986e75ae2074b7bcf9642781e';
 
-        // --- Initialize Firebase ---
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        const BASE_URL = 'https://api.themoviedb.org/3/';
+        const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+        const PLACEHOLDER_IMAGE = 'https://placehold.co/500x750/21262d/8b949e?text=No+Poster';
+        const NEWS_PLACEHOLDER_IMAGE = 'https://placehold.co/400x225/21262d/8b949e?text=No+Image';
+        const INDIAN_REGION = 'IN';
 
-        // --- Global State & DOM Cache ---
-        let isLoginMode = true;
-        let appInitialized = false;
-        const pages = {
-            login: document.getElementById('login-page'),
-            app: document.getElementById('app-page'),
-            settings: document.getElementById('settings-page')
-        };
-        const globalDom = {
-            // Login Page
-            authForm: document.getElementById('auth-form'),
-            emailInput: document.getElementById('email'),
-            passwordInput: document.getElementById('password'),
-            googleBtn: document.getElementById('google-signin-button'),
-            toggleModeBtn: document.getElementById('toggle-mode'),
-            errorMessage: document.getElementById('error-message'),
-            formTagline: document.getElementById('form-tagline'),
-            authBtnText: document.getElementById('auth-button-text'),
-            toggleContainer: document.getElementById('toggle-container'),
-            imageBackgroundContainer: document.getElementById('image-background-container'),
-            // App Page
-            navSettings: document.getElementById('nav-settings'),
-            navLogout: document.getElementById('nav-logout'),
-            // Settings Page
-            themeCards: document.querySelectorAll('.theme-card'),
-            successMessage: document.getElementById('success-message'),
-            backLink: document.getElementById('back-link'),
-        };
-
-        // --- Page Navigation & Backgrounds ---
-        function showPage(pageId) {
-            Object.values(pages).forEach(page => page.classList.remove('active'));
-            if (pages[pageId]) {
-                pages[pageId].classList.add('active');
-            }
-            // Handle dynamic background
-            if (pageId === 'login') {
-                populateLoginBackground();
-                globalDom.imageBackgroundContainer.style.display = 'flex';
-            } else {
-                globalDom.imageBackgroundContainer.style.display = 'none';
-            }
-        }
-
-        // --- Main Authentication Controller ---
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                const userRef = doc(db, 'users', user.uid);
-                const userSnap = await getDoc(userRef);
-
-                if (userSnap.exists()) {
-                    const userData = userSnap.data();
-                    globalDom.navSettings.style.display = userData.canChangeTheme ? 'flex' : 'none';
-                    document.body.className = userData.theme || 'default';
-                    if (userData.theme === 'matrix-theme') initializeMatrixRain();
-                }
-                
-                showPage('app');
-                if (!appInitialized) {
-                    initializeAppLogic();
-                    appInitialized = true;
-                }
-            } else {
-                showPage('login');
-                document.body.className = ''; // Reset theme on logout
-            }
-        });
-
-        // --- LOGIN PAGE LOGIC ---
-        function populateLoginBackground() {
-            if (globalDom.imageBackgroundContainer.children.length > 0) return; // Already populated
-
-            const posterPaths = [
-                '/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg', // Joker
-                '/78lPtwv72eTNqFW9COBYI0dMJaO.jpg', // Iron Man
-                '/uGSo2s9aR2n2xI1z2E2621vT5m4.jpg', // RRR
-                '/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg', // Interstellar
-                '/9_IAU2dsR0w2p5t5sgs9s8wP72.jpg', // Baahubali
-                '/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg', // Pulp Fiction
-                '/2Ci821T23Fk2iN3a3PqgV2c4L4s.jpg', // Pathaan
-                '/lDRhY22QyS5E72m6cO7a1i36p4n.jpg', // Star Wars
-                '/82r2iGfKxL3X6i_2i5aTvlU0LgM.jpg', // The Dark Knight
-                '/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg', // Parasite
-                '/3bhkrj58Vtu7enYsRolD1fZdja1.jpg', // The Godfather
-                '/jDJYjalE2mI222Owa2t2VxtqG5.jpg'  // Jawan
-            ];
-
-            const columns = [[], [], []];
-            posterPaths.forEach((path, index) => {
-                columns[index % 3].push(path);
-            });
-
-            let html = '';
-            columns.forEach(columnPaths => {
-                html += '<div class="bg-column">';
-                // Duplicate the images to ensure seamless looping
-                const doubledPaths = [...columnPaths, ...columnPaths];
-                doubledPaths.forEach(path => {
-                    html += `<div class="bg-image-tile" style="background-image: url('https://image.tmdb.org/t/p/w500${path}')"></div>`;
-                });
-                html += '</div>';
-            });
-            globalDom.imageBackgroundContainer.innerHTML = html;
-        }
-
-        function setAuthUIForMode() {
-            globalDom.errorMessage.textContent = '';
-            if (isLoginMode) {
-                globalDom.formTagline.textContent = 'Sign in to begin your cinematic journey.';
-                globalDom.authBtnText.textContent = 'Login';
-                globalDom.toggleContainer.innerHTML = `Don't have an account? <button id="toggle-mode">Sign Up</button>`;
-            } else {
-                globalDom.formTagline.textContent = 'Create an account to personalize your experience.';
-                globalDom.authBtnText.textContent = 'Sign Up';
-                globalDom.toggleContainer.innerHTML = `Already have an account? <button id="toggle-mode">Login</button>`;
-            }
-            document.getElementById('toggle-mode').addEventListener('click', () => {
-                isLoginMode = !isLoginMode;
-                setAuthUIForMode();
-            });
-        }
-        setAuthUIForMode(); // Initial setup
-
-        const createUserDocument = async (user) => {
-            if (!user) return;
-            const userRef = doc(db, 'users', user.uid);
-            const userSnap = await getDoc(userRef);
-
-            if (!userSnap.exists()) {
-                const counterRef = doc(db, "metadata", "userCounter");
-                try {
-                    await runTransaction(db, async (transaction) => {
-                        const counterDoc = await transaction.get(counterRef);
-                        let newUserCount = counterDoc.exists() ? counterDoc.data().count + 1 : 1;
-                        transaction.set(userRef, {
-                            uid: user.uid, email: user.email, createdAt: new Date(),
-                            canChangeTheme: newUserCount <= 1000, // Increased for demonstration
-                            theme: 'default'
-                        });
-                        transaction.set(counterRef, { count: newUserCount }, { merge: true });
-                    });
-                } catch (e) {
-                    console.error("Transaction failed: ", e);
-                    globalDom.errorMessage.textContent = "Error creating account profile.";
-                }
-            }
-        };
-
-        globalDom.authForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            globalDom.errorMessage.textContent = '';
-            try {
-                if (isLoginMode) {
-                    await signInWithEmailAndPassword(auth, globalDom.emailInput.value, globalDom.passwordInput.value);
-                } else {
-                    const cred = await createUserWithEmailAndPassword(auth, globalDom.emailInput.value, globalDom.passwordInput.value);
-                    await createUserDocument(cred.user);
-                }
-            } catch (error) {
-                globalDom.errorMessage.textContent = error.message.replace('Firebase: ', '').split(' (')[0];
-            }
-        });
-
-        globalDom.googleBtn.addEventListener('click', async () => {
-            globalDom.errorMessage.textContent = '';
-            try {
-                const cred = await signInWithPopup(auth, new GoogleAuthProvider());
-                await createUserDocument(cred.user);
-            } catch (error) {
-                globalDom.errorMessage.textContent = error.message.replace('Firebase: ', '').split(' (')[0];
-            }
-        });
-
-        // --- SETTINGS PAGE LOGIC ---
-        globalDom.themeCards.forEach(card => {
-            card.addEventListener('click', async () => {
-                const user = auth.currentUser;
-                if (!user) return;
-                const newTheme = card.dataset.theme;
-                try {
-                    await updateDoc(doc(db, 'users', user.uid), { theme: newTheme });
-                    document.body.className = newTheme;
-                    if (newTheme === 'matrix-theme') initializeMatrixRain();
-                    
-                    globalDom.themeCards.forEach(c => c.classList.remove('active'));
-                    card.classList.add('active');
-                    
-                    globalDom.successMessage.style.opacity = '1';
-                    setTimeout(() => { globalDom.successMessage.style.opacity = '0'; }, 2000);
-                } catch (error) {
-                    console.error("Error updating theme:", error);
-                }
-            });
-        });
-
-        // --- MAIN APP LOGIC ---
-        function initializeAppLogic() {
-            // This function contains all the logic for the main application
-            // (fetching movies, handling searches, modals, etc.)
+        // --- DOM ELEMENT CACHING ---
+        const dom = {
+            appWrapper: document.querySelector('.app-wrapper'),
+            mobileNavContainer: document.getElementById('mobile-nav'),
+            navButtons: document.querySelectorAll('.nav-button'),
+            featureSections: document.querySelectorAll('.feature-section'),
+            appTitle: document.getElementById('app-title'),
+            spotlightContainer: document.getElementById('spotlight-container'),
             
-            const TMDB_API_KEY = 'd91c0bfea39d9cc51c703202c289eebf';
-            const BASE_URL = 'https://api.themoviedb.org/3/';
-            const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
-            const PLACEHOLDER_IMAGE = 'https://placehold.co/500x750/21262d/8b949e?text=No+Poster';
+            home: { 
+                container: document.getElementById('home-container'), 
+                loading: document.getElementById('home-loading-indicator'),
+                searchInput: document.getElementById('home-search-input'),
+                searchButton: document.getElementById('home-search-button')
+            },
+            series: { container: document.getElementById('series-container'), loading: document.getElementById('series-loading-indicator') },
+            anticipated: { 
+                indiaContainer: document.getElementById('anticipated-india-container'), 
+                indiaLoading: document.getElementById('anticipated-india-loading'),
+                globalContainer: document.getElementById('anticipated-global-container'),
+                globalLoading: document.getElementById('anticipated-global-loading')
+            },
+            upcoming: { container: document.getElementById('upcoming-theatrical-container'), loading: document.getElementById('upcoming-theatrical-loading') },
+            recommendations: { input: document.getElementById('reco-search-input'), button: document.getElementById('reco-search-button'), container: document.getElementById('reco-results-container'), loading: document.getElementById('reco-loading-indicator') },
+            mood: { input: document.getElementById('mood-input'), button: document.getElementById('mood-button'), container: document.getElementById('mood-results-container'), loading: document.getElementById('mood-loading-indicator') },
+            news: { container: document.getElementById('news-container'), loading: document.getElementById('news-loading-indicator') },
+            watchlist: { container: document.getElementById('watchlist-entries') },
+            modals: {
+                movie: { main: document.getElementById('movie-modal'), body: document.querySelector('#movie-modal .modal-body'), close: document.querySelector('#movie-modal .close-button') },
+                trailer: { main: document.getElementById('trailer-modal'), iframe: document.getElementById('trailer-iframe'), close: document.querySelector('#trailer-modal .close-button') },
+                onboarding: { page: document.getElementById('onboarding-page'), form: document.getElementById('onboarding-form'), genreGrid: document.getElementById('onboarding-genre-grid') }
+            }
+        };
 
-            const dom = {
-                navButtons: document.querySelectorAll('#app-page .nav-button'),
-                featureSections: document.querySelectorAll('.feature-section'),
-                appTitle: document.getElementById('app-title'),
-                spotlightContainer: document.getElementById('spotlight-container'),
-                home: { 
-                    container: document.getElementById('home-container'), 
-                    loading: document.getElementById('home-loading-indicator'),
-                    searchInput: document.getElementById('home-search-input'),
-                    searchButton: document.getElementById('home-search-button')
-                },
-                series: { container: document.getElementById('series-container'), loading: document.getElementById('series-loading-indicator') },
-                anticipated: { 
-                    indiaContainer: document.getElementById('anticipated-india-container'), 
-                    indiaLoading: document.getElementById('anticipated-india-loading'),
-                    globalContainer: document.getElementById('anticipated-global-container'),
-                    globalLoading: document.getElementById('anticipated-global-loading')
-                },
-                recommendations: { input: document.getElementById('reco-search-input'), button: document.getElementById('reco-search-button'), container: document.getElementById('reco-results-container'), loading: document.getElementById('reco-loading-indicator') },
-                mood: { input: document.getElementById('mood-input'), button: document.getElementById('mood-button'), container: document.getElementById('mood-results-container'), loading: document.getElementById('mood-loading-indicator') },
-                watchlist: { container: document.getElementById('watchlist-entries') },
-                modals: {
-                    movie: { main: document.getElementById('movie-modal'), body: document.querySelector('#movie-modal .modal-body'), close: document.querySelector('#movie-modal .close-button') },
-                    trailer: { main: document.getElementById('trailer-modal'), iframe: document.getElementById('trailer-iframe'), close: document.querySelector('#trailer-modal .close-button') },
-                }
-            };
+        // --- CORE APP INITIALIZATION ---
+        function init() {
+            setupNavigation();
+            setupEventListeners();
+            checkOnboarding();
+            setupEasterEggs();
+        }
 
-            function init() {
-                setupNavigation();
-                setupEventListeners();
+        // --- ONBOARDING & PERSONALIZATION ---
+        async function checkOnboarding() {
+            if (!localStorage.getItem('userPreferences')) {
+                populateOnboardingModal();
+                dom.modals.onboarding.page.style.display = 'flex';
+            } else {
+                dom.appWrapper.style.visibility = 'visible';
                 fetchPersonalizedHome();
-                fetchUpcomingReleases(true); 
+                fetchUpcomingReleases(true); // For spotlight panel
             }
+        }
 
-            function setupNavigation() {
-                dom.navButtons.forEach(btn => {
-                    const sectionId = btn.id.replace('nav-', '');
-                    if (['home', 'series', 'anticipated', 'recommendations', 'mood-recommender', 'watchlist'].includes(sectionId)) {
-                        btn.addEventListener('click', () => {
-                            showSection(sectionId);
-                            const fetchActions = {
-                                home: fetchPersonalizedHome,
-                                series: fetchPopularWebSeries,
-                                anticipated: fetchAnticipated,
-                                watchlist: renderWatchlist,
-                            };
-                            if (fetchActions[sectionId]) fetchActions[sectionId]();
-                        });
-                    }
+        function populateOnboardingModal() {
+            const indianGenres = [
+                { id: 'custom_bollywood', name: 'Bollywood' },
+                { id: 'custom_south', name: 'South Indian' },
+                { id: '28', name: 'Action' },
+                { id: '10749', name: 'Romance' },
+                { id: '35', name: 'Comedy' },
+                { id: '18', name: 'Drama' },
+                { id: '53', name: 'Thriller' },
+                { id: '27', name: 'Horror' },
+                { id: '10751', name: 'Family' },
+            ];
+            dom.modals.onboarding.genreGrid.innerHTML = indianGenres.map(g => 
+                <label><input type="checkbox" name="genre" value="${g.id}">${g.name}</label>
+            ).join('');
+        }
+
+        function handleOnboardingSubmit(e) {
+            e.preventDefault();
+            const selectedGenres = Array.from(dom.modals.onboarding.form.querySelectorAll('input[name="genre"]:checked')).map(cb => cb.value);
+            if (selectedGenres.length === 0 || selectedGenres.length > 5) {
+                showCustomAlert("Please select 1 to 5 options.", "error");
+                return;
+            }
+            const preferences = {
+                genres: selectedGenres.filter(g => !g.startsWith('custom_')),
+                keywords: selectedGenres.filter(g => g.startsWith('custom_')).map(g => g.replace('custom_', ''))
+            };
+            localStorage.setItem('userPreferences', JSON.stringify(preferences));
+            
+            dom.modals.onboarding.page.style.display = 'none';
+            dom.appWrapper.style.visibility = 'visible';
+            showCustomAlert("Preferences saved! Welcome to your personalized Cinefy.", "success");
+            fetchPersonalizedHome();
+            fetchUpcomingReleases(true);
+        }
+        
+        // --- NAVIGATION ---
+        function setupNavigation() {
+            const sidebarNav = document.querySelector('#sidebar nav');
+            dom.mobileNavContainer.innerHTML = sidebarNav.innerHTML;
+            dom.navButtons = document.querySelectorAll('.nav-button');
+            
+            dom.navButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const sectionId = e.currentTarget.id.replace('nav-', '');
+                    showSection(sectionId);
+                    
+                    const fetchActions = {
+                        home: fetchPersonalizedHome,
+                        series: fetchPopularWebSeries,
+                        anticipated: fetchAnticipated,
+                        upcoming: fetchUpcomingReleases,
+                        news: fetchFilmNews,
+                        watchlist: renderWatchlist,
+                    };
+                    if (fetchActions[sectionId]) fetchActions[sectionId]();
                 });
-                dom.appTitle.addEventListener('click', () => document.getElementById('nav-home').click());
-            }
+            });
+            dom.appTitle.addEventListener('click', () => document.getElementById('nav-home').click());
+        }
 
-            function showSection(sectionId) {
-                dom.featureSections.forEach(section => section.classList.remove('active'));
-                const targetSection = document.getElementById(`${sectionId}-section`);
-                if (targetSection) targetSection.classList.add('active');
-                
-                dom.navButtons.forEach(btn => btn.classList.remove('active'));
-                document.querySelectorAll(`#app-page #nav-${sectionId}`).forEach(activeBtn => activeBtn.classList.add('active'));
-            }
+        function showSection(sectionId) {
+            dom.featureSections.forEach(section => section.classList.remove('active'));
+            document.getElementById(${sectionId}-section).classList.add('active');
+            
+            dom.navButtons.forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll(#nav-${sectionId}).forEach(activeBtn => activeBtn.classList.add('active'));
+        }
 
-            function setupEventListeners() {
-                dom.home.searchButton.addEventListener('click', handleHomeSearch);
-                dom.home.searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') handleHomeSearch(); });
-                dom.recommendations.button.addEventListener('click', handleRecommendationSearch);
-                dom.recommendations.input.addEventListener('keypress', e => { if (e.key === 'Enter') handleRecommendationSearch(); });
-                dom.mood.button.addEventListener('click', handleMoodRecommendation);
-                
-                [dom.modals.movie.close, dom.modals.trailer.close].forEach(btn => btn.addEventListener('click', () => {
-                    dom.modals.movie.main.style.display = 'none';
+        // --- EVENT LISTENERS ---
+        function setupEventListeners() {
+            // Search Listeners
+            dom.home.searchButton.addEventListener('click', handleHomeSearch);
+            dom.home.searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') handleHomeSearch(); });
+            dom.recommendations.button.addEventListener('click', handleRecommendationSearch);
+            dom.recommendations.input.addEventListener('keypress', e => { if (e.key === 'Enter') handleRecommendationSearch(); });
+            
+            // Mood AI Listener
+            dom.mood.button.addEventListener('click', handleMoodRecommendation);
+            
+            // Modal Close Listeners
+            [dom.modals.movie.close, dom.modals.trailer.close].forEach(btn => btn.addEventListener('click', () => {
+                dom.modals.movie.main.style.display = 'none';
+                dom.modals.trailer.main.style.display = 'none';
+                dom.modals.trailer.iframe.src = '';
+            }));
+            window.addEventListener('click', (e) => {
+                if (e.target === dom.modals.movie.main) dom.modals.movie.main.style.display = 'none';
+                if (e.target === dom.modals.trailer.main) {
                     dom.modals.trailer.main.style.display = 'none';
-                    if(dom.modals.trailer.iframe) dom.modals.trailer.iframe.src = '';
-                }));
+                    dom.modals.trailer.iframe.src = '';
+                }
+            });
+            dom.modals.onboarding.form.addEventListener('submit', handleOnboardingSubmit);
+        }
 
-                window.addEventListener('click', (e) => {
-                    if (e.target === dom.modals.movie.main) dom.modals.movie.main.style.display = 'none';
-                    if (e.target === dom.modals.trailer.main) {
-                        dom.modals.trailer.main.style.display = 'none';
-                        if(dom.modals.trailer.iframe) dom.modals.trailer.iframe.src = '';
+        // --- API FETCHING & DATA HANDLING ---
+        
+        async function fetchApiData(url, container, loader, displayFn, noResultsMessage) {
+            loader.style.display = 'block';
+            container.innerHTML = '';
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(HTTP error! Status: ${response.status});
+                const data = await response.json();
+                const results = data.results || data.articles;
+                if (results && results.length > 0) {
+                    displayFn(results, container);
+                } else {
+                    container.innerHTML = <div class="empty-state-container"><i class="fas fa-film"></i><h3>No Results</h3><p>${noResultsMessage}</p></div>;
+                }
+            } catch (error) {
+                console.error('API Fetch Error:', error);
+                container.innerHTML = <div class="empty-state-container"><i class="fas fa-exclamation-triangle"></i><h3>Error</h3><p>Could not fetch data. Please try again later.</p></div>;
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        async function fetchAndCombineContent(type, genreString = '') {
+            const indianUrl = ${BASE_URL}discover/${type}?api_key=${TMDB_API_KEY}&sort_by=popularity.desc&with_genres=${genreString}&with_origin_country=IN&language=en-US&page=1;
+            const hollywoodUrl = ${BASE_URL}discover/${type}?api_key=${TMDB_API_KEY}&sort_by=popularity.desc&with_genres=${genreString}&with_origin_country=US&language=en-US&page=1;
+
+            try {
+                const [indianRes, hollywoodRes] = await Promise.all([fetch(indianUrl), fetch(hollywoodUrl)]);
+                const indianData = await indianRes.json();
+                const hollywoodData = await hollywoodRes.json();
+
+                const combined = [];
+                const addedIds = new Set();
+
+                const indianResults = indianData.results || [];
+                const hollywoodResults = hollywoodData.results || [];
+                const maxLength = Math.max(indianResults.length, hollywoodResults.length);
+
+                for (let i = 0; i < maxLength; i++) {
+                    if (indianResults[i] && !addedIds.has(indianResults[i].id)) {
+                        combined.push(indianResults[i]);
+                        addedIds.add(indianResults[i].id);
                     }
-                });
-                
-                globalDom.navLogout.addEventListener('click', () => signOut(auth));
-                globalDom.navSettings.addEventListener('click', () => showPage('settings'));
-                globalDom.backLink.addEventListener('click', () => showPage('app'));
-            }
-
-            async function fetchApiData(url, container, loader, displayFn, noResultsMessage) {
-                if (loader) loader.style.display = 'block';
-                if (container) container.innerHTML = '';
-                try {
-                    const response = await fetch(url);
-                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                    const data = await response.json();
-                    const results = data.results;
-                    if (results && results.length > 0) {
-                        displayFn(results, container);
-                    } else if (container) {
-                        container.innerHTML = `<div class="empty-state-container"><p>${noResultsMessage}</p></div>`;
+                    if (hollywoodResults[i] && !addedIds.has(hollywoodResults[i].id)) {
+                        combined.push(hollywoodResults[i]);
+                        addedIds.add(hollywoodResults[i].id);
                     }
-                } catch (error) {
-                    console.error('API Fetch Error:', error);
-                    if (container) container.innerHTML = `<div class="empty-state-container"><p>Could not fetch data.</p></div>`;
-                } finally {
-                    if (loader) loader.style.display = 'none';
                 }
+                return combined;
+            } catch (error) {
+                console.error("Failed to fetch combined content:", error);
+                return [];
             }
+        }
+
+        async function fetchPersonalizedHome() {
+            dom.home.loading.style.display = 'block';
+            dom.home.container.innerHTML = '';
+            const prefs = JSON.parse(localStorage.getItem('userPreferences'));
+            const genreString = prefs ? prefs.genres.join(',') : '';
             
-            async function fetchAndCombineContent(type) {
-                const indianUrl = `${BASE_URL}discover/${type}?api_key=${TMDB_API_KEY}&sort_by=popularity.desc&with_origin_country=IN&language=en-US&page=1`;
-                const hollywoodUrl = `${BASE_URL}discover/${type}?api_key=${TMDB_API_KEY}&sort_by=popularity.desc&with_origin_country=US&language=en-US&page=1`;
-                try {
-                    const [indianRes, hollywoodRes] = await Promise.all([fetch(indianUrl), fetch(hollywoodUrl)]);
-                    const indianData = await indianRes.json();
-                    const hollywoodData = await hollywoodRes.json();
-                    const combined = [...(indianData.results || []), ...(hollywoodData.results || [])]
-                        .sort((a, b) => b.popularity - a.popularity)
-                        .filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i);
-                    return combined;
-                } catch (error) {
-                    console.error("Failed to fetch combined content:", error);
-                    return [];
-                }
-            }
+            const movies = await fetchAndCombineContent('movie', genreString);
 
-            async function fetchPersonalizedHome() {
-                dom.home.loading.style.display = 'block';
-                dom.home.container.innerHTML = '';
-                const movies = await fetchAndCombineContent('movie');
-                if (movies.length > 0) {
-                    displayContent(movies, dom.home.container, 'movie');
-                }
-                dom.home.loading.style.display = 'none';
+            if (movies.length > 0) {
+                displayContent(movies, dom.home.container, 'movie');
+            } else {
+                dom.home.container.innerHTML = <div class="empty-state-container"><i class="fas fa-film"></i><h3>No Movies Found</h3><p>Could not find popular movies at the moment.</p></div>;
             }
+            dom.home.loading.style.display = 'none';
+        }
 
-             async function fetchPopularWebSeries() {
-                dom.series.loading.style.display = 'block';
-                dom.series.container.innerHTML = '';
-                const series = await fetchAndCombineContent('tv');
-                if (series.length > 0) {
-                    displayContent(series, dom.series.container, 'tv');
-                }
-                dom.series.loading.style.display = 'none';
-            }
+        async function fetchPopularWebSeries() {
+            dom.series.loading.style.display = 'block';
+            dom.series.container.innerHTML = '';
+            const series = await fetchAndCombineContent('tv');
 
-            async function fetchAnticipated() {
-                const today = new Date().toISOString().split('T')[0];
-                const indiaUrl = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&primary_release_date.gte=${today}&with_origin_country=IN&sort_by=popularity.desc`;
-                const globalUrl = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&primary_release_date.gte=${today}&with_origin_country=US&sort_by=popularity.desc`;
-                fetchApiData(indiaUrl, dom.anticipated.indiaContainer, dom.anticipated.indiaLoading, (movies) => displayContent(movies, dom.anticipated.indiaContainer, 'movie'), "No anticipated Indian movies found.");
-                fetchApiData(globalUrl, dom.anticipated.globalContainer, dom.anticipated.globalLoading, (movies) => displayContent(movies, dom.anticipated.globalContainer, 'movie'), "No global blockbusters found.");
+            if (series.length > 0) {
+                displayContent(series, dom.series.container, 'tv');
+            } else {
+                dom.series.container.innerHTML = <div class="empty-state-container"><i class="fas fa-tv"></i><h3>No Series Found</h3><p>Could not find popular series at the moment.</p></div>;
             }
+            dom.series.loading.style.display = 'none';
+        }
+        
+        async function fetchAnticipated() {
+            const today = new Date().toISOString().split('T')[0];
+            const nextYear = new Date();
+            nextYear.setFullYear(nextYear.getFullYear() + 1);
+            const nextYearStr = nextYear.toISOString().split('T')[0];
+
+            const indiaUrl = ${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&primary_release_date.gte=${today}&primary_release_date.lte=${nextYearStr}&with_origin_country=IN&sort_by=popularity.desc;
+            const globalUrl = ${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&primary_release_date.gte=${today}&primary_release_date.lte=${nextYearStr}&with_origin_country=US&sort_by=popularity.desc;
+
+            await fetchApiData(indiaUrl, dom.anticipated.indiaContainer, dom.anticipated.indiaLoading, (movies) => displayContent(movies, dom.anticipated.indiaContainer, 'movie'), "No anticipated Indian movies found.");
+            await fetchApiData(globalUrl, dom.anticipated.globalContainer, dom.anticipated.globalLoading, (movies) => displayContent(movies, dom.anticipated.globalContainer, 'movie'), "No anticipated global blockbusters found.");
+        }
+
+        async function fetchUpcomingReleases(spotlightOnly = false) {
+            const today = new Date().toISOString().split('T')[0];
+            const twoMonthsLater = new Date();
+            twoMonthsLater.setMonth(twoMonthsLater.getMonth() + 2);
+            const twoMonthsLaterStr = twoMonthsLater.toISOString().split('T')[0];
+            const url = ${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&primary_release_date.gte=${today}&primary_release_date.lte=${twoMonthsLaterStr}&with_release_type=3&region=IN,US&sort_by=popularity.desc;
             
-            async function fetchUpcomingReleases(spotlightOnly = false) {
-                const today = new Date().toISOString().split('T')[0];
-                const url = `${BASE_URL}discover/movie?api_key=${TMDB_API_KEY}&primary_release_date.gte=${today}&with_release_type=3&region=IN,US&sort_by=popularity.desc`;
+            if (spotlightOnly) {
                 const response = await fetch(url);
                 const data = await response.json();
                 if (data.results) {
                     displayUpcomingMovies(data.results.slice(0, 10), dom.spotlightContainer);
                 }
+            } else {
+                await fetchApiData(url, dom.upcoming.container, dom.upcoming.loading, (movies) => displayContent(movies, dom.upcoming.container, 'movie'), "No upcoming theatrical releases found.");
             }
-            
-            function handleHomeSearch() {
-                const query = dom.home.searchInput.value.trim();
-                if (!query) return;
-                dom.recommendations.input.value = query;
-                showSection('recommendations');
-                handleRecommendationSearch();
+        }
+        
+        function handleHomeSearch() {
+            const query = dom.home.searchInput.value.trim();
+            if (!query) {
+                showCustomAlert("Please enter a search term.", "error");
+                return;
             }
-
-            async function handleRecommendationSearch() {
-                // Recommendation search logic here
-            }
-            
-            async function handleMoodRecommendation() {
-                // Mood AI logic here
-            }
-
-            function displayContent(items, container, type) {
-                if (!container) return;
-                container.innerHTML = '';
-                items.forEach(item => {
-                    if (!item.poster_path) return;
-                    const card = document.createElement('div');
-                    card.className = 'movie-card';
-                    const title = item.title || item.name;
-                    const releaseDate = item.release_date || item.first_air_date;
-                    const year = releaseDate ? releaseDate.substring(0, 4) : 'N/A';
-                    const itemType = item.media_type || type;
-                    card.innerHTML = `<img src="${IMAGE_BASE_URL}${item.poster_path}" alt="${title}" loading="lazy" onerror="this.src='${PLACEHOLDER_IMAGE}'"><div class="card-overlay"><div class="overlay-buttons"><button class="overlay-btn trailer-btn" title="Watch Trailer"><i class="fas fa-play"></i></button><button class="overlay-btn watchlist-btn" title="Add to Watchlist"><i class="fas fa-plus"></i></button></div></div><div class="movie-card-content"><h3>${title}</h3><p>${year}</p></div>`;
-                    card.addEventListener('click', () => fetchDetails(item.id, itemType));
-                    card.querySelector('.trailer-btn').addEventListener('click', (e) => { e.stopPropagation(); openTrailerModal(item.id, itemType); });
-                    card.querySelector('.watchlist-btn').addEventListener('click', (e) => { e.stopPropagation(); addToWatchlist(item, itemType); });
-                    container.appendChild(card);
-                });
-            }
-            
-            function displayUpcomingMovies(movies, container) {
-                if (!container) return;
-                container.innerHTML = '';
-                movies.forEach(movie => {
-                    if (!movie.poster_path) return;
-                    const item = document.createElement('div');
-                    item.className = 'upcoming-movie-item';
-                    const releaseDate = new Date(movie.release_date).toLocaleDateString('en-IN', { month: 'long', day: 'numeric' });
-                    item.innerHTML = `<img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}" loading="lazy" onerror="this.src='${PLACEHOLDER_IMAGE}'"><div class="upcoming-movie-info"><h4>${movie.title}</h4><p>${releaseDate}</p></div>`;
-                    item.addEventListener('click', () => fetchDetails(movie.id, 'movie'));
-                    container.appendChild(item);
-                });
-            }
-
-            async function fetchDetails(id, type) { /* ... */ }
-            async function openTrailerModal(id, type) { /* ... */ }
-            function addToWatchlist(item, type) { /* ... */ }
-            function renderWatchlist() { /* ... */ }
-
-            init();
+            dom.recommendations.input.value = query;
+            handleRecommendationSearch();
+            showSection('recommendations');
         }
 
-        // --- MATRIX RAIN EFFECT ---
-        function initializeMatrixRain() {
-            const canvas = document.getElementById('matrix-canvas');
-            if (!canvas || canvas.dataset.initialized) return;
-            canvas.dataset.initialized = 'true';
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            const alphabet = 'アァカサタナハマヤャラワガザダバパイキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            const fontSize = 16;
-            const columns = canvas.width / fontSize;
-            const rainDrops = Array.from({ length: columns }).fill(1);
+        async function handleRecommendationSearch() {
+            const query = dom.recommendations.input.value.trim();
+            if (!query) { showCustomAlert("Please enter a movie or series title.", "error"); return; }
 
-            const draw = () => {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim() || '#0F0';
-                ctx.font = fontSize + 'px monospace';
+            // Easter Egg checks
+            const lowerCaseQuery = query.toLowerCase();
+            if (easterEggTriggers[lowerCaseQuery]) {
+                easterEggTriggers[lowerCaseQuery]();
+                return;
+            }
+
+            dom.recommendations.loading.style.display = 'block';
+            dom.recommendations.container.innerHTML = '';
+            try {
+                const searchUrl = ${BASE_URL}search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=1;
+                const searchResponse = await fetch(searchUrl);
+                const searchData = await searchResponse.json();
+                if (!searchData.results || searchData.results.length === 0) throw new Error(Title "${query}" not found.);
                 
-                for (let i = 0; i < rainDrops.length; i++) {
-                    const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-                    ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-                    if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                        rainDrops[i] = 0;
-                    }
-                    rainDrops[i]++;
-                }
-            };
-            setInterval(draw, 33);
+                const firstResult = searchData.results.find(r => r.media_type !== 'person');
+                if (!firstResult) throw new Error(No movies or series found for "${query}".);
+
+                const { id, media_type } = firstResult;
+                
+                const recoUrl = ${BASE_URL}${media_type}/${id}/recommendations?api_key=${TMDB_API_KEY};
+                await fetchApiData(recoUrl, dom.recommendations.container, dom.recommendations.loading, (items) => displayContent(items, dom.recommendations.container, media_type), "No recommendations found.");
+            } catch (error) {
+                console.error("Recommendation search error:", error);
+                showCustomAlert(error.message, 'error');
+                dom.recommendations.loading.style.display = 'none';
+            }
         }
+
+        async function fetchFilmNews() {
+            if (!GNEWS_API_KEY) { 
+                dom.news.container.innerHTML = <div class="empty-state-container"><p>News feature is not configured.</p></div>; 
+                return; 
+            }
+            const query = "Bollywood OR Hollywood OR Indian Cinema OR Tollywood OR Kollywood movie";
+            const url = https://gnews.io/api/v4/search?q=${encodeURIComponent(query)}&lang=en&country=in&token=${GNEWS_API_KEY};
+            await fetchApiData(url, dom.news.container, dom.news.loading, displayNews, "No film news found.");
+        }
+
+        // --- DISPLAY & RENDERING ---
+        function displayContent(items, container, type) {
+            if (type !== 'mood_append') {
+                container.innerHTML = '';
+            }
+            items.forEach(item => {
+                if (!item.poster_path) return;
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                const title = item.title || item.name;
+                const releaseDate = item.release_date || item.first_air_date;
+                const year = releaseDate ? releaseDate.substring(0, 4) : 'N/A';
+                const itemType = item.media_type || item.type || type;
+                
+                card.innerHTML = `
+                    <img src="${IMAGE_BASE_URL}${item.poster_path}" alt="${title}" loading="lazy" onerror="this.src='${PLACEHOLDER_IMAGE}'">
+                    <div class="card-overlay">
+                        <div class="overlay-buttons">
+                            <button class="overlay-btn trailer-btn" title="Watch Trailer"><i class="fas fa-play"></i></button>
+                            <button class="overlay-btn watchlist-btn" title="Add to Watchlist"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="movie-card-content">
+                        <h3>${title}</h3>
+                        <p>${year}</p>
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => fetchDetails(item.id, itemType));
+                card.querySelector('.trailer-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openTrailerModal(item.id, itemType);
+                });
+                 card.querySelector('.watchlist-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    addToWatchlist(item, itemType);
+                });
+                container.appendChild(card);
+            });
+        }
+
+        function displayUpcomingMovies(movies, container) {
+            container.innerHTML = '';
+            movies.forEach(movie => {
+                if (!movie.poster_path) return;
+                const item = document.createElement('div');
+                item.className = 'upcoming-movie-item';
+                const releaseDate = new Date(movie.release_date).toLocaleDateString('en-IN', { month: 'long', day: 'numeric' });
+                item.innerHTML = `
+                    <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}" loading="lazy" onerror="this.src='${PLACEHOLDER_IMAGE}'">
+                    <div class="upcoming-movie-info">
+                        <h4>${movie.title}</h4>
+                        <p>${releaseDate}</p>
+                    </div>`;
+                item.addEventListener('click', () => fetchDetails(movie.id, 'movie'));
+                container.appendChild(item);
+            });
+        }
+        
+        function displayNews(articles) {
+            dom.news.container.innerHTML = '';
+            articles.forEach(article => {
+                const card = document.createElement('a');
+                card.className = 'news-card';
+                card.href = article.url;
+                card.target = '_blank';
+                card.rel = 'noopener noreferrer';
+
+                card.innerHTML = `
+                    <img src="${article.image || NEWS_PLACEHOLDER_IMAGE}" alt="${article.title}" class="news-card-img" onerror="this.src='${NEWS_PLACEHOLDER_IMAGE}'">
+                    <div class="news-card-content">
+                        <h3>${article.title}</h3>
+                        <p>${article.description || 'Click to read more.'}</p>
+                        <span class="news-card-source">${article.source.name}</span>
+                    </div>
+                `;
+                dom.news.container.appendChild(card);
+            });
+        }
+
+        // --- MODAL & DETAILS LOGIC ---
+        async function fetchDetails(id, type) {
+            if (type === 'watchlist' || !type) {
+                try {
+                    const movieUrl = ${BASE_URL}movie/${id}?api_key=${TMDB_API_KEY};
+                    const movieRes = await fetch(movieUrl);
+                    if (movieRes.ok) {
+                        type = 'movie';
+                    } else {
+                        type = 'tv';
+                    }
+                } catch (e) { type = 'tv'; }
+            }
+            try {
+                const url = ${BASE_URL}${type}/${id}?api_key=${TMDB_API_KEY}&append_to_response=credits,videos,watch/providers;
+                const response = await fetch(url);
+                const data = await response.json();
+                displayDetailsModal(data, type);
+            } catch (error) {
+                console.error('Error fetching details:', error);
+                showCustomAlert('Could not fetch details.', 'error');
+            }
+        }
+
+        function displayDetailsModal(data, type) {
+            const title = data.title || data.name;
+            const posterPath = data.poster_path ? ${IMAGE_BASE_URL}${data.poster_path} : PLACEHOLDER_IMAGE;
+            const genres = data.genres.map(g => g.name).join(', ');
+            const rating = data.vote_average ? data.vote_average.toFixed(1) + '/10' : 'N/A';
+            const trailerAvailable = data.videos?.results?.some(v => v.type === 'Trailer' && v.site === 'YouTube');
+            
+            dom.modals.movie.body.innerHTML = `
+                <img src="${posterPath}" alt="${title}" class="modal-poster">
+                <div class="modal-details">
+                    <h2>${title}</h2>
+                    <p><strong>Genre:</strong> ${genres}</p>
+                    <p><strong>Rating:</strong> ${rating}</p>
+                    <p><strong>Overview:</strong> ${data.overview || 'N/A'}</p>
+                    ${generateWatchProvidersHTML(data['watch/providers'], title)}
+                    <div class="modal-actions">
+                        ${trailerAvailable ? <button class="modal-btn primary" id="modal-trailer-btn"><i class="fas fa-play"></i> Watch Trailer</button> : ''}
+                        <button class="modal-btn secondary" id="modal-watchlist-btn"><i class="fas fa-plus"></i> Add to Watchlist</button>
+                    </div>
+                </div>
+            `;
+            
+            dom.modals.movie.main.style.display = 'block';
+
+            const trailerBtn = document.getElementById('modal-trailer-btn');
+            if(trailerBtn) trailerBtn.addEventListener('click', () => openTrailerModal(data.id, type));
+            document.getElementById('modal-watchlist-btn').addEventListener('click', () => addToWatchlist(data, type));
+        }
+        
+        function generateWatchProvidersHTML(providers, title) {
+            const indianProviders = providers?.results?.[INDIAN_REGION]?.flatrate;
+            if (!indianProviders || indianProviders.length === 0) {
+                return '<p>Not currently available on major streaming platforms in India.</p>';
+            }
+
+            const providerLinks = {
+                'Netflix': (q) => https://www.netflix.com/search?q=${encodeURIComponent(q)},
+                'Amazon Prime Video': (q) => https://www.primevideo.com/search/ref=atv_nb_sr?phrase=${encodeURIComponent(q)}&ie=UTF8,
+                'Disney+ Hotstar': (q) => https://www.hotstar.com/in/search?q=${encodeURIComponent(q)},
+                'JioCinema': (q) => https://www.jiocinema.com/search/${encodeURIComponent(q)},
+                'Zee5': (q) => https://www.zee5.com/search?q=${encodeURIComponent(q)},
+                'Sony Liv': (q) => https://www.sonyliv.com/search/${encodeURIComponent(q)}
+            };
+            
+            let html = '<h4>Watch Now On:</h4><div class="provider-list">';
+            indianProviders.forEach(p => {
+                const link = providerLinks[p.provider_name] ? providerLinks[p.provider_name](title) : '#';
+                html += `<a href="${link}" target="_blank" rel="noopener noreferrer" title="${p.provider_name}">
+                            <img src="${IMAGE_BASE_URL}${p.logo_path}" alt="${p.provider_name}">
+                         </a>`;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        async function openTrailerModal(id, type) {
+            try {
+                const url = ${BASE_URL}${type}/${id}/videos?api_key=${TMDB_API_KEY};
+                const response = await fetch(url);
+                const data = await response.json();
+                const trailer = data.results.find(video => video.type === 'Trailer' && video.site === 'YouTube');
+                if (trailer) {
+                    dom.modals.trailer.iframe.src = https://www.youtube.com/embed/${trailer.key}?autoplay=1;
+                    dom.modals.trailer.main.style.display = 'block';
+                } else {
+                    showCustomAlert('No official trailer found.', 'info');
+                }
+            } catch (error) {
+                console.error("Trailer fetch error:", error);
+                showCustomAlert('Could not fetch trailer.', 'error');
+            }
+        }
+
+        // --- WATCHLIST ---
+        function addToWatchlist(item, type) {
+            let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+            if (!watchlist.some(w => w.id === item.id)) {
+                watchlist.push({ id: item.id, title: item.title || item.name, poster_path: item.poster_path, release_date: item.release_date || item.first_air_date, type: type });
+                localStorage.setItem('watchlist', JSON.stringify(watchlist));
+                showCustomAlert(${item.title || item.name} added to watchlist!, 'success');
+            } else {
+                showCustomAlert(${item.title || item.name} is already in your watchlist., 'info');
+            }
+        }
+
+        function renderWatchlist() {
+            const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+            dom.watchlist.container.innerHTML = '';
+            if (watchlist.length === 0) {
+                dom.watchlist.container.innerHTML = <div class="empty-state-container"><i class="fas fa-list-alt"></i><h3>Your Watchlist is Empty</h3><p>Add movies and series you want to watch.</p></div>;
+                return;
+            }
+            displayContent(watchlist, dom.watchlist.container, 'watchlist');
+        }
+
+        // --- UTILITY FUNCTIONS ---
+        function showCustomAlert(message, type = 'info') {
+            console.log(ALERT (${type}): ${message});
+        }
+
+        // --- AI MOOD RECOMMENDER (GEMINI) ---
+        async function handleMoodRecommendation() {
+            const mood = dom.mood.input.value.trim();
+            if (!mood) { showCustomAlert('Please describe your mood or what you want to watch.', 'error'); return; }
+            if (!GEMINI_API_KEY) { showCustomAlert('AI feature is not configured. API key is missing.', 'error'); return; }
+
+            dom.mood.loading.style.display = 'block';
+            dom.mood.container.innerHTML = '';
+            
+            try {
+                const prompt = Based on the following mood, suggest 8-10 specific Indian or popular Hollywood movie/web series titles. Do not include any other text besides the numbered list of titles. For example: "1. Movie A\\n2. Series B\\n...". Mood: ${mood};
+                const apiUrl = https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY};
+                const payload = { contents: [{ parts: [{ text: prompt }] }] };
+                
+                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!response.ok) throw new Error(API error: ${response.status});
+                
+                const result = await response.json();
+                const recommendationText = result?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                const titles = recommendationText.split('\n').map(line => line.replace(/^\d+\.\s*/, '').trim()).filter(line => line.length > 0);
+                
+                if (titles.length > 0) {
+                    await fetchAndDisplayFromTitles(titles, dom.mood.container);
+                } else {
+                    dom.mood.container.innerHTML = <div class="empty-state-container"><p>The AI couldn't find matches for that mood.</p></div>;
+                }
+            } catch (error) {
+                console.error('Mood recommender error:', error);
+                dom.mood.container.innerHTML = <div class="empty-state-container"><p>An error occurred with the AI recommender.</p></div>;
+            } finally {
+                dom.mood.loading.style.display = 'none';
+            }
+        }
+
+        async function fetchAndDisplayFromTitles(titles, container) {
+            const foundItems = [];
+            const promises = titles.map(title => 
+                fetch(${BASE_URL}search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(title)})
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.results && data.results.length > 0) {
+                            const bestMatch = data.results.find(r => r.media_type !== 'person' && r.poster_path);
+                            if (bestMatch) {
+                                foundItems.push(bestMatch);
+                            }
+                        }
+                    })
+                    .catch(err => console.error(Error fetching ${title}:, err))
+            );
+            await Promise.all(promises);
+            
+            if (foundItems.length > 0) {
+                displayContent(foundItems, container, 'mood_append');
+            } else {
+                container.innerHTML = <div class="empty-state-container"><p>Could not find poster images for the AI recommendations.</p></div>;
+            }
+        }
+
+        // --- EASTER EGGS ---
+        const easterEggTriggers = {
+            'i am groot': handleGrootEasterEgg,
+            'there is no spoon': () => applyCssFilter('blur(2px) grayscale(1)', 3000, 'The Matrix has you...'),
+            'show me the money': () => makeItRain('💰'),
+            'bond, james bond': () => searchAndDisplayById(646, 'movie'), // Dr. No
+            'may the force be with you': () => searchAndDisplayById(11, 'movie'), // Star Wars
+            'i\'ll be back': () => searchAndDisplayById(218, 'movie'), // The Terminator
+            'why so serious?': () => searchAndDisplayById(155, 'movie'), // The Dark Knight
+            'hakuna matata': () => searchAndDisplayById(8587, 'movie'), // The Lion King
+            'to infinity and beyond': () => searchAndDisplayById(862, 'movie'), // Toy Story
+            'winter is coming': () => searchAndDisplayById(1399, 'tv'), // Game of Thrones
+            'how you doin?': () => searchAndDisplayById(1668, 'tv'), // Friends
+            'bazinga': () => searchAndDisplayById(1418, 'tv'), // The Big Bang Theory
+            'alohomora': () => {
+                document.documentElement.style.setProperty('--accent-color', '#740001'); // Gryffindor Red
+                document.documentElement.style.setProperty('--accent-hover-color', '#ae0001');
+                showCustomAlert('Mischief Managed!', 'success');
+            }
+        };
+
+        function setupEasterEggs() {
+            // Konami Code
+            const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+            let konamiIndex = 0;
+            window.addEventListener('keydown', (e) => {
+                if (e.key.toLowerCase() === konamiCode[konamiIndex]) {
+                    konamiIndex++;
+                    if (konamiIndex === konamiCode.length) {
+                        konamiIndex = 0;
+                        applyCssFilter('invert(1) hue-rotate(180deg)', 3000, 'Konami code activated!');
+                    }
+                } else {
+                    konamiIndex = 0;
+                }
+            });
+
+            // Se7en Click
+            let clickCount = 0;
+            dom.appTitle.addEventListener('click', () => {
+                clickCount++;
+                if (clickCount === 7) {
+                    showCustomAlert("What's in the box?!", "info");
+                    clickCount = 0;
+                }
+                setTimeout(() => { if(clickCount > 0) clickCount = 0; }, 2000); // Reset after 2 seconds
+            });
+        }
+        
+        function applyCssFilter(filter, duration, message) {
+            document.body.style.transition = 'filter 0.5s ease';
+            document.body.style.filter = filter;
+            showCustomAlert(message, "success");
+            setTimeout(() => document.body.style.filter = '', duration);
+        }
+
+        function makeItRain(emoji) {
+            for (let i = 0; i < 50; i++) {
+                const rain = document.createElement('div');
+                rain.innerText = emoji;
+                rain.style.position = 'fixed';
+                rain.style.left = ${Math.random() * 100}vw;
+                rain.style.top = ${Math.random() * -50}vh;
+                rain.style.fontSize = ${Math.random() * 2 + 1}rem;
+                rain.style.animation = fall 2s linear ${Math.random() * 2}s forwards;
+                document.body.appendChild(rain);
+                setTimeout(() => rain.remove(), 4000);
+            }
+            const keyframes = @keyframes fall { to { top: 110vh; transform: rotate(360deg); } };
+            const style = document.createElement('style');
+            style.innerHTML = keyframes;
+            document.head.appendChild(style);
+            setTimeout(() => style.remove(), 4000);
+        }
+
+        async function searchAndDisplayById(id, type) {
+            showSection('recommendations');
+            dom.recommendations.loading.style.display = 'block';
+            dom.recommendations.container.innerHTML = '';
+            try {
+                const url = ${BASE_URL}${type}/${id}?api_key=${TMDB_API_KEY};
+                const response = await fetch(url);
+                const data = await response.json();
+                displayContent([data], dom.recommendations.container, type);
+            } catch (error) {
+                console.error("Easter egg fetch error:", error);
+            } finally {
+                dom.recommendations.loading.style.display = 'none';
+            }
+        }
+
+        async function handleGrootEasterEgg() {
+            const grootId = 118340; // Guardians of the Galaxy Vol. 1
+            const url = ${BASE_URL}movie/${grootId}/recommendations?api_key=${TMDB_API_KEY};
+            showSection('recommendations');
+            dom.recommendations.loading.style.display = 'block';
+            dom.recommendations.container.innerHTML = '';
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.results) {
+                    const grootMovies = data.results.map(movie => ({...movie, title: "I am Groot"}));
+                    displayContent(grootMovies, dom.recommendations.container, 'movie');
+                }
+            } catch (error) {
+                console.error("Groot error:", error);
+            } finally {
+                dom.recommendations.loading.style.display = 'none';
+            }
+        }
+
+        init();
+    });
     </script>
 </body>
 </html>
