@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cinefy - Your Cinematic Universe</title>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Courier+Prime&display=swap" rel="stylesheet">
@@ -194,7 +192,7 @@
             align-items: center; justify-content: center; gap: 10px;
         }
         .login-container .btn-primary { background: var(--accent-color); color: white; }
-        .login-container .btn-primary:hover { background: #0056b3; transform: translateY(-2px); }
+        .login-container .btn-primary:hover { background: var(--accent-hover-color); transform: translateY(-2px); }
         .login-container .btn-google { background-color: #fff; color: #333; margin-top: 15px; }
         .login-container .btn-google:hover { background-color: #f1f1f1; transform: translateY(-2px); }
         .login-container .divider {
@@ -344,8 +342,8 @@
             :root { --sidebar-width: 0; }
             #sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
             main { margin-left: 0; width: 100%; padding: 15px; }
-            #mobile-nav { display: block; position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--secondary-bg-color); padding: 5px 0; z-index: 1000; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; }
-            .app-wrapper { padding-bottom: 60px; }
+            #mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--secondary-bg-color); padding: 5px 0; z-index: 1000; border-top: 1px solid var(--border-color); justify-content: space-around; }
+            .app-wrapper { padding-bottom: 60px; } /* NEW: Added padding for mobile nav */
         }
         @media (min-width: 993px) { #mobile-nav { display: none; } }
         
@@ -394,7 +392,6 @@
     
     <div id="image-background-container"></div>
 
-    <!-- ===== LOGIN PAGE ===== -->
     <div id="login-page" class="page active">
         <div class="login-container">
             <h1 class="logo">Cinefy</h1>
@@ -423,21 +420,20 @@
         </div>
     </div>
 
-    <!-- ===== MAIN APP PAGE ===== -->
     <div id="app-page" class="page">
         <div class="app-wrapper">
             <aside id="sidebar">
                 <h1 id="app-title">Cinefy</h1>
                 <nav>
-                    <button class="nav-button active" id="nav-home"><i class="fas fa-home"></i> Home</button>
-                    <button class="nav-button" id="nav-series"><i class="fas fa-tv"></i> Web Series</button>
-                    <button class="nav-button" id="nav-anticipated"><i class="fas fa-fire"></i> Anticipated</button>
-                    <button class="nav-button" id="nav-recommendations"><i class="fas fa-magic"></i> For You</button>
-                    <button class="nav-button" id="nav-mood-recommender"><i class="fas fa-smile"></i> Mood AI</button>
-                    <button class="nav-button" id="nav-news"><i class="fas fa-newspaper"></i> Film News</button>
-                    <button class="nav-button" id="nav-watchlist"><i class="fas fa-list-alt"></i> Watchlist</button>
-                    <button class="nav-button" id="nav-settings" style="display: none;"><i class="fas fa-cog"></i> Settings</button>
-                    <button class="nav-button" id="nav-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                    <button class="nav-button active" id="nav-home"><i class="fas fa-home"></i> <span>Home</span></button>
+                    <button class="nav-button" id="nav-series"><i class="fas fa-tv"></i> <span>Web Series</span></button>
+                    <button class="nav-button" id="nav-anticipated"><i class="fas fa-fire"></i> <span>Anticipated</span></button>
+                    <button class="nav-button" id="nav-recommendations"><i class="fas fa-magic"></i> <span>For You</span></button>
+                    <button class="nav-button" id="nav-mood-recommender"><i class="fas fa-smile"></i> <span>Mood AI</span></button>
+                    <button class="nav-button" id="nav-news"><i class="fas fa-newspaper"></i> <span>Film News</span></button>
+                    <button class="nav-button" id="nav-watchlist"><i class="fas fa-list-alt"></i> <span>Watchlist</span></button>
+                    <button class="nav-button" id="nav-settings" style="display: none;"><i class="fas fa-cog"></i> <span>Settings</span></button>
+                    <button class="nav-button" id="nav-logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></button>
                 </nav>
             </aside>
             <div id="main-content" style="width:100%;">
@@ -509,7 +505,6 @@
         <div id="mobile-nav"></div>
     </div>
 
-    <!-- ===== SETTINGS PAGE ===== -->
     <div id="settings-page" class="page">
         <div class="settings-container">
             <h1>Theme Settings</h1>
@@ -553,11 +548,9 @@
         </div>
     </div>
 
-    <!-- ===== MODALS (Shared) ===== -->
     <div id="movie-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><div class="modal-body"></div></div></div>
-    <div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><iframe id="trailer-iframe" allow="autoplay; encrypted-media" allowfullscreen></iframe></div></div>
+    <div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><iframe id="trailer-iframe" width="100%" height="500px" style="border:none;" allow="autoplay; encrypted-media" allowfullscreen></iframe></div></div>
     
-    <!-- ===== FIREBASE & APP SCRIPT ===== -->
     <script type="module">
         // --- Firebase SDK Imports ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -574,7 +567,7 @@
             apiKey: "AIzaSyAnGsBcsc2I23QHAO3b_Kk42d0SZoAP6ok",
             authDomain: "cinefy-app.firebaseapp.com",
             projectId: "cinefy-app",
-            storageBucket: "cinefy-app.firebasestorage.app",
+            storageBucket: "cinefy-app.appspot.com",
             messagingSenderId: "434515285834",
             appId: "1:434515285834:web:2583d43d2f905e67ea13b3",
             measurementId: "G-SXVE113XG5"
@@ -775,6 +768,9 @@
             const BASE_URL = 'https://api.themoviedb.org/3/';
             const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
             const PLACEHOLDER_IMAGE = 'https://placehold.co/500x750/21262d/8b949e?text=No+Poster';
+            
+            // NEW: In-memory cache to store API results
+            const apiCache = {};
 
             const dom = {
                 navButtons: document.querySelectorAll('#app-page .nav-button'),
@@ -807,6 +803,7 @@
             function init() {
                 setupNavigation();
                 setupEventListeners();
+                buildMobileNav(); // NEW: Build the mobile navigation
                 fetchPersonalizedHome();
                 fetchUpcomingReleases(true); 
             }
@@ -831,6 +828,36 @@
                 dom.appTitle.addEventListener('click', () => document.getElementById('nav-home').click());
             }
 
+            // NEW: Function to build the mobile navigation bar
+            function buildMobileNav() {
+                const mobileNavContainer = document.getElementById('mobile-nav');
+                if (!mobileNavContainer) return;
+
+                const navIds = ['home', 'series', 'anticipated', 'recommendations', 'watchlist'];
+                mobileNavContainer.innerHTML = ''; // Clear previous content
+
+                navIds.forEach(id => {
+                    const desktopBtn = document.getElementById(`nav-${id}`);
+                    if (desktopBtn) {
+                        const mobileBtn = desktopBtn.cloneNode(true);
+                        // Remove text label for a cleaner icon-only look on mobile
+                        const textSpan = mobileBtn.querySelector('span');
+                        if (textSpan) {
+                            textSpan.remove();
+                        }
+                        mobileBtn.style.flexDirection = 'column'; // Stack icon and text if text is kept
+                        mobileBtn.style.padding = '8px';
+                        mobileBtn.style.fontSize = '0.8rem';
+                        
+                        mobileBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                             desktopBtn.click(); // Trigger the original button's click event
+                        });
+                        mobileNavContainer.appendChild(mobileBtn);
+                    }
+                });
+            }
+
             function showSection(sectionId) {
                 dom.featureSections.forEach(section => section.classList.remove('active'));
                 const targetSection = document.getElementById(`${sectionId}-section`);
@@ -838,12 +865,23 @@
                 
                 dom.navButtons.forEach(btn => btn.classList.remove('active'));
                 document.querySelectorAll(`#app-page #nav-${sectionId}`).forEach(activeBtn => activeBtn.classList.add('active'));
+
+                // Also update mobile nav active state
+                const mobileNav = document.getElementById('mobile-nav');
+                mobileNav.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+                const activeMobileBtn = mobileNav.querySelector(`#nav-${sectionId}`);
+                if (activeMobileBtn) activeMobileBtn.classList.add('active');
             }
 
             function setupEventListeners() {
                 dom.home.searchButton.addEventListener('click', handleHomeSearch);
                 dom.home.searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') handleHomeSearch(); });
                 
+                // FIXED: Hooked up event listeners for Recommendations and Mood AI
+                dom.recommendations.button.addEventListener('click', handleRecommendationSearch);
+                dom.recommendations.input.addEventListener('keypress', e => { if (e.key === 'Enter') handleRecommendationSearch(); });
+                dom.mood.button.addEventListener('click', handleMoodRecommendation);
+
                 [dom.modals.movie.close, dom.modals.trailer.close].forEach(btn => btn.addEventListener('click', () => {
                     dom.modals.movie.main.style.display = 'none';
                     dom.modals.trailer.main.style.display = 'none';
@@ -870,14 +908,16 @@
                     const response = await fetch(url);
                     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                     const data = await response.json();
-                    const results = data.results;
+                    const results = data.results || (Array.isArray(data) ? data : []); // Handle different API response shapes
                     if (results && results.length > 0) {
                         displayFn(results, container);
                     } else if (container) {
-                        container.innerHTML = `<div class="empty-state-container"><p>${noResultsMessage}</p></div>`;
+                        container.innerHTML = `<div class="empty-state-container"><i class="fas fa-video-slash"></i><p>${noResultsMessage}</p></div>`;
                     }
+                    return results; // Return data for caching
                 } catch (error) {
                     console.error('API Fetch Error:', error);
+                    if (container) container.innerHTML = `<div class="empty-state-container"><i class="fas fa-exclamation-triangle"></i><p>Could not fetch data. Please try again later.</p></div>`;
                 } finally {
                     if (loader) loader.style.display = 'none';
                 }
@@ -890,30 +930,116 @@
                 return data.results || [];
             }
 
+            // FIXED: Added caching logic
             async function fetchPersonalizedHome() {
+                if (apiCache.home) {
+                    displayContent(apiCache.home, dom.home.container, 'movie');
+                    return;
+                }
                 dom.home.loading.style.display = 'block';
                 const movies = await fetchAndCombineContent('movie');
+                apiCache.home = movies;
                 displayContent(movies, dom.home.container, 'movie');
                 dom.home.loading.style.display = 'none';
             }
-
-             async function fetchPopularWebSeries() {
+            
+            // FIXED: Added caching logic
+            async function fetchPopularWebSeries() {
+                 if (apiCache.series) {
+                    displayContent(apiCache.series, dom.series.container, 'tv');
+                    return;
+                }
                 dom.series.loading.style.display = 'block';
                 const series = await fetchAndCombineContent('tv');
+                apiCache.series = series;
                 displayContent(series, dom.series.container, 'tv');
                 dom.series.loading.style.display = 'none';
             }
             
+            // FIXED: Added caching logic
             async function fetchFilmNews() {
+                if (apiCache.news) {
+                    displayContent(apiCache.news, dom.news.container, 'movie');
+                    return;
+                }
                 const url = `${BASE_URL}trending/movie/day?api_key=${TMDB_API_KEY}`;
-                await fetchApiData(url, dom.news.container, dom.news.loading, displayContent, "No trending news found.");
+                apiCache.news = await fetchApiData(url, dom.news.container, dom.news.loading, (results) => displayContent(results, dom.news.container, 'movie'), "No trending news found.");
             }
 
-            async function fetchAnticipated() { /* ... */ }
-            async function fetchUpcomingReleases(spotlightOnly = false) { /* ... */ }
-            function handleHomeSearch() { /* ... */ }
-            async function handleRecommendationSearch() { /* ... */ }
-            async function handleMoodRecommendation() { /* ... */ }
+            // FIXED: Implemented function to fetch anticipated movies
+            async function fetchAnticipated() {
+                if (apiCache.anticipatedIndia && apiCache.anticipatedGlobal) {
+                     displayContent(apiCache.anticipatedIndia, dom.anticipated.indiaContainer, 'movie');
+                     displayContent(apiCache.anticipatedGlobal, dom.anticipated.globalContainer, 'movie');
+                    return;
+                }
+                // Fetch for India
+                const indiaUrl = `${BASE_URL}movie/upcoming?api_key=${TMDB_API_KEY}&language=en-US&region=IN`;
+                apiCache.anticipatedIndia = await fetchApiData(indiaUrl, dom.anticipated.indiaContainer, dom.anticipated.indiaLoading, (results) => displayContent(results, dom.anticipated.indiaContainer, 'movie'), "No upcoming Indian movies found.");
+                
+                // Fetch for Global
+                const globalUrl = `${BASE_URL}movie/upcoming?api_key=${TMDB_API_KEY}&language=en-US`;
+                apiCache.anticipatedGlobal = await fetchApiData(globalUrl, dom.anticipated.globalContainer, dom.anticipated.globalLoading, (results) => displayContent(results, dom.anticipated.globalContainer, 'movie'), "No upcoming global movies found.");
+            }
+
+            async function fetchUpcomingReleases(spotlightOnly = false) { 
+                const url = `${BASE_URL}movie/upcoming?api_key=${TMDB_API_KEY}&language=en-US&page=1`;
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    if(spotlightOnly) {
+                        displayUpcomingMovies(data.results.slice(0, 5), dom.spotlightContainer);
+                    }
+                } catch(e) { console.error(e) }
+            }
+
+            // FIXED: Implemented home search
+            function handleHomeSearch() {
+                const query = dom.home.searchInput.value.trim();
+                if (!query) return;
+                const url = `${BASE_URL}search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`;
+                fetchApiData(url, dom.home.container, dom.home.loading, (results) => displayContent(results, dom.home.container), `No results found for "${query}".`);
+            }
+
+            // FIXED: Implemented recommendation search
+            async function handleRecommendationSearch() {
+                const query = dom.recommendations.input.value.trim();
+                if (!query) return;
+
+                dom.recommendations.loading.style.display = 'block';
+                dom.recommendations.container.innerHTML = '';
+                try {
+                    // First, search for the movie/series to get its ID
+                    const searchUrl = `${BASE_URL}search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`;
+                    const searchResponse = await fetch(searchUrl);
+                    const searchData = await searchResponse.json();
+                    const firstResult = searchData.results[0];
+
+                    if (!firstResult) {
+                        dom.recommendations.container.innerHTML = `<div class="empty-state-container"><p>Could not find "${query}". Please try another title.</p></div>`;
+                        return;
+                    }
+
+                    // Then, fetch recommendations based on that ID
+                    const { id, media_type } = firstResult;
+                    const recoUrl = `${BASE_URL}${media_type}/${id}/recommendations?api_key=${TMDB_API_KEY}`;
+                    fetchApiData(recoUrl, dom.recommendations.container, dom.recommendations.loading, (results) => displayContent(results, dom.recommendations.container, media_type), `No recommendations found for "${query}".`);
+                } catch (error) {
+                    console.error("Recommendation search error:", error);
+                } finally {
+                    dom.recommendations.loading.style.display = 'none';
+                }
+            }
+
+            // FIXED: Implemented mood-based search
+            async function handleMoodRecommendation() {
+                const query = dom.mood.input.value.trim();
+                if (!query) return;
+                // This is a simplified "AI" search that uses the regular search endpoint.
+                // A true AI would use a more complex model, but this provides a good user experience.
+                const url = `${BASE_URL}search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`;
+                fetchApiData(url, dom.mood.container, dom.mood.loading, (results) => displayContent(results, dom.mood.container, 'movie'), `No movies matched your mood. Try being more descriptive!`);
+            }
 
             function displayContent(items, container, type) {
                 if (!container) return;
@@ -934,7 +1060,22 @@
                 });
             }
             
-            function displayUpcomingMovies(movies, container) { /* ... */ }
+            function displayUpcomingMovies(movies, container) {
+                container.innerHTML = '';
+                movies.forEach(movie => {
+                     const item = document.createElement('div');
+                    item.className = 'upcoming-movie-item';
+                    item.innerHTML = `
+                        <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}">
+                        <div class="upcoming-movie-info">
+                            <h4>${movie.title}</h4>
+                            <p>Release: ${movie.release_date}</p>
+                        </div>
+                    `;
+                    item.addEventListener('click', () => fetchDetails(movie.id, 'movie'));
+                    container.appendChild(item);
+                });
+            }
 
             async function fetchDetails(id, type) {
                 try {
@@ -947,14 +1088,27 @@
                 }
             }
 
+            // FIXED: Modal layout uses a flexbox wrapper for proper alignment.
             function displayDetailsModal(data, type) {
                 const title = data.title || data.name;
                 const posterPath = data.poster_path ? `${IMAGE_BASE_URL}${data.poster_path}` : PLACEHOLDER_IMAGE;
+                
+                const genres = data.genres.map(g => g.name).join(', ');
+                const releaseDate = data.release_date || data.first_air_date;
+                const rating = data.vote_average ? data.vote_average.toFixed(1) : 'N/A';
+
                 dom.modals.movie.body.innerHTML = `
-                    <img src="${posterPath}" alt="${title}" style="width:300px; object-fit:cover;">
-                    <div style="padding: 30px; flex-grow:1;">
-                        <h2>${title}</h2>
-                        <p>${data.overview}</p>
+                    <div style="display: flex; align-items: flex-start; gap: 30px; padding: 30px;">
+                        <img src="${posterPath}" alt="${title}" style="width:300px; height: 450px; object-fit:cover; border-radius: 8px; flex-shrink: 0;">
+                        <div style="flex-grow:1;">
+                            <h2 style="margin-top:0;">${title}</h2>
+                            <p style="color: var(--soft-text-color); font-style: italic;">${data.tagline || ''}</p>
+                            <p><strong>Rating:</strong> ⭐ ${rating} / 10</p>
+                            <p><strong>Release Date:</strong> ${releaseDate}</p>
+                            <p><strong>Genres:</strong> ${genres}</p>
+                            <br>
+                            <p>${data.overview}</p>
+                        </div>
                     </div>`;
                 dom.modals.movie.main.style.display = 'block';
             }
@@ -963,7 +1117,7 @@
                 const url = `${BASE_URL}${type}/${id}/videos?api_key=${TMDB_API_KEY}`;
                 const response = await fetch(url);
                 const data = await response.json();
-                const trailer = data.results.find(video => video.type === 'Trailer');
+                const trailer = data.results.find(video => video.type === 'Trailer' && video.site === 'YouTube');
                 if (trailer) {
                     dom.modals.trailer.iframe.src = `https://www.youtube.com/embed/${trailer.key}?autoplay=1`;
                     dom.modals.trailer.main.style.display = 'block';
@@ -975,7 +1129,7 @@
             function addToWatchlist(item, type) {
                 let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
                 if (!watchlist.some(w => w.id === item.id)) {
-                    watchlist.push({ id: item.id, title: item.title || item.name, poster_path: item.poster_path, type: type });
+                    watchlist.push({ id: item.id, title: item.title || item.name, poster_path: item.poster_path, type: item.media_type || type });
                     localStorage.setItem('watchlist', JSON.stringify(watchlist));
                     alert(`${item.title || item.name} added to watchlist!`);
                 } else {
@@ -985,6 +1139,10 @@
             
             function renderWatchlist() {
                 const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+                 if (watchlist.length === 0) {
+                    dom.watchlist.container.innerHTML = `<div class="empty-state-container"><i class="fas fa-list-alt"></i><p>Your watchlist is empty. Add some movies!</p></div>`;
+                    return;
+                }
                 displayContent(watchlist, dom.watchlist.container, 'watchlist');
             }
 
@@ -1003,6 +1161,7 @@
             const columns = canvas.width / fontSize;
             const rainDrops = Array.from({ length: columns }).fill(1);
 
+            let animationFrameId;
             const draw = () => {
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -1017,8 +1176,13 @@
                     }
                     rainDrops[i]++;
                 }
+                animationFrameId = requestAnimationFrame(draw);
             };
-            setInterval(draw, 33);
+            if(document.body.classList.contains('matrix-theme')) {
+                draw();
+            } else {
+                cancelAnimationFrame(animationFrameId);
+            }
         }
     </script>
 </body>
